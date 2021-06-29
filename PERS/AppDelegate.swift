@@ -6,11 +6,13 @@
 //
 
 import UIKit
-//import GoogleMaps
-//import GooglePlaces
+import GoogleMaps
+import GooglePlaces
 import FirebaseCore
 import FirebaseMessaging
 import FirebaseInstallations
+import IQKeyboardManagerSwift
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -20,22 +22,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     override init() {
         super .init()
         FirebaseApp.configure()
-        let token = Messaging.messaging().fcmToken
-        print("FCM token: \(token ?? "")")
-        deviceTokenForPushN = (" \(token ?? "")")
-        print("FCM deviceTokenForPushN: \(deviceTokenForPushN )")
-        UserDefaults.standard.set(deviceTokenForPushN, forKey: "Constant.token_id")
-        UserDefaults.standard.synchronize()
-        UIApplication.shared.applicationIconBadgeNumber = 0
-        UNUserNotificationCenter.current().delegate = self
-        self.registerForPushNotifications()
+        self.setUpAppNotifications()
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        IQKeyboardManager.shared.enable = true
+        self.checkUserAlreadyLogin()
         
-        //checkUserAlreadyLogin()
-        //IQKeyboardManager.shared.enable = true
         return true
     }
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -48,6 +42,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register: \(error)")
     }
+}
+
+
+//MARK:- HELPING METHOD'S
+extension AppDelegate{
+    func checkUserAlreadyLogin() {
+        var storyboard :UIStoryboard!
+        if UIDevice.current.userInterfaceIdiom == .phone{
+            storyboard = UIStoryboard(name: "Main", bundle: nil)
+        }
+        else{
+            storyboard = UIStoryboard(name: "Ipad", bundle: nil)
+        }
+        if (CommonHelper.getCachedUserData()?.id != nil){
+            let controller = storyboard.instantiateViewController(identifier: "Tabbar")
+            self.window?.rootViewController = controller
+        }else{
+            let controller = storyboard.instantiateViewController(identifier: "LoginVC")
+            self.window?.rootViewController = controller
+        }
+        self.window?.makeKeyAndVisible()
+    }
+}
+
+
+//MARK:- NOTIFICATION HELPING METHOD'S
+extension AppDelegate{
+    func setUpAppNotifications() {
+        let token = Messaging.messaging().fcmToken
+        print("FCM token: \(token ?? "")")
+        deviceTokenForPushN = (" \(token ?? "")")
+        print("FCM deviceTokenForPushN: \(deviceTokenForPushN )")
+        UserDefaults.standard.set(deviceTokenForPushN, forKey: "Constant.token_id")
+        UserDefaults.standard.synchronize()
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        UNUserNotificationCenter.current().delegate = self
+        self.registerForPushNotifications()
+    }
+    
     func registerForPushNotifications() {
         UNUserNotificationCenter.current()
             .requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] granted, error in
@@ -76,25 +109,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 }
-extension AppDelegate{
-    //    func checkUserAlreadyLogin() {
-    //        var storyboard :UIStoryboard!
-    //        if UIDevice.current.userInterfaceIdiom == .phone{
-    //            storyboard = UIStoryboard(name: "Main", bundle: nil)
-    //        }
-    //        else{
-    //            storyboard = UIStoryboard(name: "Ipad", bundle: nil)
-    //        }
-    //        if (CommonHelper.getCachedUserData()?.id != nil){
-    //            let controller = storyboard.instantiateViewController(identifier: "LGSideMenuController") as! UINavigationController
-    //            self.window?.rootViewController = controller
-    //        }else{
-    //            let controller = storyboard.instantiateViewController(identifier: "SignInViewController") as! UINavigationController
-    //            self.window?.rootViewController = controller
-    //        }
-    //        self.window?.makeKeyAndVisible()
-    //    }
-}
+
+//MARK:- NOTIFICATION DELEGATES METHOD'S
 extension AppDelegate:UNUserNotificationCenterDelegate{
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         if notification.request.identifier == "Local Notification Order" {

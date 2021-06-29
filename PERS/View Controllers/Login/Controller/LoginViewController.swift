@@ -95,20 +95,23 @@ extension LoginViewController{
                         if let error = error,user == nil{
                             hud.dismiss()
                             print(error.localizedDescription)
-                            print("SignInFailed")
                         }else{
                             if let user_FLag = self.mAuth.currentUser?.isEmailVerified{
                                 if user_FLag{
                                     if let userID = self.mAuth.currentUser?.uid{
                                         print(userID)
                                         self.ref.child("Users").child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
-                                            var value = snapshot.value as? NSDictionary
-                                            //let key = snapshot.key as? NSDictionary
-                                            let user = LoginModel(dic: value as! NSDictionary)
-                                            guard let data = user else{return}
-                                            CommonHelper.saveCachedUserData(data)
-                                            hud.dismiss()
-                                            PopupHelper.changeRootView(storyboardName: "Main", ViewControllerId: "Tabbar")
+                                            if let value = snapshot.value as? NSDictionary{
+                                                let user = LoginModel(dic: value)
+                                                guard let data = user else{return}
+                                                data.id = userID
+                                                if let token = Messaging.messaging().fcmToken{
+                                                    data.token = token
+                                                }
+                                                CommonHelper.saveCachedUserData(data)
+                                                hud.dismiss()
+                                                PopupHelper.changeRootView(storyboardName: "Main", ViewControllerId: "Tabbar")
+                                            }
                                         }){
                                             (error) in
                                             print(error.localizedDescription)

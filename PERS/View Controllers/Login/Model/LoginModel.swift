@@ -18,8 +18,9 @@ class LoginModel: Codable {
     var number:String!
     var password:String!
     var country:String!
+    var token:String!
     
-    init(id:String? = nil,email: String? = nil,imageURL: String? = nil,latitude: String? = nil,location: String? = nil,longitude:String? = nil,name: String? = nil,number:String? = nil,password:String? = nil,country:String? = nil) {
+    init(id:String? = nil,email: String? = nil,imageURL: String? = nil,latitude: String? = nil,location: String? = nil,longitude:String? = nil,name: String? = nil,number:String? = nil,password:String? = nil,country:String? = nil,token:String? = nil) {
         self.id = id
         self.email = email
         self.imageURL = imageURL
@@ -30,6 +31,7 @@ class LoginModel: Codable {
         self.number = number
         self.password = password
         self.country = country
+        self.token = token
     }
     
     init?(dic:NSDictionary) {
@@ -44,6 +46,7 @@ class LoginModel: Codable {
         let number = (dic as AnyObject).value(forKey: Constant.number) as? String
         let password = (dic as AnyObject).value(forKey: Constant.password) as? String
         let country = (dic as AnyObject).value(forKey: Constant.country) as? String
+        let token = (dic as AnyObject).value(forKey: Constant.token) as? String
         
         self.id = id
         self.email = email
@@ -55,6 +58,7 @@ class LoginModel: Codable {
         self.number = number
         self.password = password
         self.country = country
+        self.token = token
         
     }
 }

@@ -73,6 +73,7 @@
 		761D7C27268213100013EA2F /* DistributionSummary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 761D7BEB268213100013EA2F /* DistributionSummary.plist */; };
 		761D7C28268213100013EA2F /* DatabaseRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761D7BEC268213100013EA2F /* DatabaseRepresentation.swift */; };
 		761D7C29268213100013EA2F /* HelpingDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761D7BED268213100013EA2F /* HelpingDelegates.swift */; };
+		7638076326832E88001D08AB /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7638076226832E88001D08AB /* NotificationsManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -144,6 +145,7 @@
 		761D7BEB268213100013EA2F /* DistributionSummary.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DistributionSummary.plist; sourceTree = "<group>"; };
 		761D7BEC268213100013EA2F /* DatabaseRepresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseRepresentation.swift; sourceTree = "<group>"; };
 		761D7BED268213100013EA2F /* HelpingDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpingDelegates.swift; sourceTree = "<group>"; };
+		7638076226832E88001D08AB /* NotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
 		7E19AD45B637D4130AA94699 /* Pods_PERS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PERS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C860F488655CBE23AC5F556 /* Pods-PERS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PERS.debug.xcconfig"; path = "Target Support Files/Pods-PERS/Pods-PERS.debug.xcconfig"; sourceTree = "<group>"; };
 		A9BA8AF749ED8E6AD2819317 /* Pods-PERS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PERS.release.xcconfig"; path = "Target Support Files/Pods-PERS/Pods-PERS.release.xcconfig"; sourceTree = "<group>"; };
@@ -611,6 +613,7 @@
 				761D7BE12682130E0013EA2F /* NVActivityIndicatorViewable.swift */,
 				761D7BE22682130E0013EA2F /* DataBaseHelper.swift */,
 				761D7BE32682130E0013EA2F /* NetworkConnection.swift */,
+				7638076226832E88001D08AB /* NotificationsManager.swift */,
 			);
 			path = HelperClasses;
 			sourceTree = "<group>";
@@ -650,6 +653,7 @@
 				761D7AF0268203C10013EA2F /* Frameworks */,
 				761D7AF1268203C10013EA2F /* Resources */,
 				28E153EBCA0E820F2F959EF5 /* [CP] Embed Pods Frameworks */,
+				398ADA36D7AF29A224E38770 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -728,6 +732,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PERS/Pods-PERS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		398ADA36D7AF29A224E38770 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PERS/Pods-PERS-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PERS/Pods-PERS-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PERS/Pods-PERS-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		7DB8717E82BDD6542EF93C54 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -789,6 +810,7 @@
 				761D7C18268213100013EA2F /* AlamofireHelper.swift in Sources */,
 				761D7BF8268213100013EA2F /* UITexfield+Additions.swift in Sources */,
 				761D7C14268213100013EA2F /* urlHelper.swift in Sources */,
+				7638076326832E88001D08AB /* NotificationsManager.swift in Sources */,
 				761D7C1B268213100013EA2F /* DateTimeHelper.swift in Sources */,
 				761D7BF7268213100013EA2F /* Extensions.swift in Sources */,
 				761D7C04268213100013EA2F /* LocationModel.swift in Sources */,

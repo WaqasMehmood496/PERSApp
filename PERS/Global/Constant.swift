@@ -53,4 +53,5 @@ struct Constant {
     static let videoLocation = "videoLocation"
     static let videoLongitude = "videoLongitude"
     static let videoURL = "videoURL"
+    static let token = "token"
 }

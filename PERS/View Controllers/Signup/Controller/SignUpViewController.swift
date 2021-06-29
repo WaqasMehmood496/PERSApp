@@ -148,6 +148,7 @@ extension SignUpViewController{
     // INSERT USER RECORD INTO FIREBASE DATABASE
     func insertUserIntoDataBase(fullname:String,email:String,mobileNumber:String,location:String,password:String){
         guard let user = mAuth.currentUser?.uid else { return }
+        guard let token = Messaging.messaging().fcmToken else {return}
         self.ref.child("Users").child(user).setValue([
             "country":self.userLocation.country_id!,
             "email":email,
@@ -158,9 +159,10 @@ extension SignUpViewController{
             "name":fullname,
             "number":mobileNumber,
             "password":password,
+            "token":token
         ])
         // save into cache
-        let currentuser = LoginModel(id: user, email: email, imageURL: "null", latitude: String(self.userLocation.address_lat), location: String(self.userLocation.address), longitude: String(self.userLocation.address_lng), name: fullname, number: mobileNumber, password: password, country: String(self.userLocation.country_id))
+        let currentuser = LoginModel(id: user, email: email, imageURL: "null", latitude: String(self.userLocation.address_lat), location: String(self.userLocation.address), longitude: String(self.userLocation.address_lng), name: fullname, number: mobileNumber, password: password, country: String(self.userLocation.country_id),token: token)
         CommonHelper.saveCachedUserData(currentuser)
         // Change root view controller
         PopupHelper.changeRootView(storyboardName: "Main", ViewControllerId: "Tabbar")
