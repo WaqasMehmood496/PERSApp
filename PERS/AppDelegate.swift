@@ -111,12 +111,18 @@ extension AppDelegate{
     }
     
     func saveIntoCache(data:[String:AnyObject]) {
-        if let fetchData:[String:String] = data["alert"] as? [String:String]{
-            let title = fetchData["title"]!
-            let description = fetchData["body"]!
-            guard var notificationCache = CommonHelper.getNotificationCachedData()else {return}
-            notificationCache.append(NotificationModel(title: title, detail: description))
-            CommonHelper.saveNotificationCachedData(notificationCache)
+        if let fetchData = data["alert"] as? NSDictionary{
+            let title = fetchData["title"] as! String
+            let description = fetchData["body"] as! String
+            if var notificationCache = CommonHelper.getNotificationCachedData(){
+                notificationCache.append(NotificationModel(title: title, detail: description))
+                CommonHelper.saveNotificationCachedData(notificationCache)
+            }
+            else {
+                var array = [NotificationModel]()
+                array.append(NotificationModel(title: title, detail: description))
+                CommonHelper.saveNotificationCachedData(array)
+            }
         }
     }
 }

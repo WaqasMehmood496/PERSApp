@@ -17,6 +17,9 @@ class NotificationsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+    }
+    override func viewWillAppear(_ animated: Bool) {
         if let notifiArray = CommonHelper.getNotificationCachedData(){
             notificationsArray = notifiArray
         }
