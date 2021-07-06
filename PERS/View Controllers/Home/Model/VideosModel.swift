@@ -16,8 +16,11 @@ class VideosModel: Codable {
     var videoLocation:String!
     var videoLongitude:String!
     var videoURL:String!
-
-    init(id:String? = nil,thumbnail: String? = nil,uploaderID: String? = nil,videoLatitude: String? = nil,videoLocation: String? = nil,videoLongitude:String? = nil,videoURL: String? = nil) {
+    var timestamp:String!
+    var videoUploaderName:String!
+    var videoUploaderImageUrl:String!
+    
+    init(id:String? = nil,thumbnail: String? = nil,uploaderID: String? = nil,videoLatitude: String? = nil,videoLocation: String? = nil,videoLongitude:String? = nil,videoURL: String? = nil,timestamp:String? = nil,videoUploaderName:String? = nil,videoUploaderImageUrl:String? = nil) {
         self.id = id
         self.thumbnail = thumbnail
         self.uploaderID = uploaderID
@@ -25,6 +28,9 @@ class VideosModel: Codable {
         self.videoLocation = videoLocation
         self.videoLongitude = videoLongitude
         self.videoURL = videoURL
+        self.timestamp = timestamp
+        self.videoUploaderName = videoUploaderName
+        self.videoUploaderImageUrl = videoUploaderImageUrl
     }
     
     init?(dic:NSDictionary) {
@@ -36,7 +42,10 @@ class VideosModel: Codable {
         let videoLocation = (dic as AnyObject).value(forKey: Constant.videoLocation) as! String
         let videoLongitude = (dic as AnyObject).value(forKey: Constant.videoLongitude) as! String
         let videoURL = (dic as AnyObject).value(forKey: Constant.videoURL) as! String
-
+        let timestamp = (dic as AnyObject).value(forKey: Constant.timestamp) as? String
+        let videoUploaderName = (dic as AnyObject).value(forKey: Constant.videoUploaderName) as? String
+        let videoUploaderImageUrl = (dic as AnyObject).value(forKey: Constant.videoUploaderImageUrl) as? String
+        
         self.id = id
         self.thumbnail = thumbnail
         self.uploaderID = uploaderID
@@ -44,6 +53,8 @@ class VideosModel: Codable {
         self.videoLocation = videoLocation
         self.videoLongitude = videoLongitude
         self.videoURL = videoURL
-        
+        self.timestamp = timestamp
+        self.videoUploaderName = videoUploaderName
+        self.videoUploaderImageUrl = videoUploaderImageUrl
     }
 }

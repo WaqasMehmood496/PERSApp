@@ -51,10 +51,6 @@ extension PlayerViewController{
         self.VideoContainerView.addSubview(playerViewController.view)
         addChild(playerViewController)
         playlist.play()
-        //        playlist.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.new, context: nil)
-        //        playlist.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions.new, context: nil)
-        //        NotificationCenter.default.addObserver(self, selector:#selector(self.playerDidFinishPlaying(note:)),name: .AVPlayerItemDidPlayToEndTime, object: playlist.currentItem)
-        
     }
     
     @objc func playerDidFinishPlaying(note: NSNotification){
@@ -73,6 +69,20 @@ extension PlayerViewController{
         }
         return items
     }
+    
+    //This method will change time stamp into date time and return only time
+    func getTimeFromTimeStamp(timeStamp:Double) -> String{
+        let date = NSDate(timeIntervalSince1970: timeStamp)
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = DateFormatter.Style.medium //Set time style
+        dateFormatter.dateStyle = DateFormatter.Style.medium //Set date style
+        dateFormatter.timeZone = NSTimeZone() as TimeZone
+        let localDate = dateFormatter.string(from: date as Date)
+        if let getTime = localDate.components(separatedBy: "at").last{
+            return getTime
+        }
+        return " "
+    }
 }
 
 extension PlayerViewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
@@ -83,6 +93,17 @@ extension PlayerViewController:UICollectionViewDelegate,UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "VideosCell", for: indexPath) as! HomeCollectionViewCell
         cell.PlayButton.addTarget(self, action: #selector(PlayVideoBtnAction(_:)), for: .touchUpInside)
+        
+        
+        if let timeStm = self.MyAreaVideos[indexPath.row].timestamp{
+            if let timeStamp = Double(timeStm){
+                cell.VideoDate.text = self.getTimeFromTimeStamp(timeStamp: timeStamp)
+            }
+        }
+        cell.PersonImage.sd_setImage(with: URL(string: self.MyAreaVideos[indexPath.row].videoUploaderImageUrl), placeholderImage: #imageLiteral(resourceName: "Clip-2"))
+        cell.PersonName.text = self.MyAreaVideos[indexPath.row].videoUploaderName
+        
+        
         if let data = Data(base64Encoded: self.MyAreaVideos[indexPath.row].thumbnail){
             cell.VideoThumbnail.image = UIImage(data: data)
         }

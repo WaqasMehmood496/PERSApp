@@ -37,11 +37,11 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.collectionViewSetup()
         ref = Database.database().reference()
+        self.collectionViewSetup()
         self.updateToken()
-        self.getAllVideo()
         self.getCurrentLocation()
+        self.getAllVideo()
     }
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
@@ -73,6 +73,27 @@ extension HomeViewController{
         self.RecentlyAddedCV?.collectionViewLayout = layout
     }
     
+    //UPDATE USER TOKEN
+    func updateToken() {
+        guard let user = self.mAuth.currentUser?.uid else {return}
+        if let token = Messaging.messaging().fcmToken{
+            ref.child("Users").child(user).child("token").setValue(token)
+        }
+    }
+    
+    // First get user lat,lng
+    func getLocation(hud:JGProgressHUD)  {
+        self.getUserCurrentLocation { (status) in
+            if status{
+                self.getCurrentAddress(location: self.currentLocation, hud: hud)
+            }else{
+                hud.dismiss()
+                PopupHelper.alertWithOk(title: "Location Not Found", message: "Your location not found please enable your location from settings", controler: self)
+                locManager.requestWhenInUseAuthorization()
+            }
+        }
+    }
+    
     //GET USER CURRENT LOCATION
     func getUserCurrentLocation(completion: (Bool) -> ()) {
         locManager.requestWhenInUseAuthorization()
@@ -89,6 +110,7 @@ extension HomeViewController{
         }
     }
     
+    // This method will fetch user current location address using lat lng
     func getCurrentAddress(location:CLLocation,hud:JGProgressHUD) {
         let loc: CLLocation = CLLocation(latitude:location.coordinate.latitude, longitude: location.coordinate.longitude)
         let ceo: CLGeocoder = CLGeocoder()
@@ -126,6 +148,7 @@ extension HomeViewController{
                 })
     }
     
+    // This method will create new name for recorded video by using datetime and extension .mp3
     func getName() -> String {
         let dateFormatter = DateFormatter()
         let dateFormat = "yyyyMMddHHmmss"
@@ -135,13 +158,14 @@ extension HomeViewController{
         return name
     }
     
+    
     func getFriendRecordById(friends:[FriendModel]) {
         for friend in friends{
             self.getFriendByIdFromUsersRecord(friendId: friend.id)
         }
     }
     
-    
+    // This methods will get user current location
     func getCurrentLocation() {
         locManager.requestWhenInUseAuthorization()
         if
@@ -155,49 +179,44 @@ extension HomeViewController{
         
     }
     
-    
+    // This methods will filter nearest videos using lat lng distance
     func checkMyNearestVideos(videos: [VideosModel]) {
+        var tempArray = [VideosModel]()
         for video in videos{
             if let videoLat = CLLocationDegrees(video.videoLatitude) , let videoLng = CLLocationDegrees(video.videoLongitude){
                 let videoLocation = CLLocation(latitude: videoLat, longitude: videoLng)
                 let distance = self.currentLocation.distance(from: videoLocation) / 1000
-                
                 if(distance <= 3218)
                 {
-                    // under 1 mile
-                    self.MyAreaVideos.append(video)
-                    
+                    tempArray.append(video)
                 }
             }
         }//End For loop
-        self.MyAreaCV.reloadData()
+        let hud = JGProgressHUD()
+        hud.dismiss()
+        self.getUsersAccordingVideos(hud: hud, videos: tempArray, isRecent: false)
+        
+    }
+    
+    //This method will change time stamp into date time and return only time
+    func getTimeFromTimeStamp(timeStamp:Double) -> String{
+        let date = NSDate(timeIntervalSince1970: timeStamp)
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = DateFormatter.Style.medium //Set time style
+        dateFormatter.dateStyle = DateFormatter.Style.medium //Set date style
+        dateFormatter.timeZone = NSTimeZone() as TimeZone
+        let localDate = dateFormatter.string(from: date as Date)
+        if let getTime = localDate.components(separatedBy: "at").last{
+            return getTime
+        }
+        return " "
     }
 }
 
 
 //MARK:- FIREBASE METHOD"S EXTENSION
 extension HomeViewController{
-    //UPDATE USER TOKEN
-    func updateToken() {
-        guard let user = self.mAuth.currentUser?.uid else {return}
-        if let token = Messaging.messaging().fcmToken{
-            ref.child("Users").child(user).child("token").setValue(token)
-        }
-    }
-    
-    // First get user lat,lng
-    func getLocation(hud:JGProgressHUD)  {
-        self.getUserCurrentLocation { (status) in
-            if status{
-                self.getCurrentAddress(location: self.currentLocation, hud: hud)
-            }else{
-                hud.dismiss()
-                PopupHelper.alertWithOk(title: "Location Not Found", message: "Your location not found please enable your location from settings", controler: self)
-                locManager.requestWhenInUseAuthorization()
-            }
-        }
-    }
-    
+
     // THIS METHOD IS USED FOR UPLOADING IMAGE INTO FIREBASE DATABASE
     func uploadVideo(_ path: URL, _ userID: String,
                      metadataEsc: @escaping (URL, StorageReference)->(),
@@ -270,7 +289,7 @@ extension HomeViewController{
                 let reference = self.ref.child("Videos").queryLimited(toLast: 5)
                 reference.observe(.value) { (snapshot) in
                     if(snapshot.exists()) {
-                        print(snapshot)
+                        var tempArray = [VideosModel]()
                         let array:NSArray = snapshot.children.allObjects as NSArray
                         for obj in array {
                             let snapshot:DataSnapshot = obj as! DataSnapshot
@@ -279,16 +298,55 @@ extension HomeViewController{
                                 childSnapshot[Constant.id] = snapshot.key as String as AnyObject
                                 let videos = VideosModel(dic: childSnapshot as NSDictionary)
                                 if let video = videos{
-                                    self.videoArray.append(video)
+                                    tempArray.append(video)
                                 }
                             }
                         }// End For loop
-                        hud.dismiss()
-                        self.RecentlyAddedCV.reloadData()
+                        self.getUsersAccordingVideos(hud: hud, videos: tempArray, isRecent: true)
                     }else{
                         hud.dismiss()
                     }// End Snapshot if else statement
                 }
+            }// End Firebase user id
+        }else{
+            PopupHelper.showAlertControllerWithError(forErrorMessage: "Internet is unavailable please check your connection", forViewController: self)
+        }//End Connectity Check Statement
+    }// End get favorite method
+    
+    // GET ALL VIDEOS FROM FIREBASE DATABASE
+    func getUsersAccordingVideos(hud:JGProgressHUD,videos:[VideosModel],isRecent:Bool) {
+        if Connectivity.isConnectedToNetwork(){
+            self.ref.child("Users").observe(.value) { (snapshot) in
+                if(snapshot.exists()) {
+                    let array:NSArray = snapshot.children.allObjects as NSArray
+
+                    for obj in array {
+                        let snapshot:DataSnapshot = obj as! DataSnapshot
+                        if var childSnapshot = snapshot.value as? [String : AnyObject]{
+                            childSnapshot[Constant.id] = snapshot.key as String as AnyObject
+                            let users = LoginModel(dic: childSnapshot as NSDictionary)
+                            if let user = users{
+                                for video in videos{
+                                    if video.uploaderID == user.id{
+                                        video.videoUploaderImageUrl = user.imageURL
+                                        video.videoUploaderName = user.name
+                                        if isRecent == true{
+                                            self.videoArray.append(video)
+                                        }else{
+                                            self.MyAreaVideos.append(video)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }// End For loop
+                    
+                    hud.dismiss()
+                    self.RecentlyAddedCV.reloadData()
+                    self.MyAreaCV.reloadData()
+                }else{
+                    hud.dismiss()
+                }// End Snapshot if else statement
             }// End Firebase user id
         }else{
             PopupHelper.showAlertControllerWithError(forErrorMessage: "Internet is unavailable please check your connection", forViewController: self)
@@ -397,20 +455,30 @@ extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource
             self.isAllVideosSelected = true
             cell.PlayButton.addTarget(self, action: #selector(PlayVideoBtnAction(_:)), for: .touchUpInside)
             cell.PlayButton.tag = indexPath.row
-            
+            if let timeStm = self.MyAreaVideos[indexPath.row].timestamp{
+                if let timeStamp = Double(timeStm){
+                    cell.VideoDate.text = self.getTimeFromTimeStamp(timeStamp: timeStamp)
+                }
+            }
+            cell.PersonImage.sd_setImage(with: URL(string: self.MyAreaVideos[indexPath.row].videoUploaderImageUrl), placeholderImage: #imageLiteral(resourceName: "Clip-2"))
+            cell.PersonName.text = self.MyAreaVideos[indexPath.row].videoUploaderName
             if let data = Data(base64Encoded: self.MyAreaVideos[indexPath.row].thumbnail){
                 cell.VideoThumbnail.image = UIImage(data: data)
             }
-            cell.VideoDate.text = " "
         }else{
             self.isAllVideosSelected = false
             cell.PlayButton.addTarget(self, action: #selector(PlayVideoBtnAction(_:)), for: .touchUpInside)
-            cell.PlayButton.tag = indexPath.row
-            
+            cell.PlayButton.tag = indexPath.row            
+            if let timeStm = self.videoArray[indexPath.row].timestamp{
+                if let timeStamp = Double(timeStm){
+                    cell.VideoDate.text = self.getTimeFromTimeStamp(timeStamp: timeStamp)
+                }
+            }
+            cell.PersonImage.sd_setImage(with: URL(string: self.videoArray[indexPath.row].videoUploaderImageUrl), placeholderImage: #imageLiteral(resourceName: "Clip-2"))
+            cell.PersonName.text = self.videoArray[indexPath.row].videoUploaderName
             if let data = Data(base64Encoded: self.videoArray[indexPath.row].thumbnail){
                 cell.VideoThumbnail.image = UIImage(data: data)
             }
-            cell.VideoDate.text = " "
         }
         
         return cell
@@ -512,8 +580,7 @@ extension HomeViewController {
                         } progressEsc: { (progress) in
                             print(progress)
                         } completionEsc: {
-                            //                            PopupHelper.alertWithOk(title: "Video Uploaded Successfully", message: "Your video is uploaded successfully", controler: self)
-                            //Send notification to friends
+                            //PopupHelper.alertWithOk(title: "Video Uploaded Successfully", message: "Your video is uploaded successfully", controler: self)
                             
                         } errorEsc: { (error) in
                             PopupHelper.alertWithOk(title: "Video Uploaded Fail", message: "\(error.localizedDescription)", controler: self)
@@ -530,20 +597,3 @@ extension HomeViewController {
         picker.dismiss(animated: true, completion: nil)
     }
 }
-
-//// MARK: - CoreLocation Delegate Methods
-//extension HomeViewController {
-//    func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
-//        self.locManager.stopUpdatingLocation()
-//        if let error = error {
-//            print(error)
-//        }
-//    }
-//
-//    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-//        let locationArray = locations as NSArray
-//        let locationObj = locationArray.lastObject as! CLLocation
-//        self.currentLocation = CLLocation(latitude: locationObj.coordinate.longitude, longitude: locationObj.coordinate.longitude)
-//        self.locManager.stopUpdatingLocation()
-//    }
-//}

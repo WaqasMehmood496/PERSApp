@@ -8,6 +8,7 @@
 import UIKit
 
 class NotificationsViewController: UIViewController {
+    
     // IBOUTLET'S
     @IBOutlet weak var NotificationTableView: UITableView!
     //VARIABLES

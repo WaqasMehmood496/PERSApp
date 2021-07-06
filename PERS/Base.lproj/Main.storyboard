@@ -591,7 +591,7 @@
             <objects>
                 <viewController id="GaX-jE-U9c" customClass="LocalMapViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xmJ-Bd-SSw">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KDn-gv-mSN" customClass="GMSMapView">
@@ -625,7 +625,7 @@
             <objects>
                 <viewController id="roB-Sa-zBC" customClass="HomeViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aMi-LD-2Sg">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ECO-Uu-O92">
@@ -708,12 +708,15 @@
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Katherine Elisabeth" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E2p-Lo-5lL">
                                                             <rect key="frame" x="48" y="166" width="184" height="16.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="16.5" id="ltC-Kx-u8e"/>
+                                                            </constraints>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                                             <color key="textColor" name="Text Black Color"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="today 12:55 PM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ejl-N1-Z8F">
-                                                            <rect key="frame" x="48" y="186.5" width="184" height="14"/>
+                                                            <rect key="frame" x="48" y="186.5" width="184" height="19.5"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                             <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
@@ -734,6 +737,7 @@
                                                         <constraint firstItem="ejl-N1-Z8F" firstAttribute="trailing" secondItem="E2p-Lo-5lL" secondAttribute="trailing" id="ArW-LD-noV"/>
                                                         <constraint firstAttribute="trailing" secondItem="E2p-Lo-5lL" secondAttribute="trailing" constant="8" id="EID-KF-5b8"/>
                                                         <constraint firstItem="ejl-N1-Z8F" firstAttribute="top" secondItem="E2p-Lo-5lL" secondAttribute="bottom" constant="4" id="EUJ-2C-fDT"/>
+                                                        <constraint firstItem="ejl-N1-Z8F" firstAttribute="bottom" secondItem="de7-fu-Kze" secondAttribute="bottom" id="OEN-wp-Xoy"/>
                                                         <constraint firstItem="de7-fu-Kze" firstAttribute="top" secondItem="oKF-MI-IYO" secondAttribute="bottom" constant="8" id="PgR-yD-xlz"/>
                                                         <constraint firstItem="E2p-Lo-5lL" firstAttribute="leading" secondItem="de7-fu-Kze" secondAttribute="trailing" constant="8" id="RC2-rC-CAA"/>
                                                         <constraint firstItem="E2p-Lo-5lL" firstAttribute="top" secondItem="de7-fu-Kze" secondAttribute="top" id="TBG-au-07P"/>
@@ -812,12 +816,15 @@
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Katherine Elisabeth" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cY8-at-lmK">
                                                             <rect key="frame" x="48" y="80" width="72" height="16.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="16.5" id="byk-Fw-gB5"/>
+                                                            </constraints>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                                             <color key="textColor" name="Text Black Color"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="today 12:55 PM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5lU-Lv-oH9">
-                                                            <rect key="frame" x="48" y="100.5" width="72" height="14"/>
+                                                            <rect key="frame" x="48" y="100.5" width="72" height="19.5"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                             <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
@@ -842,6 +849,7 @@
                                                         <constraint firstItem="cY8-at-lmK" firstAttribute="top" secondItem="eLS-Sk-Xlq" secondAttribute="top" id="TC1-Lr-BkN"/>
                                                         <constraint firstItem="5lU-Lv-oH9" firstAttribute="trailing" secondItem="cY8-at-lmK" secondAttribute="trailing" id="TyL-o1-jhN"/>
                                                         <constraint firstItem="asQ-3y-OSW" firstAttribute="leading" secondItem="6R7-v0-lga" secondAttribute="leading" id="V1J-Lh-1Qb"/>
+                                                        <constraint firstItem="5lU-Lv-oH9" firstAttribute="bottom" secondItem="eLS-Sk-Xlq" secondAttribute="bottom" id="WMx-V4-8yW"/>
                                                         <constraint firstItem="eLS-Sk-Xlq" firstAttribute="top" secondItem="asQ-3y-OSW" secondAttribute="bottom" constant="8" id="bQg-AJ-S9B"/>
                                                         <constraint firstItem="MZO-Ua-2LY" firstAttribute="leading" secondItem="asQ-3y-OSW" secondAttribute="leading" constant="8" id="hrO-Pl-a3J"/>
                                                         <constraint firstItem="eLS-Sk-Xlq" firstAttribute="leading" secondItem="6R7-v0-lga" secondAttribute="leading" id="iyl-R1-bGT"/>
@@ -911,7 +919,7 @@
             <objects>
                 <viewController storyboardIdentifier="PlayerVC" id="ppk-Ue-bse" customClass="PlayerViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="X5b-6D-Ijd">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iN3-l3-NWD">
@@ -1284,7 +1292,7 @@
             <objects>
                 <viewController id="6a2-IW-0I3" customClass="NotificationsViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Duh-k8-e1S">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QXO-87-nrV">
@@ -1405,7 +1413,7 @@
             <objects>
                 <viewController id="s6N-31-u1Z" customClass="ProfileViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cGv-Dg-3s1">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sLF-yA-gzC">
@@ -1873,7 +1881,7 @@
             <objects>
                 <viewController storyboardIdentifier="AddFriendVC" id="Pez-0H-bXf" customClass="AddFriendsViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HSL-AL-G8H">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3kM-bF-TyZ">
@@ -2096,7 +2104,7 @@
             <objects>
                 <viewController id="k0q-xB-s6e" customClass="FriendRequestViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Pq5-cZ-DD8">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Kx2-T9-Dqd">
