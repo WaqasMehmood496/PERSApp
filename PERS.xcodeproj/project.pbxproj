@@ -74,6 +74,8 @@
 		761D7C28268213100013EA2F /* DatabaseRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761D7BEC268213100013EA2F /* DatabaseRepresentation.swift */; };
 		761D7C29268213100013EA2F /* HelpingDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761D7BED268213100013EA2F /* HelpingDelegates.swift */; };
 		7638076326832E88001D08AB /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7638076226832E88001D08AB /* NotificationsManager.swift */; };
+		7661316B268B59CB004DC5E0 /* style.json in Resources */ = {isa = PBXBuildFile; fileRef = 7661316A268B59CA004DC5E0 /* style.json */; };
+		76F9D7BC268F3FA7005E2A12 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F9D7BB268F3FA7005E2A12 /* NotificationModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -146,6 +148,8 @@
 		761D7BEC268213100013EA2F /* DatabaseRepresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseRepresentation.swift; sourceTree = "<group>"; };
 		761D7BED268213100013EA2F /* HelpingDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpingDelegates.swift; sourceTree = "<group>"; };
 		7638076226832E88001D08AB /* NotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
+		7661316A268B59CA004DC5E0 /* style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = style.json; sourceTree = "<group>"; };
+		76F9D7BB268F3FA7005E2A12 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
 		7E19AD45B637D4130AA94699 /* Pods_PERS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PERS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C860F488655CBE23AC5F556 /* Pods-PERS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PERS.debug.xcconfig"; path = "Target Support Files/Pods-PERS/Pods-PERS.debug.xcconfig"; sourceTree = "<group>"; };
 		A9BA8AF749ED8E6AD2819317 /* Pods-PERS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PERS.release.xcconfig"; path = "Target Support Files/Pods-PERS/Pods-PERS.release.xcconfig"; sourceTree = "<group>"; };
@@ -213,6 +217,7 @@
 				761D7B01268203C40013EA2F /* LaunchScreen.storyboard */,
 				761D7B04268203C40013EA2F /* Info.plist */,
 				761D7B812682111D0013EA2F /* GoogleService-Info.plist */,
+				7661316A268B59CA004DC5E0 /* style.json */,
 			);
 			path = PERS;
 			sourceTree = "<group>";
@@ -260,7 +265,7 @@
 				761D7BB22682130D0013EA2F /* Forgot Password */,
 				761D7BB42682130D0013EA2F /* Profile */,
 				761D7BBB2682130D0013EA2F /* Tabbar Controller */,
-				761D7BBE2682130D0013EA2F /* New Group */,
+				761D7BBE2682130D0013EA2F /* Map */,
 				761D7BC12682130D0013EA2F /* Navigation Controller */,
 				761D7BC42682130D0013EA2F /* Notifications */,
 				761D7BCA2682130D0013EA2F /* Login */,
@@ -466,12 +471,12 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		761D7BBE2682130D0013EA2F /* New Group */ = {
+		761D7BBE2682130D0013EA2F /* Map */ = {
 			isa = PBXGroup;
 			children = (
 				761D7BBF2682130D0013EA2F /* Controller */,
 			);
-			path = "New Group";
+			path = Map;
 			sourceTree = "<group>";
 		};
 		761D7BBF2682130D0013EA2F /* Controller */ = {
@@ -519,6 +524,7 @@
 		761D7BC72682130D0013EA2F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				76F9D7BB268F3FA7005E2A12 /* NotificationModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -704,6 +710,7 @@
 				761D7B03268203C40013EA2F /* LaunchScreen.storyboard in Resources */,
 				761D7C27268213100013EA2F /* DistributionSummary.plist in Resources */,
 				761D7B822682111D0013EA2F /* GoogleService-Info.plist in Resources */,
+				7661316B268B59CB004DC5E0 /* style.json in Resources */,
 				761D7C26268213100013EA2F /* FitnessVideoApp.ipa in Resources */,
 				761D7B00268203C40013EA2F /* Assets.xcassets in Resources */,
 				761D7AFE268203C10013EA2F /* Main.storyboard in Resources */,
@@ -814,6 +821,7 @@
 				761D7C1B268213100013EA2F /* DateTimeHelper.swift in Sources */,
 				761D7BF7268213100013EA2F /* Extensions.swift in Sources */,
 				761D7C04268213100013EA2F /* LocationModel.swift in Sources */,
+				76F9D7BC268F3FA7005E2A12 /* NotificationModel.swift in Sources */,
 				761D7BF3268213100013EA2F /* UIViewController+Additions.swift in Sources */,
 				761D7BFB268213100013EA2F /* Utility.swift in Sources */,
 				761D7C10268213100013EA2F /* NotificationTableViewCell.swift in Sources */,

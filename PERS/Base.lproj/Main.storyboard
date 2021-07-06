@@ -613,7 +613,7 @@
                         <barButtonItem key="rightBarButtonItem" image="Location Off" id="724-QF-Drz"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="map" destination="KDn-gv-mSN" id="x7c-lF-zfh"/>
+                        <outlet property="Map" destination="KDn-gv-mSN" id="chB-PC-4pM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tPF-dS-P5o" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -768,7 +768,7 @@
                                 </connections>
                             </collectionView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="2Rn-s7-HzE">
-                                <rect key="frame" x="16" y="346" width="398" height="379"/>
+                                <rect key="frame" x="16" y="346" width="382" height="379"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="qz5-Ts-yhd">
                                     <size key="itemSize" width="128" height="128"/>
@@ -886,7 +886,7 @@
                             <constraint firstItem="s3q-y3-Tws" firstAttribute="trailing" secondItem="ggG-fR-nZ8" secondAttribute="trailing" constant="16" id="dNZ-Bc-a4F"/>
                             <constraint firstItem="s3q-y3-Tws" firstAttribute="bottom" secondItem="2Rn-s7-HzE" secondAttribute="bottom" id="eke-pb-k05"/>
                             <constraint firstItem="ECO-Uu-O92" firstAttribute="top" secondItem="s3q-y3-Tws" secondAttribute="top" constant="12" id="j7J-jd-jwy"/>
-                            <constraint firstItem="2Rn-s7-HzE" firstAttribute="trailing" secondItem="FCQ-HJ-HWy" secondAttribute="trailing" id="ldj-4j-8eE"/>
+                            <constraint firstItem="2Rn-s7-HzE" firstAttribute="trailing" secondItem="FCQ-HJ-HWy" secondAttribute="trailing" constant="-16" id="ldj-4j-8eE"/>
                             <constraint firstItem="s3q-y3-Tws" firstAttribute="trailing" secondItem="FCQ-HJ-HWy" secondAttribute="trailing" id="owT-UR-Yyz"/>
                             <constraint firstItem="ggG-fR-nZ8" firstAttribute="leading" secondItem="s3q-y3-Tws" secondAttribute="leading" constant="16" id="vdS-tC-t1j"/>
                             <constraint firstItem="s3q-y3-Tws" firstAttribute="trailing" secondItem="ECO-Uu-O92" secondAttribute="trailing" constant="64" id="xce-tC-f4f"/>
@@ -915,39 +915,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iN3-l3-NWD">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="269"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Layer 49" translatesAutoresizingMaskIntoConstraints="NO" id="HoZ-G6-q3e">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="269"/>
-                                    </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lQM-xp-j5g">
-                                        <rect key="frame" x="182" y="109.5" width="50" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="50" id="rCm-4K-Bgn"/>
-                                            <constraint firstAttribute="height" constant="50" id="xDD-Qt-zGm"/>
-                                        </constraints>
-                                        <state key="normal" image="Play Button Circled copy"/>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="244.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="lQM-xp-j5g" firstAttribute="centerX" secondItem="iN3-l3-NWD" secondAttribute="centerX" id="1kT-rQ-6uz"/>
-                                    <constraint firstItem="lQM-xp-j5g" firstAttribute="centerY" secondItem="iN3-l3-NWD" secondAttribute="centerY" id="3A7-rM-VsJ"/>
-                                    <constraint firstItem="HoZ-G6-q3e" firstAttribute="leading" secondItem="iN3-l3-NWD" secondAttribute="leading" id="AQC-QY-2KY"/>
-                                    <constraint firstAttribute="width" secondItem="iN3-l3-NWD" secondAttribute="height" multiplier="1:0.65" id="FnF-6t-7BA"/>
-                                    <constraint firstItem="HoZ-G6-q3e" firstAttribute="top" secondItem="iN3-l3-NWD" secondAttribute="top" id="Ji5-yt-KiW"/>
-                                    <constraint firstAttribute="trailing" secondItem="HoZ-G6-q3e" secondAttribute="trailing" id="ZEy-Ly-QBX"/>
-                                    <constraint firstAttribute="bottom" secondItem="HoZ-G6-q3e" secondAttribute="bottom" id="cGa-wL-LI7"/>
+                                    <constraint firstAttribute="width" secondItem="iN3-l3-NWD" secondAttribute="height" multiplier="1.1:0.65" id="FnF-6t-7BA"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Related Videos" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qar-Qe-7xa">
-                                <rect key="frame" x="16" y="346" width="382" height="21"/>
+                                <rect key="frame" x="16" y="321.5" width="382" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="oUo-BO-DAs">
-                                <rect key="frame" x="16" y="375" width="398" height="215"/>
+                                <rect key="frame" x="16" y="350.5" width="398" height="215"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="215" id="5fr-z4-MmC"/>
@@ -1055,7 +1036,7 @@
                                 </connections>
                             </collectionView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Clip" translatesAutoresizingMaskIntoConstraints="NO" id="LQl-er-8In">
-                                <rect key="frame" x="16" y="285" width="45" height="45"/>
+                                <rect key="frame" x="16" y="260.5" width="45" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="Pgi-aq-oGZ"/>
                                     <constraint firstAttribute="width" constant="45" id="WAx-0b-rbR"/>
@@ -1067,13 +1048,13 @@
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Katherine Elisabeth" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VDH-1z-dlV">
-                                <rect key="frame" x="69" y="285" width="329" height="16.5"/>
+                                <rect key="frame" x="69" y="260.5" width="329" height="16.5"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                 <color key="textColor" name="Text Black Color"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="today 12:55 PM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fus-DE-lUZ">
-                                <rect key="frame" x="69" y="305.5" width="329" height="14"/>
+                                <rect key="frame" x="69" y="281" width="329" height="14"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -1117,6 +1098,7 @@
                     <navigationItem key="navigationItem" id="Fnt-6k-ccc"/>
                     <connections>
                         <outlet property="RelatedVideoTableView" destination="oUo-BO-DAs" id="PcC-KH-wUD"/>
+                        <outlet property="VideoContainerView" destination="iN3-l3-NWD" id="Gqn-xm-jXA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XBl-76-bMK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1385,6 +1367,9 @@
                     <navigationItem key="navigationItem" title="Notification" id="d6l-E0-PaZ">
                         <barButtonItem key="backBarButtonItem" title=" " id="8SF-jI-thF"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="NotificationTableView" destination="QXO-87-nrV" id="DRU-Ue-sTx"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jF5-T4-HZZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2266,12 +2251,10 @@
         <image name="Exit" width="17" height="17.5"/>
         <image name="Group 1" width="39" height="39"/>
         <image name="Home1" width="30" height="40.5"/>
-        <image name="Layer 49" width="499" height="280"/>
         <image name="Local Map1" width="48" height="37"/>
         <image name="Location Off" width="22" height="22"/>
         <image name="Logo" width="145" height="195"/>
         <image name="Notification1" width="56" height="39"/>
-        <image name="Play Button Circled copy" width="31" height="31"/>
         <image name="Play button" width="30" height="30"/>
         <image name="Profile1" width="32" height="40.5"/>
         <image name="Rounded Rectangle 3" width="202.5" height="135"/>

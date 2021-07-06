@@ -24,10 +24,7 @@ class CommonHelper
         return ret
     }
     
-    
-    
-    class func setLeftPadding(_ txt: UITextField?)
-    {
+    class func setLeftPadding(_ txt: UITextField?) {
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 20))
         txt?.leftView = paddingView
         txt?.leftViewMode = .always
@@ -72,6 +69,29 @@ class CommonHelper
             return nil
         }
     }
+    
+    class func getNotificationCachedData() -> [NotificationModel]? {
+        let userDefaults = UserDefaults.standard
+        do {
+            let user = try userDefaults.getObject(forKey: Constant.notificationKey, castTo: [NotificationModel].self)
+            return user
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+    
+    class func saveNotificationCachedData(_ userData:[NotificationModel]){
+        let userDefaults = UserDefaults.standard
+        do {
+            try userDefaults.setObject(userData, forKey: Constant.notificationKey)
+            userDefaults.synchronize()
+            
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
     class func removeCachedUserData() {
         let userDefaults = UserDefaults.standard
         userDefaults.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
@@ -138,6 +158,7 @@ class CommonHelper
         let appWindowRect = UIApplication.shared.keyWindow?.bounds ?? UIWindow().bounds
         return appWindowRect
     }
+    
     func getDirectoryPath(isImage:Bool = false) -> String {
         
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)

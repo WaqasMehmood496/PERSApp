@@ -2,12 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSCameraUsageDescription</key>
-	<string>App need your permission for using camera to capture video</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Access microphones for audio recording of video</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>App need to access your location for fetching videos in your area</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -26,6 +20,12 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>App need your permission for using camera to capture video</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>App need to access your location for fetching videos in your area</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Access microphones for audio recording of video</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     override init() {
         super .init()
         FirebaseApp.configure()
+        GMSServices.provideAPIKey("AIzaSyCjS8sP6t2b0fKNmFJgvgtiOF4_v0fwnRc")
         self.setUpAppNotifications()
     }
     
@@ -108,6 +109,16 @@ extension AppDelegate{
             }
         }
     }
+    
+    func saveIntoCache(data:[String:AnyObject]) {
+        if let fetchData:[String:String] = data["alert"] as? [String:String]{
+            let title = fetchData["title"]!
+            let description = fetchData["body"]!
+            guard var notificationCache = CommonHelper.getNotificationCachedData()else {return}
+            notificationCache.append(NotificationModel(title: title, detail: description))
+            CommonHelper.saveNotificationCachedData(notificationCache)
+        }
+    }
 }
 
 //MARK:- NOTIFICATION DELEGATES METHOD'S
@@ -125,7 +136,11 @@ extension AppDelegate:UNUserNotificationCenterDelegate{
             completionHandler(UNNotificationPresentationOptions([.badge,.banner,.sound]))
             return
         }
+        print ("the notification detail is " , aps )
         print ("the user info is " , userInfo )
+        
+        self.saveIntoCache(data: aps)
+        
         //      let str = String(describing: userInfo)
         //
         //      let arr = str.components(separatedBy: ",")
@@ -147,13 +162,16 @@ extension AppDelegate:UNUserNotificationCenterDelegate{
         //
         //      }
         //    }
+        
     }
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         if response.notification.request.identifier == "Local Notification Order" {
             print("Handling notifications with the Local Notification Identifier")
             center.removeDeliveredNotifications(withIdentifiers: [response.notification.request.identifier])
             UIApplication.shared.applicationIconBadgeNumber = 0
             completionHandler()
+            
         }
     }
     @objc func userNotify(){

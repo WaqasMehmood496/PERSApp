@@ -33,7 +33,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
     var videoArray = [VideosModel]()
     var MyAreaVideos = [VideosModel]()
     let notificationSender = PushNotificationSender()
-    
+    var isAllVideosSelected = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -180,8 +180,9 @@ extension HomeViewController{
     //UPDATE USER TOKEN
     func updateToken() {
         guard let user = self.mAuth.currentUser?.uid else {return}
-        guard let token = Messaging.messaging().fcmToken else {return}
-        ref.child("Users").child(user).child("token").setValue(token)
+        if let token = Messaging.messaging().fcmToken{
+            ref.child("Users").child(user).child("token").setValue(token)
+        }
     }
     
     // First get user lat,lng
@@ -330,6 +331,7 @@ extension HomeViewController{
         if Connectivity.isConnectedToNetwork(){
             var friends = [FriendModel]()
             self.ref.child("Friends").observeSingleEvent(of: .value) { (snapshot) in
+                print(snapshot)
                 if(snapshot.exists()) {
                     let array:NSArray = snapshot.children.allObjects as NSArray
                     for obj in array {
@@ -392,6 +394,7 @@ extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "VideosCell", for: indexPath) as! HomeCollectionViewCell
         if collectionView.tag == 0{
+            self.isAllVideosSelected = true
             cell.PlayButton.addTarget(self, action: #selector(PlayVideoBtnAction(_:)), for: .touchUpInside)
             cell.PlayButton.tag = indexPath.row
             
@@ -400,6 +403,7 @@ extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource
             }
             cell.VideoDate.text = " "
         }else{
+            self.isAllVideosSelected = false
             cell.PlayButton.addTarget(self, action: #selector(PlayVideoBtnAction(_:)), for: .touchUpInside)
             cell.PlayButton.tag = indexPath.row
             
@@ -413,8 +417,13 @@ extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource
     }
     
     @objc func PlayVideoBtnAction(_ sender:UIButton){
-        let friendListVC = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(identifier: "PlayerVC") as! PlayerViewController
-        self.navigationController?.pushViewController(friendListVC, animated: true)
+        let playViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(identifier: "PlayerVC") as! PlayerViewController
+        if isAllVideosSelected{
+            playViewController.MyAreaVideos = self.MyAreaVideos
+        }else{
+            playViewController.MyAreaVideos = self.videoArray
+        }
+        self.navigationController?.pushViewController(playViewController, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
