@@ -23,6 +23,7 @@ class SignUpViewController: UIViewController, PassDataDelegate {
     var ref: DatabaseReference!
     var mAuth = Auth.auth()
     var userLocation = LocationModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
@@ -37,6 +38,7 @@ class SignUpViewController: UIViewController, PassDataDelegate {
 
 //MARK:- HELPING FUNCTION'S EXTENSION
 extension SignUpViewController{
+    
     // SETUP USER INTERFACE WITH SOME MODIFICATION
     func setupUI() {
         self.setupLeftPaddingOnTextFields()
@@ -44,6 +46,7 @@ extension SignUpViewController{
         self.buttonCustomization()
         self.addTabGuestureOnLocationTextField()
     }
+    
     //ADD LEFT PADDING ON ALL TEXTFIELD'S
     func setupLeftPaddingOnTextFields() {
         FullNameTF.setLeftPaddingPoints(8)
@@ -52,6 +55,7 @@ extension SignUpViewController{
         LocationTF.setLeftPaddingPoints(8)
         PasswordTF.setLeftPaddingPoints(8)
     }
+    
     //ADD RIGHT PADDING ON ALL TEXTFIELD'S
     func setupRightPaddingOnTextFields() {
         FullNameTF.setRightPaddingPoints(8)
@@ -60,6 +64,7 @@ extension SignUpViewController{
         LocationTF.setRightPaddingPoints(8)
         PasswordTF.setRightPaddingPoints(8)
     }
+    
     //ADD GRADIENT ON BUTTON
     func buttonCustomization() {
         guard let darkColor = UIColor(named: "Gradient Dark Color")?.cgColor else{return}
@@ -67,22 +72,26 @@ extension SignUpViewController{
         RegisterButton.setGradient(colors: [darkColor,lightColor])
         RegisterButton.clipsToBounds = true
     }
+    
     //ADD TAP GUESTURE ON LOCATION TEXTFIELD FOR GETTING USER CURRENT LOCATION
     func addTabGuestureOnLocationTextField() {
         let tapGuesture = UITapGestureRecognizer(target: self, action: #selector(LocationTextFieldSelector(_:)))
         self.LocationTF.addGestureRecognizer(tapGuesture)
     }
+    
     @objc func LocationTextFieldSelector(_ sender: UITextField){
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         let mapController = storyboard.instantiateViewController(identifier: "MapsViewController") as! MapsViewController
-        //mapController.delagate = self
+        mapController.delagate = self
         self.present(mapController, animated: true, completion: nil)
     }
+    
     // DELEGTE METHOD WHICH RETURN USER CURRENT LOCATION
     func passCurrentLocation(data: LocationModel) {
         self.userLocation = data
         self.LocationTF.text = data.address
     }
+    
     // ERROR ALERT POPUP WITH ERROR MESSAGE
     func ErrorAlertMessage(title:String,description:String) {
         let alert = UIAlertController(title: title, message: description, preferredStyle: .alert)
@@ -94,17 +103,20 @@ extension SignUpViewController{
                 print("cancel")
             case .destructive:
                 print("destructive")
+            @unknown default:
+                break
             }
         }))
         self.present(alert, animated: true, completion: nil)
     }
+    
 }
 
 // MARK:- FIREBASE METHOD'S EXTENSION
 extension SignUpViewController{
+    
     // VALIDATE USER AND INSERT INTO FIREBASE
     func SignUpUser(){
-        
         let fullname = FullNameTF.text!
         let email = EmailTF.text!
         let mobilenumber = MobileNumberTF.text!
@@ -149,20 +161,24 @@ extension SignUpViewController{
     func insertUserIntoDataBase(fullname:String,email:String,mobileNumber:String,location:String,password:String){
         guard let user = mAuth.currentUser?.uid else { return }
         guard let token = Messaging.messaging().fcmToken else {return}
+        
         self.ref.child("Users").child(user).setValue([
-            "country":self.userLocation.country_id!,
-            "email":email,
-            "imageURL":"Null",
-            "latitude":self.userLocation.address_lat!,
-            "location":self.userLocation.address!,
-            "longitude":self.userLocation.address_lng!,
-            "name":fullname,
-            "number":mobileNumber,
-            "password":password,
-            "token":token
+            "country": self.userLocation.country ?? "",
+            "email": email,
+            "imageURL": "xyz",
+            "latitude": self.userLocation.address_lat!,
+            "location": self.userLocation.address!,
+            "longitude": self.userLocation.address_lng!,
+            "name": fullname,
+            "number": mobileNumber,
+            "password": password,
+            "token": token
         ])
         // save into cache
-        let currentuser = LoginModel(id: user, email: email, imageURL: "null", latitude: String(self.userLocation.address_lat), location: String(self.userLocation.address), longitude: String(self.userLocation.address_lng), name: fullname, number: mobileNumber, password: password, country: String(self.userLocation.country_id),token: token)
+        
+        let currentuser = LoginModel (
+            id: user, email: email, imageURL: "null", latitude: String(self.userLocation.address_lat), location: String(self.userLocation.address), longitude: String(self.userLocation.address_lng), name: fullname, number: mobileNumber, password: password, country: String(self.userLocation.country),token: token
+        )
         CommonHelper.saveCachedUserData(currentuser)
         // Change root view controller
         PopupHelper.changeRootView(storyboardName: "Main", ViewControllerId: "Tabbar")

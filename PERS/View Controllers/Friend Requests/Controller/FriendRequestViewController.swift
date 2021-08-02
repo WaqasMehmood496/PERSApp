@@ -12,12 +12,13 @@ class FriendRequestViewController: UIViewController {
     
     //MARK:IBOUTLET'S
     @IBOutlet weak var FriendRequests: UITableView!
+    
     //MARK: VARIABLE'S
     var allRequests = [FriendRequestModel]()
     var mAuth = Auth.auth()
     var delegate:FriendRequestsDelegate?
-    
     var ref: DatabaseReference!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
@@ -36,7 +37,7 @@ extension FriendRequestViewController{
             "friend":true
         ])
     }// End Add in to favorites method
-    func addIntoRequestedFriendList(friendId:String){
+    func addIntoFriendList(friendId:String){
         guard let user = mAuth.currentUser?.uid else {
             return
         }
@@ -87,7 +88,7 @@ extension FriendRequestViewController:UITableViewDelegate,UITableViewDataSource{
         /// - TAG: SAVE INTO OWN RECOED
         self.addIntoMyFriendList(friendId: self.allRequests[sender.tag].id)
         /// - TAG: SAVE INTO REQUESTED USER RECORD
-        self.addIntoRequestedFriendList(friendId: self.allRequests[sender.tag].id)
+        self.addIntoFriendList(friendId: self.allRequests[sender.tag].id)
         //Delete from requests table
         self.RemoveRequestFromFriendRequest(friendId: self.allRequests[sender.tag].id, index: sender.tag)
         

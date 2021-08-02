@@ -8,29 +8,31 @@
 import UIKit
 import GoogleMaps
 import Firebase
+import SwiftUI
+import SemiModalViewController
 
 class LocalMapViewController: UIViewController {
-    //MARK: IBOUTLET'S
     
+    //MARK: IBOUTLET'S
     @IBOutlet weak var Map: GMSMapView!
-    //MARK: VARIABLE'S
-    ///Google map and location variables
+    // CONSTANTS
+    let controllerXYPosition: CGFloat = 0.0
+    let geocoder = GMSGeocoder()
+    var myNearestVideos = [VideosModel]()
+    
+    // VARIABLE'S
     var locationManager = CLLocationManager()
     var curentPosition = CLLocation()
     var zoomLevel: Float = 12.0
-    let geocoder = GMSGeocoder()
     var isLocationGet = false
-    ///Firebase Valiablesa
     var mAuth = Auth.auth()
     var ref: DatabaseReference!
-    // var mapMarkArray:[MapMarkerModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
         self.mapStyleSetup()
         self.userLocationSetup()
-        
     }
 }
 
@@ -41,6 +43,7 @@ extension LocalMapViewController{
             if let styleURL = Bundle.main.url(forResource: "style", withExtension: "json") {
                 self.Map.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
                 self.Map.isMyLocationEnabled = true
+                self.Map.delegate = self
             } else {
                 NSLog("Unable to find style.json")
             }
@@ -59,28 +62,21 @@ extension LocalMapViewController{
     }
     
     func checkMyNearestVideos(videos: [VideosModel]) {
-        for video in videos{
-            if let videoLat = CLLocationDegrees(video.videoLatitude) , let videoLng = CLLocationDegrees(video.videoLongitude){
+        for (index,video) in videos.enumerated(){
+            if let videoLat = CLLocationDegrees( video.videoLatitude ) , let videoLng = CLLocationDegrees(video.videoLongitude) {
                 let videoLocation = CLLocation(latitude: videoLat, longitude: videoLng)
                 let distance = self.curentPosition.distance(from: videoLocation) / 1000
-                if(distance <= 1609){
+                if( distance <= 1609 ) {
                     // place mark on google map
-                    let marker = GMSMarker(position: CLLocationCoordinate2D(latitude: videoLat, longitude: videoLng))
+                    let marker = GMSMarker(position: CLLocationCoordinate2D (latitude: videoLat, longitude: videoLng))
                     marker.map = self.Map
                     marker.icon = #imageLiteral(resourceName: "Location")
-                    
+                    marker.accessibilityHint = String(index)
+                    myNearestVideos.append(video)
                 }
             }
         }//End For loop
     }
-    //    func findMarker(markerTitle:String) {
-    //      for i in mapMarkArray{
-    //        if i.title == markerTitle{
-    //          selectedMarkerData = i
-    //          self.performSegue(withIdentifier: "MarkerDetailSegue", sender: nil)
-    //        }
-    //      }
-    //    }
 }
 
 
@@ -95,9 +91,11 @@ extension LocalMapViewController: CLLocationManagerDelegate {
             isLocationGet = true
             let location: CLLocation = locations.last!
             print("Location: \(location)")
-            let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude,
-                                                  longitude: location.coordinate.longitude,
-                                                  zoom: zoomLevel)
+            let camera = GMSCameraPosition.camera (
+                withLatitude: location.coordinate.latitude,
+                longitude: location.coordinate.longitude,
+                zoom: zoomLevel
+            )
             self.Map.camera = camera
             self.Map.animate(to: camera)
             self.curentPosition = location
@@ -132,12 +130,59 @@ extension LocalMapViewController: CLLocationManagerDelegate {
     }
 }
 
+extension LocalMapViewController:GMSMapViewDelegate{
+    
+    func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
+        //mapView.clear()
+    }
+    
+    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+        let controller = self.storyboard!.instantiateViewController(identifier: "PlayerViewController") as! PlayerViewController
+        controller.isVideoSelectedFromMap = true
+        if let selectedVideo = Int(marker.accessibilityHint!) {
+            controller.MyAreaVideos.append(self.myNearestVideos[selectedVideo])
+            DispatchQueue.main.async {
+                self.tabBarController!.present( controller, animated: true, completion: nil )
+            }
+        }
+        return true
+    }
+    
+    func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
+        
+    }
+    
+    func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
+        //reverseGeocodeCoordinate(position.target)
+    }
+    
+    func mapView(_ mapView: GMSMapView, willMove gesture: Bool) {
+    }
+    
+    private func reverseGeocodeCoordinate(_ coordinate: CLLocationCoordinate2D) {
+        let geocoder = GMSGeocoder()
+        geocoder.reverseGeocodeCoordinate(coordinate) { response, error in
+            guard let address = response?.firstResult(), let lines = address.lines else {
+                return
+            }
+            // 3
+            //    self.lblAddress.text = lines.joined(separator: "\n")
+            //    self.curentPosition = address.coordinate
+            // 4
+            UIView.animate(withDuration: 0.25) {
+                self.view.layoutIfNeeded()
+            }
+            self.Map.animate(toLocation: address.coordinate)
+        }
+    }
+}
+
 // MARK:- FIREBASE METHODS EXTENSION
 extension LocalMapViewController{
     // GET ALL VIDEOS FROM FIREBASE DATABASE
     func getAllVideosInMyArea() {
         if Connectivity.isConnectedToNetwork(){
-            self.ref.child("Videos").observe(.value) { (snapshot) in
+            self.ref.child(Constant.videosTable).observe(.value) { (snapshot) in
                 if(snapshot.exists()) {
                     var tempArray = [VideosModel]()
                     let array:NSArray = snapshot.children.allObjects as NSArray
@@ -158,7 +203,7 @@ extension LocalMapViewController{
                 }// End Snapshot if else statement
             }
         }else{
-            PopupHelper.showAlertControllerWithError(forErrorMessage: "Internet is unavailable please check your connection", forViewController: self)
+            PopupHelper.showAlertControllerWithError(forErrorMessage: Constant.internetMsg, forViewController: self)
         }//End Connectity Check Statement
     }// End get favorite method
     

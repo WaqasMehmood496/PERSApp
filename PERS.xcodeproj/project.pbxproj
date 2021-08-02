@@ -67,12 +67,9 @@
 		761D7C21268213100013EA2F /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761D7BE32682130E0013EA2F /* NetworkConnection.swift */; };
 		761D7C22268213100013EA2F /* WebServiceResponseDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761D7BE5268213100013EA2F /* WebServiceResponseDelegate.swift */; };
 		761D7C23268213100013EA2F /* WebServiceDataParsingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761D7BE6268213100013EA2F /* WebServiceDataParsingDelegate.swift */; };
-		761D7C24268213100013EA2F /* Packaging.log in Resources */ = {isa = PBXBuildFile; fileRef = 761D7BE8268213100013EA2F /* Packaging.log */; };
-		761D7C25268213100013EA2F /* ExportOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = 761D7BE9268213100013EA2F /* ExportOptions.plist */; };
-		761D7C26268213100013EA2F /* FitnessVideoApp.ipa in Resources */ = {isa = PBXBuildFile; fileRef = 761D7BEA268213100013EA2F /* FitnessVideoApp.ipa */; };
-		761D7C27268213100013EA2F /* DistributionSummary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 761D7BEB268213100013EA2F /* DistributionSummary.plist */; };
 		761D7C28268213100013EA2F /* DatabaseRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761D7BEC268213100013EA2F /* DatabaseRepresentation.swift */; };
 		761D7C29268213100013EA2F /* HelpingDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761D7BED268213100013EA2F /* HelpingDelegates.swift */; };
+		7633D25926A321C50022A573 /* MapVideoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7633D25826A321C50022A573 /* MapVideoDetailViewController.swift */; };
 		7638076326832E88001D08AB /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7638076226832E88001D08AB /* NotificationsManager.swift */; };
 		7661316B268B59CB004DC5E0 /* style.json in Resources */ = {isa = PBXBuildFile; fileRef = 7661316A268B59CA004DC5E0 /* style.json */; };
 		76F9D7BC268F3FA7005E2A12 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F9D7BB268F3FA7005E2A12 /* NotificationModel.swift */; };
@@ -141,12 +138,9 @@
 		761D7BE32682130E0013EA2F /* NetworkConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
 		761D7BE5268213100013EA2F /* WebServiceResponseDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebServiceResponseDelegate.swift; sourceTree = "<group>"; };
 		761D7BE6268213100013EA2F /* WebServiceDataParsingDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebServiceDataParsingDelegate.swift; sourceTree = "<group>"; };
-		761D7BE8268213100013EA2F /* Packaging.log */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Packaging.log; sourceTree = "<group>"; };
-		761D7BE9268213100013EA2F /* ExportOptions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ExportOptions.plist; sourceTree = "<group>"; };
-		761D7BEA268213100013EA2F /* FitnessVideoApp.ipa */ = {isa = PBXFileReference; lastKnownFileType = file; path = FitnessVideoApp.ipa; sourceTree = "<group>"; };
-		761D7BEB268213100013EA2F /* DistributionSummary.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DistributionSummary.plist; sourceTree = "<group>"; };
 		761D7BEC268213100013EA2F /* DatabaseRepresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseRepresentation.swift; sourceTree = "<group>"; };
 		761D7BED268213100013EA2F /* HelpingDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpingDelegates.swift; sourceTree = "<group>"; };
+		7633D25826A321C50022A573 /* MapVideoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVideoDetailViewController.swift; sourceTree = "<group>"; };
 		7638076226832E88001D08AB /* NotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
 		7661316A268B59CA004DC5E0 /* style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = style.json; sourceTree = "<group>"; };
 		76F9D7BB268F3FA7005E2A12 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
@@ -256,6 +250,7 @@
 		761D7B972682130D0013EA2F /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				7633D25626A321A60022A573 /* Map Video Detail */,
 				761D7B982682130D0013EA2F /* Local Map */,
 				761D7B9E2682130D0013EA2F /* Home */,
 				761D7BA52682130D0013EA2F /* Location Map */,
@@ -629,22 +624,26 @@
 			children = (
 				761D7BE5268213100013EA2F /* WebServiceResponseDelegate.swift */,
 				761D7BE6268213100013EA2F /* WebServiceDataParsingDelegate.swift */,
-				761D7BE7268213100013EA2F /* FitnessVideoApp 2021-06-16 20-26-54 */,
 				761D7BEC268213100013EA2F /* DatabaseRepresentation.swift */,
 				761D7BED268213100013EA2F /* HelpingDelegates.swift */,
 			);
 			path = Delegates;
 			sourceTree = "<group>";
 		};
-		761D7BE7268213100013EA2F /* FitnessVideoApp 2021-06-16 20-26-54 */ = {
+		7633D25626A321A60022A573 /* Map Video Detail */ = {
 			isa = PBXGroup;
 			children = (
-				761D7BE8268213100013EA2F /* Packaging.log */,
-				761D7BE9268213100013EA2F /* ExportOptions.plist */,
-				761D7BEA268213100013EA2F /* FitnessVideoApp.ipa */,
-				761D7BEB268213100013EA2F /* DistributionSummary.plist */,
+				7633D25726A321B40022A573 /* Controller */,
 			);
-			path = "FitnessVideoApp 2021-06-16 20-26-54";
+			path = "Map Video Detail";
+			sourceTree = "<group>";
+		};
+		7633D25726A321B40022A573 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7633D25826A321C50022A573 /* MapVideoDetailViewController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -708,14 +707,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				761D7B03268203C40013EA2F /* LaunchScreen.storyboard in Resources */,
-				761D7C27268213100013EA2F /* DistributionSummary.plist in Resources */,
 				761D7B822682111D0013EA2F /* GoogleService-Info.plist in Resources */,
 				7661316B268B59CB004DC5E0 /* style.json in Resources */,
-				761D7C26268213100013EA2F /* FitnessVideoApp.ipa in Resources */,
 				761D7B00268203C40013EA2F /* Assets.xcassets in Resources */,
 				761D7AFE268203C10013EA2F /* Main.storyboard in Resources */,
-				761D7C24268213100013EA2F /* Packaging.log in Resources */,
-				761D7C25268213100013EA2F /* ExportOptions.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -809,6 +804,7 @@
 				761D7C00268213100013EA2F /* MapMarkerModel.swift in Sources */,
 				761D7BFC268213100013EA2F /* NavigationBarExtension.swift in Sources */,
 				761D7BF4268213100013EA2F /* NotificationExtension.swift in Sources */,
+				7633D25926A321C50022A573 /* MapVideoDetailViewController.swift in Sources */,
 				761D7C15268213100013EA2F /* NVActivityIndicatorPresenter.swift in Sources */,
 				761D7AF7268203C10013EA2F /* AppDelegate.swift in Sources */,
 				761D7BFD268213100013EA2F /* AppStoryBoard.swift in Sources */,

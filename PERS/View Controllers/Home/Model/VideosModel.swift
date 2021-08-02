@@ -17,10 +17,10 @@ class VideosModel: Codable {
     var videoLongitude:String!
     var videoURL:String!
     var timestamp:String!
-    var videoUploaderName:String!
-    var videoUploaderImageUrl:String!
+    var userName:String!
+    var userImage:String!
     
-    init(id:String? = nil,thumbnail: String? = nil,uploaderID: String? = nil,videoLatitude: String? = nil,videoLocation: String? = nil,videoLongitude:String? = nil,videoURL: String? = nil,timestamp:String? = nil,videoUploaderName:String? = nil,videoUploaderImageUrl:String? = nil) {
+    init(id:String? = nil,thumbnail: String? = nil,uploaderID: String? = nil,videoLatitude: String? = nil,videoLocation: String? = nil,videoLongitude:String? = nil,videoURL: String? = nil,timestamp:String? = nil,userName:String? = nil,userImage:String? = nil) {
         self.id = id
         self.thumbnail = thumbnail
         self.uploaderID = uploaderID
@@ -29,8 +29,8 @@ class VideosModel: Codable {
         self.videoLongitude = videoLongitude
         self.videoURL = videoURL
         self.timestamp = timestamp
-        self.videoUploaderName = videoUploaderName
-        self.videoUploaderImageUrl = videoUploaderImageUrl
+        self.userName = userName
+        self.userImage = userImage
     }
     
     init?(dic:NSDictionary) {
@@ -43,8 +43,8 @@ class VideosModel: Codable {
         let videoLongitude = (dic as AnyObject).value(forKey: Constant.videoLongitude) as! String
         let videoURL = (dic as AnyObject).value(forKey: Constant.videoURL) as! String
         let timestamp = (dic as AnyObject).value(forKey: Constant.timestamp) as? String
-        let videoUploaderName = (dic as AnyObject).value(forKey: Constant.videoUploaderName) as? String
-        let videoUploaderImageUrl = (dic as AnyObject).value(forKey: Constant.videoUploaderImageUrl) as? String
+        let userName = (dic as AnyObject).value(forKey: Constant.userName) as? String
+        let userImage = (dic as AnyObject).value(forKey: Constant.userImage) as? String
         
         self.id = id
         self.thumbnail = thumbnail
@@ -54,7 +54,7 @@ class VideosModel: Codable {
         self.videoLongitude = videoLongitude
         self.videoURL = videoURL
         self.timestamp = timestamp
-        self.videoUploaderName = videoUploaderName
-        self.videoUploaderImageUrl = videoUploaderImageUrl
+        self.userName = userName
+        self.userImage = userImage
     }
 }

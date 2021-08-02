@@ -39,12 +39,14 @@ class ProfileViewController: UIViewController, FriendRequestsDelegate {
         ref = Database.database().reference()
         self.setupUI()
         self.getAllUsersRecord()
-        self.getAllFriendRequestsFromFirebase()
+        self.getFriendsFromFirebase()
     }
     
     @IBAction func AddFriendsBtnAction(_ sender: Any) {
         let friendListVC = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(identifier: "AddFriendVC") as! AddFriendsViewController
+        friendListVC.allUser = self.allUser
         friendListVC.friendList = self.friendList
+        friendListVC.friendRequest = self.friendsRequests
         self.navigationController?.pushViewController(friendListVC, animated: true)
     }
     
@@ -73,7 +75,7 @@ class ProfileViewController: UIViewController, FriendRequestsDelegate {
 }
 
 //MARK:- HELPING METHO'D EXTENSION
-extension ProfileViewController{
+extension ProfileViewController {
     // SETUP USER INTERFACE WITH SOME MODIFICATION
     func setupUI() {
         if let userData = CommonHelper.getCachedUserData(){
@@ -99,9 +101,10 @@ extension ProfileViewController{
         self.FriendListTableView.reloadData()
     }
     
-    func updateUI() {
+    func updateUI(hud:JGProgressHUD) {
         self.FriendRequestLabel.text = "You have \(self.friendsRequests.count) friends requests"
         self.FriendRequestBtn.setTitle("\(self.friendsRequests.count)", for: .normal)
+        hud.dismiss()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -116,61 +119,52 @@ extension ProfileViewController{
     func updateFriendRequestData(data: [FriendRequestModel]) {
         self.friendsRequests = data
         self.FriendRequestLabel.text = "\(data.count)"
-        self.getFavoritesFromFirebase()//Fetch all friends
+        self.getFriendsFromFirebase()//Fetch all friends
     }
 }
+
+
 
 //MARK:- FIREBASE METHOD'S EXTENSION
 extension ProfileViewController{
     //GET ALL USERS RECORD FROM FIREBASE DATABASE
     func getAllUsersRecord() {
-        if Connectivity.isConnectedToNetwork(){
-            showHUDView(hudIV: .indeterminate, text: .process) { (hud) in
-                hud.show(in: self.view, animated: true)
-                if let userID = self.mAuth.currentUser?.uid{
-                    self.ref.child("Users").observeSingleEvent(of: .value) { (snapshot) in
-                        print(snapshot)
-                        if(snapshot.exists()) {
-                            let array:NSArray = snapshot.children.allObjects as NSArray
-                            print(array.count)
-                            for obj in array {
-                                let snapshot:DataSnapshot = obj as! DataSnapshot
-                                if var childSnapshot = snapshot.value as? [String : AnyObject]{
-                                    childSnapshot[Constant.id] = snapshot.key as String as AnyObject
-                                    let users = LoginModel(dic: childSnapshot as NSDictionary)
-                                    if let user = users{
-                                        self.allUser.append(user)
-                                    }
-                                    print(childSnapshot)
+        if Connectivity.isConnectedToNetwork() {
+            if (self.mAuth.currentUser?.uid) != nil{
+                self.ref.child("Users").observeSingleEvent(of: .value) { (snapshot) in
+                    if(snapshot.exists()) {
+                        let array:NSArray = snapshot.children.allObjects as NSArray
+                        for obj in array {
+                            let snapshot:DataSnapshot = obj as! DataSnapshot
+                            if var childSnapshot = snapshot.value as? [String : AnyObject] {
+                                childSnapshot[Constant.id] = snapshot.key as String as AnyObject
+                                let users = LoginModel(dic: childSnapshot as NSDictionary)
+                                if let user = users {
+                                    self.allUser.append(user)
                                 }
-                            }// End For loop
-                            hud.dismiss()
-                        }// End Snapshot if else statement
-                        self.getFavoritesFromFirebase()
-                        hud.dismiss()
-                    }// End ref Child Completion Block
-                }// End Firebase user id
-                else{
-                    hud.dismiss()
-                }
+                                print(childSnapshot)
+                            }
+                        }// End For loop
+                    }// End Snapshot if else statement
+                }// End ref Child Completion Block
+            }// End Firebase user id
+            else{
             }
         }else{
-            PopupHelper.showAlertControllerWithError(forErrorMessage: "Internet is unavailable please check your connection", forViewController: self)
+            PopupHelper.showAlertControllerWithError( forErrorMessage: "Internet is unavailable please check your connection", forViewController: self )
         }//End Connectity Check Statement
     }// End get favorite method
     
     // GET ALL FRIENDS VIDEOS FROM FIREBASE DATABASE
-    func getFavoritesFromFirebase() {
+    func getFriendsFromFirebase() {
         if Connectivity.isConnectedToNetwork(){
             showHUDView(hudIV: .indeterminate, text: .process) { (hud) in
                 hud.show(in: self.view, animated: true)
                 var friends = [FriendModel]()
                 if let userID = self.mAuth.currentUser?.uid{
                     self.ref.child("Friends").child(userID).observeSingleEvent(of: .value) { (snapshot) in
-                        print(snapshot)
                         if(snapshot.exists()) {
                             let array:NSArray = snapshot.children.allObjects as NSArray
-                            print(array.count)
                             for obj in array {
                                 let snapshot:DataSnapshot = obj as! DataSnapshot
                                 if var childSnapshot = snapshot.value as? [String : AnyObject]{
@@ -179,14 +173,13 @@ extension ProfileViewController{
                                     if let fav = favData{
                                         friends.append(fav)
                                     }
-                                    print(childSnapshot)
                                 }
                             }// End For loop
                             hud.dismiss()
                         }// End Snapshot if else statement
                         self.compareRecord(friendArray: friends)
-                        self.TotalFriendCountLabel.text = "You have \(friends.count) friends requests"
-                        hud.dismiss()
+                        self.TotalFriendCountLabel.text = "You have \(friends.count) friends"
+                        self.getFriendRequestsFromFirebase(hud: hud)
                     }// End ref Child Completion Block
                 }// End Firebase user id
                 else{
@@ -199,33 +192,26 @@ extension ProfileViewController{
     }// End get favorite method
     
     //THIS METHODS WILL FETCH ALL FRIENDS REQUESTS
-    func getAllFriendRequestsFromFirebase() {
+    func getFriendRequestsFromFirebase(hud:JGProgressHUD) {
         if Connectivity.isConnectedToNetwork(){
-            showHUDView(hudIV: .indeterminate, text: .process) { (hud) in
-                hud.show(in: self.view, animated: true)
-                if let userID = self.mAuth.currentUser?.uid{
-                    self.ref.child("Requests").child(userID).observeSingleEvent(of: .value) { (snapshot) in
-                        if(snapshot.exists()) {
-                            let array:NSArray = snapshot.children.allObjects as NSArray
-                            for obj in array {
-                                let snapshot:DataSnapshot = obj as! DataSnapshot
-                                if var childSnapshot = snapshot.value as? [String : AnyObject]{
-                                    childSnapshot[Constant.id] = snapshot.key as String as AnyObject
-                                    let frindRequest = FriendRequestModel(dic: childSnapshot as NSDictionary)
-                                    if let fav = frindRequest{
-                                        self.friendsRequests.append(fav)
-                                    }
-                                }//End childSnapshop statement
-                            }// End For loop
-                            hud.dismiss()
-                            self.updateUI()
-                        }// End Snapshot if else statement
+            if let userID = self.mAuth.currentUser?.uid{
+                self.ref.child("Requests").child(userID).observeSingleEvent(of: .value) { (snapshot) in
+                    if (snapshot.exists()) {
+                        let array:NSArray = snapshot.children.allObjects as NSArray
+                        for obj in array {
+                            let snapshot:DataSnapshot = obj as! DataSnapshot
+                            if let frindRequest = FriendRequestModel(dic: snapshot) {
+                                self.friendsRequests.append(frindRequest)
+                            }
+                        }// End For loop
+                        self.updateUI(hud: hud)
+                    }else{
                         hud.dismiss()
-                    }// End ref Child Completion Block
-                }// End Firebase user id
-                else{
-                    hud.dismiss()
-                }
+                    }// End Snapshot if else statement
+                }// End ref Child Completion Block
+            }// End Firebase user id
+            else{
+                hud.dismiss()
             }
         }else{
             PopupHelper.showAlertControllerWithError(forErrorMessage: "Internet is unavailable please check your connection", forViewController: self)

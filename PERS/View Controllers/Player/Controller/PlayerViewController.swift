@@ -14,6 +14,7 @@ class PlayerViewController: UIViewController {
     //MARK: IBOUTLET'S
     @IBOutlet weak var RelatedVideoTableView: UICollectionView!
     @IBOutlet weak var VideoContainerView: UIView!
+    @IBOutlet weak var RelatedVideosLabel: UILabel!
     
     //MARK: VARIABLE'S
     private let spacingIphone:CGFloat = 0.0
@@ -21,6 +22,7 @@ class PlayerViewController: UIViewController {
     let playerViewController = AVPlayerViewController()
     var playlist = AVQueuePlayer()
     var MyAreaVideos = [VideosModel]()
+    var isVideoSelectedFromMap = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,7 +89,12 @@ extension PlayerViewController{
 
 extension PlayerViewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.MyAreaVideos.count
+        if isVideoSelectedFromMap {
+            self.RelatedVideosLabel.isHidden = true
+            return 0
+        } else {
+            return self.MyAreaVideos.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -100,8 +107,8 @@ extension PlayerViewController:UICollectionViewDelegate,UICollectionViewDataSour
                 cell.VideoDate.text = self.getTimeFromTimeStamp(timeStamp: timeStamp)
             }
         }
-        cell.PersonImage.sd_setImage(with: URL(string: self.MyAreaVideos[indexPath.row].videoUploaderImageUrl), placeholderImage: #imageLiteral(resourceName: "Clip-2"))
-        cell.PersonName.text = self.MyAreaVideos[indexPath.row].videoUploaderName
+        cell.PersonImage.sd_setImage(with: URL(string: self.MyAreaVideos[indexPath.row].userImage), placeholderImage: #imageLiteral(resourceName: "Clip-2"))
+        cell.PersonName.text = self.MyAreaVideos[indexPath.row].userName
         
         
         if let data = Data(base64Encoded: self.MyAreaVideos[indexPath.row].thumbnail){

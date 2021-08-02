@@ -32,6 +32,10 @@ struct Constant {
     
     //MARK: MODELS KEY'S
     static let id = "id"
+    static let receiverId = "receiverId"
+    static let senderId = "senderId"
+    static let receiverRecord = "receiverRecord"
+    static let requester = "requester"
     static let email = "email"
     static let full_name = "full_name"
     static let location = "location"
@@ -48,6 +52,11 @@ struct Constant {
     static let number = "number"
     static let isFriend = "isFriend"
     static let country = "country"
+    static let zipCode = "zipCode"
+    static let state = "state"
+    static let city = "city"
+    static let address1 = "address1"
+    static let address2 = "address2"
     static let thumbnail = "thumbnail"
     static let uploaderID = "uploaderID"
     static let videoLatitude = "videoLatitude"
@@ -58,9 +67,27 @@ struct Constant {
     static let title = "title"
     static let detail = "detail"
     static let timestamp = "timestamp"
-    static let videoUploaderImageUrl = "videoUploaderImageUrl"
-    static let videoUploaderName = "videoUploaderName"
+    static let userImage = "userImage"
+    static let userName = "userName"
     
-    //Others
+    
+    //MARK:- OTHER STATIC VARIABLE'S
     static let MapStyle = "[{\"featureType\":\"all\",\"elementType\":\"geometry\",\"stylers\":[{\"color\":\"#242f3e\"}]},{\"featureType\":\"all\",\"elementType\":\"labels.text.stroke\",\"stylers\":[{\"lightness\":-80}]},{\"featureType\":\"administrative\",\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#746855\"}]},{\"featureType\":\"administrative.locality\",\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#d59563\"}]},{\"featureType\":\"poi\",\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#d59563\"}]},{\"featureType\":\"poi.park\",\"elementType\":\"geometry\",\"stylers\":[{\"color\":\"#263c3f\"}]},{\"featureType\":\"poi.park\",\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#6b9a76\"}]},{\"featureType\":\"road\",\"elementType\":\"geometry.fill\",\"stylers\":[{\"color\":\"#2b3544\"}]},{\"featureType\":\"road\",\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#9ca5b3\"}]},{\"featureType\":\"road.arterial\",\"elementType\":\"geometry.fill\",\"stylers\":[{\"color\":\"#38414e\"}]},{\"featureType\":\"road.arterial\",\"elementType\":\"geometry.stroke\",\"stylers\":[{\"color\":\"#212a37\"}]},{\"featureType\":\"road.highway\",\"elementType\":\"geometry.fill\",\"stylers\":[{\"color\":\"#746855\"}]},{\"featureType\":\"road.highway\",\"elementType\":\"geometry.stroke\",\"stylers\":[{\"color\":\"#1f2835\"}]},{\"featureType\":\"road.highway\",\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#f3d19c\"}]},{\"featureType\":\"road.local\",\"elementType\":\"geometry.fill\",\"stylers\":[{\"color\":\"#38414e\"}]},{\"featureType\":\"road.local\",\"elementType\":\"geometry.stroke\",\"stylers\":[{\"color\":\"#212a37\"}]},{\"featureType\":\"transit\",\"elementType\":\"geometry\",\"stylers\":[{\"color\":\"#2f3948\"}]},{\"featureType\":\"transit.station\",\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#d59563\"}]},{\"featureType\":\"water\",\"elementType\":\"geometry\",\"stylers\":[{\"color\":\"#17263c\"}]},{\"featureType\":\"water\",\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#515c6d\"}]},{\"featureType\":\"water\",\"elementType\":\"labels.text.stroke\",\"stylers\":[{\"lightness\":-20}]}]"
+    
+    static let usersTable = "Users"
+    static let videosTable = "Videos"
+    static let myVideosTable = "MyVideos"
+    static let friendsTable = "Friends"
+    static let userTableTokenKey = "token"
+    static let dateFormat = "yyyyMMddHHmmss"
+    static let mainStotyboard = "Main"
+    static let locationTitle = "Location Not Found"
+    static let notificationTitle = "New video uploaded"
+    static let internetMsg = "Internet is unavailable please check your connection"
+    static let locationMsg = "Your location not found please enable your location from settings"
+    
+    
+    //MARK: VIEW CONTROLLER IDENTIFIERS
+    static let tabbarIdentifier = "Tabbar"
+    static let mapVideoPlayerViewController = "MapVideoDetailViewController"
 }

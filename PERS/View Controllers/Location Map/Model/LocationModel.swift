@@ -14,20 +14,20 @@ class LocationModel:Codable {
     var street_address_2:String!
     var zipcode:String!
     var city:String!
-    var state_id:Int64!
-    var country_id:Int64!
-    var address_lat:Double!
-    var address_lng:Double!
+    var state:String!
+    var country:String!
+    var address_lat:String!
+    var address_lng:String!
     
-    init(address_name:String? = nil,address:String? = nil,street_address_1:String? = nil,street_address_2:String? = nil,zipcode:String? = nil,city:String? = nil,state_id:Int64? = nil,country_id:Int64? = nil,address_lat:Double? = nil,address_lng:Double? = nil) {
+    init(address_name:String? = nil,address:String? = nil,street_address_1:String? = nil,street_address_2:String? = nil,zipcode:String? = nil,city:String? = nil,state_id:String? = nil,country_id:String? = nil,address_lat:String? = nil,address_lng:String? = nil) {
         self.address_name = address_name
         self.address = address
         self.street_address_1 = street_address_1
         self.street_address_2 = street_address_2
         self.zipcode = zipcode
         self.city = city
-        self.state_id = state_id
-        self.country_id = country_id
+        self.state = state_id
+        self.country = country_id
         self.address_lat = address_lat
         self.address_lng = address_lng
     }
@@ -37,12 +37,26 @@ class LocationModel:Codable {
         
         let address_name = (dic as AnyObject).value(forKey: Constant.address_name) as? String
         let address = (dic as AnyObject).value(forKey: Constant.address) as? String
-        let address_lat = (dic as AnyObject).value(forKey: Constant.address_lat) as? Double
-        let address_lng = (dic as AnyObject).value(forKey: Constant.address_lng) as? Double
-                
+        let address_lat = (dic as AnyObject).value(forKey: Constant.address_lat) as? String
+        let address_lng = (dic as AnyObject).value(forKey: Constant.address_lng) as? String
+        let zipCode = (dic as AnyObject).value(forKey: Constant.zipCode) as? String
+        let state = (dic as AnyObject).value(forKey: Constant.state) as? String
+        let city = (dic as AnyObject).value(forKey: Constant.city) as? String
+        let country = (dic as AnyObject).value(forKey: Constant.country) as? String
+        let address1 = (dic as AnyObject).value(forKey: Constant.address1) as? String
+        let address2 = (dic as AnyObject).value(forKey: Constant.address2) as? String
+        
+        
+        
         self.address_name = address_name
         self.address = address
         self.address_lat = address_lat
         self.address_lng = address_lng
+        self.street_address_1 = address1
+        self.street_address_2 = address2
+        self.zipcode = zipCode
+        self.city = city
+        self.state = state
+        self.country = country
     }
 }

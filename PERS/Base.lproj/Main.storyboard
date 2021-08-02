@@ -589,7 +589,7 @@
         <!--Local Map-->
         <scene sceneID="KMl-aY-tJB">
             <objects>
-                <viewController id="GaX-jE-U9c" customClass="LocalMapViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalTransitionStyle="crossDissolve" modalPresentationStyle="overCurrentContext" id="GaX-jE-U9c" customClass="LocalMapViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xmJ-Bd-SSw">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -623,7 +623,7 @@
         <!--Home-->
         <scene sceneID="NAq-dk-LK4">
             <objects>
-                <viewController id="roB-Sa-zBC" customClass="HomeViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeViewController" id="roB-Sa-zBC" customClass="HomeViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aMi-LD-2Sg">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1106,12 +1106,40 @@
                     <navigationItem key="navigationItem" id="Fnt-6k-ccc"/>
                     <connections>
                         <outlet property="RelatedVideoTableView" destination="oUo-BO-DAs" id="PcC-KH-wUD"/>
+                        <outlet property="RelatedVideosLabel" destination="qar-Qe-7xa" id="S5q-ju-GhS"/>
                         <outlet property="VideoContainerView" destination="iN3-l3-NWD" id="Gqn-xm-jXA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XBl-76-bMK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-17" y="3046"/>
+        </scene>
+        <!--Map Video Detail View Controller-->
+        <scene sceneID="wUq-QE-37w">
+            <objects>
+                <viewController storyboardIdentifier="MapVideoDetailViewController" id="Sqm-0x-hgU" customClass="MapVideoDetailViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="S1A-0b-MMt">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MZB-9G-P5N">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="244.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="eT8-qV-y5y"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="MZB-9G-P5N" firstAttribute="width" secondItem="MZB-9G-P5N" secondAttribute="height" multiplier="1.1:0.65" id="E7t-If-Fof"/>
+                            <constraint firstItem="MZB-9G-P5N" firstAttribute="top" secondItem="S1A-0b-MMt" secondAttribute="top" id="UZh-ir-rA4"/>
+                            <constraint firstItem="MZB-9G-P5N" firstAttribute="leading" secondItem="S1A-0b-MMt" secondAttribute="leading" id="WXL-mu-1fS"/>
+                            <constraint firstItem="eT8-qV-y5y" firstAttribute="trailing" secondItem="MZB-9G-P5N" secondAttribute="trailing" id="mEA-YU-ImA"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ofM-YE-s2Z" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="912" y="3046"/>
         </scene>
         <!--Forgot Password View Controller-->
         <scene sceneID="8xR-A2-Rk0">
@@ -1290,7 +1318,7 @@
         <!--Notification-->
         <scene sceneID="9fo-Ni-E0z">
             <objects>
-                <viewController id="6a2-IW-0I3" customClass="NotificationsViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NotificationsViewController" id="6a2-IW-0I3" customClass="NotificationsViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Duh-k8-e1S">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1381,7 +1409,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jF5-T4-HZZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1912" y="2310"/>
+            <point key="canvasLocation" x="1912" y="2330"/>
         </scene>
         <!--Gradient NavigationVC-->
         <scene sceneID="LE7-qd-jUq">
@@ -1636,7 +1664,7 @@
                                                 <color key="textColor" name="Gradient Dark Color"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You have 5 friends requests" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XjA-Za-Lm0">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You have 0 friends requests" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XjA-Za-Lm0">
                                                 <rect key="frame" x="32" y="444" width="312" height="16.5"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
