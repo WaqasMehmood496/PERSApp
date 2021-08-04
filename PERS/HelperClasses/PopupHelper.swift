@@ -9,6 +9,7 @@
 import UIKit
 import SwiftEntryKit
 import NVActivityIndicatorView
+
 class PopupHelper
 {
     /// Show a popup using the STPopup framework [STPopup on Cocoapods](https://cocoapods.org/pods/STPopup)

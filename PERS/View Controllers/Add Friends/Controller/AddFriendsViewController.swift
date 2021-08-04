@@ -37,11 +37,16 @@ extension AddFriendsViewController{
         
         var usersArray = [LoginModel]()
         if friendList.count != 0 {
-            for user in self.allUser{
-                for friend in self.friendList{
-                    if user.id != friend.id{
-                        usersArray.append(user)
+            for user in self.allUser {
+               let result = self.friendList.contains(where: { (LoginModel) -> Bool in
+                    if LoginModel.id == user.id {
+                        return true
+                    } else {
+                        return false
                     }
+                })
+                if result == false{
+                    usersArray.append(user)
                 }
             }
             self.allUser = usersArray
@@ -50,11 +55,16 @@ extension AddFriendsViewController{
         
         if friendRequest.count != 0 {
             for user in self.allUser {
-                for friend in self.friendRequest {
-                    if user.id != friend.id{
-                        usersArray.append(user)
-                    }
-                }
+                let result = self.friendRequest.contains(where: { (request) -> Bool in
+                     if request.id == user.id {
+                         return true
+                     } else {
+                         return false
+                     }
+                 })
+                 if result == false{
+                     usersArray.append(user)
+                 }
             }
             self.allUser = usersArray
             usersArray.removeAll()

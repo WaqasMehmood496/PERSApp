@@ -71,6 +71,8 @@
 		761D7C29268213100013EA2F /* HelpingDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761D7BED268213100013EA2F /* HelpingDelegates.swift */; };
 		7633D25926A321C50022A573 /* MapVideoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7633D25826A321C50022A573 /* MapVideoDetailViewController.swift */; };
 		7638076326832E88001D08AB /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7638076226832E88001D08AB /* NotificationsManager.swift */; };
+		76397E0726BAC53100D31BCF /* VideoPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76397E0626BAC53100D31BCF /* VideoPopup.xib */; };
+		76397E0C26BAC75300D31BCF /* VideoUploadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76397E0B26BAC75300D31BCF /* VideoUploadingView.swift */; };
 		7661316B268B59CB004DC5E0 /* style.json in Resources */ = {isa = PBXBuildFile; fileRef = 7661316A268B59CA004DC5E0 /* style.json */; };
 		76F9D7BC268F3FA7005E2A12 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F9D7BB268F3FA7005E2A12 /* NotificationModel.swift */; };
 /* End PBXBuildFile section */
@@ -142,6 +144,8 @@
 		761D7BED268213100013EA2F /* HelpingDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpingDelegates.swift; sourceTree = "<group>"; };
 		7633D25826A321C50022A573 /* MapVideoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVideoDetailViewController.swift; sourceTree = "<group>"; };
 		7638076226832E88001D08AB /* NotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
+		76397E0626BAC53100D31BCF /* VideoPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VideoPopup.xib; sourceTree = "<group>"; };
+		76397E0B26BAC75300D31BCF /* VideoUploadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoUploadingView.swift; sourceTree = "<group>"; };
 		7661316A268B59CA004DC5E0 /* style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = style.json; sourceTree = "<group>"; };
 		76F9D7BB268F3FA7005E2A12 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
 		7E19AD45B637D4130AA94699 /* Pods_PERS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PERS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -250,6 +254,7 @@
 		761D7B972682130D0013EA2F /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				76397E0926BAC72300D31BCF /* Uploading Video Popup */,
 				7633D25626A321A60022A573 /* Map Video Detail */,
 				761D7B982682130D0013EA2F /* Local Map */,
 				761D7B9E2682130D0013EA2F /* Home */,
@@ -646,6 +651,23 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		76397E0926BAC72300D31BCF /* Uploading Video Popup */ = {
+			isa = PBXGroup;
+			children = (
+				76397E0626BAC53100D31BCF /* VideoPopup.xib */,
+				76397E0A26BAC73400D31BCF /* UIView */,
+			);
+			path = "Uploading Video Popup";
+			sourceTree = "<group>";
+		};
+		76397E0A26BAC73400D31BCF /* UIView */ = {
+			isa = PBXGroup;
+			children = (
+				76397E0B26BAC75300D31BCF /* VideoUploadingView.swift */,
+			);
+			path = UIView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -706,6 +728,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76397E0726BAC53100D31BCF /* VideoPopup.xib in Resources */,
 				761D7B03268203C40013EA2F /* LaunchScreen.storyboard in Resources */,
 				761D7B822682111D0013EA2F /* GoogleService-Info.plist in Resources */,
 				7661316B268B59CB004DC5E0 /* style.json in Resources */,
@@ -807,6 +830,7 @@
 				7633D25926A321C50022A573 /* MapVideoDetailViewController.swift in Sources */,
 				761D7C15268213100013EA2F /* NVActivityIndicatorPresenter.swift in Sources */,
 				761D7AF7268203C10013EA2F /* AppDelegate.swift in Sources */,
+				76397E0C26BAC75300D31BCF /* VideoUploadingView.swift in Sources */,
 				761D7BFD268213100013EA2F /* AppStoryBoard.swift in Sources */,
 				761D7C17268213100013EA2F /* WebServicesHelper.swift in Sources */,
 				761D7C22268213100013EA2F /* WebServiceResponseDelegate.swift in Sources */,

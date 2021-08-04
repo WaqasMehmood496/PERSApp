@@ -13,6 +13,8 @@ import AVKit
 import JGProgressHUD
 import FirebaseStorage
 import FirebaseMessaging
+import CoreLocation
+import SwiftEntryKit
 
 class HomeViewController: UIViewController, CLLocationManagerDelegate {
     
@@ -28,25 +30,30 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
     let totalVideoFetch:UInt = 10
     private let spacingIphone:CGFloat = 0.0
     private let spacingIpad:CGFloat = 0.0
+    
     // VARIABLE'S
     var mAuth = Auth.auth()
     var ref: DatabaseReference!
-    var locManager = CLLocationManager()
+    var locationManager = CLLocationManager()
     var currentLocation: CLLocation!
     var myLocation = CLLocationCoordinate2D()
     var currentAddress = String()
     var thumbnail = String()
+    var allUsers = [LoginModel]()
+    var allVideos = [VideosModel]()
     var videoArray = [VideosModel]()
     var MyAreaVideos = [VideosModel]()
     var isAllVideosSelected = true
+    var isLocationGet = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
-        self.collectionViewSetup()
-        self.updateToken()
-        self.getLocationForMyAreaVideos()
-        self.getRecentlyAddedVideos()
+        userLocationSetup()
+        collectionViewSetup()
+        updateToken()
+        //getLocationForMyAreaVideos()
+        getRecentlyAddedVideos()
     }
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
@@ -60,8 +67,217 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
     }
 }
 
+
+
+// MARK:- LOCATION METHOD'S EXTENSION
+extension HomeViewController {
+    
+    // Handle incoming location events.
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if isLocationGet{
+            
+        }else{
+            isLocationGet = true
+            self.currentLocation = locations.last!
+            getAllVideos()
+        }
+    }
+    
+    // Handle authorization for the location manager.
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .restricted:
+            print("Location access was restricted.")
+        case .denied:
+            print("User denied access to location.")
+            // Display the map using the default location.
+            PopupHelper.alertWithAppSetting(title: "Alert", message: "Please enable your location to show you videos which uploaded near your location", controler: self)
+        case .notDetermined:
+            print("Location status not determined.")
+        case .authorizedAlways:
+            break
+        case .authorizedWhenInUse:
+            print("Location status is OK.")
+            
+        @unknown default:
+            print("Unknown case found")
+        }
+    }
+    
+    // Handle location manager errors.
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        locationManager.stopUpdatingLocation()
+        print("Error: \(error)")
+    }
+}
+
+
+
+//MARK: - NEW FIREBASE METHODS EXTENSION
+extension HomeViewController{
+    // GET ALL VIDEOS FROM FIREBASE DATABASE
+    func getAllVideos() {
+        if Connectivity.isConnectedToNetwork() {
+            self.ref.child ( Constant.videosTable ).observe(.value) { (snapshot) in
+                if(snapshot.exists()) {
+                    self.allVideos.removeAll()
+                    let array:NSArray = snapshot.children.allObjects as NSArray
+                    for obj in array {
+                        let snapshot:DataSnapshot = obj as! DataSnapshot
+                        if var childSnapshot = snapshot.value as? [String : AnyObject] {
+                            childSnapshot[Constant.id] = snapshot.key as String as AnyObject
+                            let videos = VideosModel(dic: childSnapshot as NSDictionary)
+                            if let video = videos{
+                                self.allVideos.append(video)
+                            }
+                        }
+                    }// End For loop
+                    self.getAllUsersRecord()
+                    //self.checkMyNearestVideos ( videos: tempArray )
+                }
+            }
+        }else{
+            PopupHelper.showAlertControllerWithError (
+                forErrorMessage: Constant.internetMsg,
+                forViewController: self
+            )
+        }//End Connectity Check Statement
+    }// End get favorite method
+    
+    //GET ALL USERS RECORD FROM FIREBASE DATABASE
+    func getAllUsersRecord() {
+        if Connectivity.isConnectedToNetwork() {
+            if (self.mAuth.currentUser?.uid) != nil{
+                self.ref.child("Users").observeSingleEvent(of: .value) { (snapshot) in
+                    if(snapshot.exists()) {
+                        self.allUsers.removeAll()
+                        let array:NSArray = snapshot.children.allObjects as NSArray
+                        for obj in array {
+                            let snapshot:DataSnapshot = obj as! DataSnapshot
+                            if var childSnapshot = snapshot.value as? [String : AnyObject] {
+                                childSnapshot[Constant.id] = snapshot.key as String as AnyObject
+                                let users = LoginModel(dic: childSnapshot as NSDictionary)
+                                if let user = users {
+                                    self.allUsers.append(user)
+                                }
+                            }
+                        }// End For loop
+                        self.videosWithUploaderRecord()
+                    }// End Snapshot if else statement
+                }// End ref Child Completion Block
+            }// End Firebase user id
+            else{
+            }
+        }else{
+            PopupHelper.showAlertControllerWithError( forErrorMessage: "Internet is unavailable please check your connection", forViewController: self )
+        }//End Connectity Check Statement
+    }// End get favorite method
+    
+    // GET ALL VIDEOS FROM FIREBASE DATABASE
+    func getRecentlyAddedVideos() {
+        if Connectivity.isConnectedToNetwork() {
+            showHUDView ( hudIV: .indeterminate, text: .process ) { (hud) in
+                hud.show ( in: self.view,  animated: true )
+                let reference = self.ref.child (
+                    Constant.videosTable
+                ).queryLimited ( toLast: self.totalVideoFetch )
+                reference.observe(.value) { ( snapshot ) in
+                    if ( snapshot.exists() ) {
+                        self.videoArray.removeAll()
+                        let array:NSArray = snapshot.children.allObjects as NSArray
+                        for obj in array {
+                            let snapshot:DataSnapshot = obj as! DataSnapshot
+                            if var childSnapshot = snapshot.value as? [String : AnyObject] {
+                                childSnapshot[Constant.id] = snapshot.key as String as AnyObject
+                                let videos = VideosModel (
+                                    dic: childSnapshot as NSDictionary
+                                )
+                                if let video = videos {
+                                    self.videoArray.append(video)
+                                }
+                            }
+                        }// End For loop
+                        hud.dismiss()
+                        //self.RecentlyAddedCV.reloadData()
+                        //self.checkMyNearestVideos(isMyArea: false)
+                    } else {
+                        hud.dismiss()
+                    } // End Snapshot if else statement
+                }
+            }// End Firebase user id
+        }else{
+            PopupHelper.showAlertControllerWithError (
+                forErrorMessage: Constant.internetMsg,
+                forViewController: self
+            )
+        }//End Connectity Check Statement
+    }// End get favorite method
+}
+
+
+
+//MARK: - NEW FIREBASE HELPING METHOD'S
+extension HomeViewController {
+    //This methods will check video that who will upload the video and assign user to that video.
+    func videosWithUploaderRecord() {
+        for (vindex,video) in self.allVideos.enumerated(){
+            for (uindex,user) in self.allUsers.enumerated(){
+                if user.id == video.uploaderID{
+                    self.allVideos[vindex].userName = self.allUsers[uindex].name
+                    self.allVideos[vindex].userImage = self.allUsers[uindex].imageURL
+                }
+            }
+        }
+        checkMyNearestVideos(isMyArea: true)
+    }
+    
+    
+    // This methods will filter nearest videos using lat lng distance
+    func checkMyNearestVideos(isMyArea:Bool) {
+        self.MyAreaVideos.removeAll()
+        
+        for (index,video) in self.allVideos.enumerated(){
+            if let videoLat = CLLocationDegrees( video.videoLatitude ) , let videoLng = CLLocationDegrees(video.videoLongitude) {
+                let videoLocation = CLLocation(latitude: videoLat, longitude: videoLng)
+                let distance = self.currentLocation.distance(from: videoLocation) / 1000
+                if( distance <= 1609 ) {
+                    self.MyAreaVideos.append(self.allVideos[index])
+                }
+            }
+        }//End For loop
+        
+        for (vindex,video) in self.videoArray.enumerated(){
+            for (_,user) in self.allUsers.enumerated(){
+                if user.id == video.uploaderID{
+                    self.videoArray[vindex].userName = user.name
+                    self.videoArray[vindex].userImage = user.imageURL
+                }
+            }
+            self.MyAreaCV.reloadData()
+            self.RecentlyAddedCV.reloadData()
+        }
+    }
+}
+
+
+
 //MARK:- HELPING METHOD'S EXTENSION
 extension HomeViewController{
+    
+    func userLocationSetup() {
+        //        locationManager = CLLocationManager()
+        //        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestAlwaysAuthorization()
+        locationManager.requestWhenInUseAuthorization()
+        //        locationManager.startUpdatingLocation()
+        //        locationManager.delegate = self
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
+    }
+    
     // Setup Collection View
     func collectionViewSetup() {
         let layout = UICollectionViewFlowLayout()
@@ -128,58 +344,12 @@ extension HomeViewController{
     }
 }
 
-//MARK:- RECENTLY ADDED METHOD'S
-extension HomeViewController {
-    
-    // GET ALL VIDEOS FROM FIREBASE DATABASE
-    func getRecentlyAddedVideos() {
-        if Connectivity.isConnectedToNetwork() {
-            showHUDView(
-                hudIV: .indeterminate,
-                text: .process
-            ) { (hud) in
-                hud.show (
-                    in: self.view,
-                    animated: true
-                )
-                let reference = self.ref.child (
-                    Constant.videosTable
-                ).queryLimited ( toLast: self.totalVideoFetch )
-                reference.observe(.value) { (snapshot) in
-                    if (snapshot.exists()) {
-                        let array:NSArray = snapshot.children.allObjects as NSArray
-                        for obj in array {
-                            let snapshot:DataSnapshot = obj as! DataSnapshot
-                            if var childSnapshot = snapshot.value as? [String : AnyObject] {
-                                childSnapshot[Constant.id] = snapshot.key as String as AnyObject
-                                let videos = VideosModel (
-                                    dic: childSnapshot as NSDictionary
-                                )
-                                if let video = videos{
-                                    self.videoArray.append(video)
-                                }
-                            }
-                        }// End For loop
-                        hud.dismiss()
-                        self.RecentlyAddedCV.reloadData()
-                    } else {
-                        hud.dismiss()
-                    }// End Snapshot if else statement
-                }
-            }// End Firebase user id
-        }else{
-            PopupHelper.showAlertControllerWithError (
-                forErrorMessage: Constant.internetMsg,
-                forViewController: self
-            )
-        }//End Connectity Check Statement
-    }// End get favorite method
-}
+
 
 //MARK:- UPLOAD VIDEO EXTENSION
 extension HomeViewController {
     // First get user lat,lng
-    func getLocation(hud:JGProgressHUD)  {
+    func getLocation(hud:JGProgressHUD) {
         self.getUserCurrentLocation { (status) in
             if status{
                 self.getCurrentAddress (
@@ -193,18 +363,18 @@ extension HomeViewController {
                     message: Constant.locationMsg,
                     controler: self
                 )
-                locManager.requestWhenInUseAuthorization()
+                locationManager.requestWhenInUseAuthorization()
             }
         }
     }
     
     //GET USER CURRENT LOCATION
     func getUserCurrentLocation ( completion: (Bool ) -> ()) {
-        locManager.requestWhenInUseAuthorization()
+        locationManager.requestWhenInUseAuthorization()
         if
             CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
                 CLLocationManager.authorizationStatus() ==  .authorizedAlways {
-            self.currentLocation = locManager.location
+            self.currentLocation = locationManager.location
             completion(true)
         }else{
             completion(false)
@@ -252,80 +422,6 @@ extension HomeViewController {
 }
 
 
-//MARK:- MY AREA FIREBASE METHOD"S EXTENSION
-extension HomeViewController{
-    // This methods will get user current location
-    func getLocationForMyAreaVideos() {
-        locManager.requestWhenInUseAuthorization()
-        if
-            CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
-                CLLocationManager.authorizationStatus() ==  .authorizedAlways {
-            self.currentLocation = locManager.location
-            self.getAllVideosInMyArea()
-        }else{
-            PopupHelper.alertWithOk (
-                title: Constant.locationTitle,
-                message: Constant.locationMsg,
-                controler: self
-            )
-        }
-    }
-    // GET ALL VIDEOS FROM FIREBASE DATABASE
-    func getAllVideosInMyArea() {
-        if Connectivity.isConnectedToNetwork() {
-            self.ref.child (
-                Constant.videosTable
-            ).observe(.value) { (snapshot) in
-                if(snapshot.exists()) {
-                    var tempArray = [VideosModel]()
-                    let array:NSArray = snapshot.children.allObjects as NSArray
-                    for obj in array {
-                        let snapshot:DataSnapshot = obj as! DataSnapshot
-                        if var childSnapshot = snapshot.value as? [String : AnyObject]
-                        {
-                            childSnapshot[Constant.id] = snapshot.key as String as AnyObject
-                            let videos = VideosModel(dic: childSnapshot as NSDictionary)
-                            if let video = videos{
-                                tempArray.append(video)
-                            }
-                        }
-                    }// End For loop
-                    self.checkMyNearestVideos ( videos: tempArray )
-                }
-            }
-        }else{
-            PopupHelper.showAlertControllerWithError (
-                forErrorMessage: Constant.internetMsg,
-                forViewController: self
-            )
-        }//End Connectity Check Statement
-    }// End get favorite method
-    
-    // This methods will filter nearest videos using lat lng distance
-    func checkMyNearestVideos ( videos: [VideosModel] ) {
-        for video in videos {
-            if let videoLat = CLLocationDegrees (
-                video.videoLatitude
-            ) ,let videoLng = CLLocationDegrees (
-                video.videoLongitude
-            ){
-                let videoLocation = CLLocation (
-                    latitude: videoLat,
-                    longitude: videoLng
-                )
-                let distance = self.currentLocation.distance (
-                    from: videoLocation
-                ) / 1000
-                if ( distance <= 3218 ) {
-                    self.MyAreaVideos.append(video)
-                }
-            }
-        }//End For loop
-        self.MyAreaCV.reloadData()
-        self.RecentlyAddedCV.reloadData()
-    }
-}
-
 
 //MARK:- UICOLLECTION VIEW DELEGATES AND DATASOURCE METHOD"S EXTENSION
 extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
@@ -354,11 +450,12 @@ extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource
                     cell.VideoDate.text = self.getTimeFromTimeStamp ( timeStamp: timeStamp )
                 }
             }
-            cell.PersonImage.sd_setImage (
-                with: URL(string: self.MyAreaVideos[indexPath.row].userImage
-                ),
-                placeholderImage: #imageLiteral(resourceName: "Clip-2")
-            )
+            if let image = self.MyAreaVideos[indexPath.row].userImage{
+                cell.PersonImage.sd_setImage (
+                    with: URL(string: image),
+                    placeholderImage: #imageLiteral(resourceName: "Clip-2")
+                )
+            }
             cell.PersonName.text = self.MyAreaVideos[indexPath.row].userName
             if let data = Data(base64Encoded: self.MyAreaVideos[indexPath.row].thumbnail) {
                 cell.VideoThumbnail.image = UIImage ( data: data )
@@ -376,10 +473,12 @@ extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource
                     cell.VideoDate.text = self.getTimeFromTimeStamp ( timeStamp: timeStamp )
                 }
             }
-            cell.PersonImage.sd_setImage (
-                with: URL(string: self.videoArray[indexPath.row].userImage),
-                placeholderImage: #imageLiteral(resourceName: "Clip-2")
-            )
+            if let image = self.videoArray[indexPath.row].userImage{
+                cell.PersonImage.sd_setImage (
+                    with: URL(string: image),
+                    placeholderImage: #imageLiteral(resourceName: "Clip-2")
+                )
+            }
             cell.PersonName.text = self.videoArray[indexPath.row].userName
             if let data = Data(base64Encoded: self.videoArray[indexPath.row].thumbnail) {
                 cell.VideoThumbnail.image = UIImage(data: data)
@@ -396,10 +495,12 @@ extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource
         ).instantiateViewController (
             identifier: playVCIdentifier
         ) as! PlayerViewController
-        if isAllVideosSelected{
+        if isAllVideosSelected {
             playViewController.MyAreaVideos = self.MyAreaVideos
-        }else{
+            playViewController.SelectedVideo = self.MyAreaVideos[sender.tag]
+        } else {
             playViewController.MyAreaVideos = self.videoArray
+            playViewController.SelectedVideo = self.videoArray[sender.tag]
         }
         self.navigationController?.pushViewController ( playViewController, animated: true )
     }
@@ -603,7 +704,7 @@ extension HomeViewController {
     
     //UPDATE IMAGE URL INTO USER TABLE
     func SaveDatatoDB ( videoUrl:String ){
-        if let currentUser = CommonHelper.getCachedUserData() {
+        if CommonHelper.getCachedUserData() != nil {
             guard let user = self.mAuth.currentUser?.uid else { return }
             let timestamp = Int(NSDate().timeIntervalSince1970)
             ref.child ( Constant.myVideosTable ).child ( user ).childByAutoId().setValue ([
@@ -622,8 +723,8 @@ extension HomeViewController {
                 Constant.videoLocation:self.currentAddress,
                 Constant.videoLongitude:"\(self.currentLocation.coordinate.longitude)",
                 Constant.videoURL:videoUrl,
-                Constant.userName:currentUser.name,
-                Constant.userImage:currentUser.imageURL,
+                //                Constant.userName:currentUser.name,
+                //                Constant.userImage:currentUser.imageURL,
             ])
         }
         self.getAllFriendsFromFirebase()
@@ -633,23 +734,25 @@ extension HomeViewController {
     func getAllFriendsFromFirebase() {
         if Connectivity.isConnectedToNetwork(){
             var friends = [FriendModel]()
-            self.ref.child ( Constant.friendsTable ).observeSingleEvent(of: .value) { (snapshot) in
-                if(snapshot.exists()) {
-                    let array:NSArray = snapshot.children.allObjects as NSArray
-                    for obj in array {
-                        let snapshot:DataSnapshot = obj as! DataSnapshot
-                        if var childSnapshot = snapshot.value as? [String : AnyObject] {
-                            childSnapshot[Constant.id] = snapshot.key as String as AnyObject
-                            let favData = FriendModel ( dic: childSnapshot as NSDictionary )
-                            if let fav = favData {
-                                friends.append(fav)
+            if let userID = self.mAuth.currentUser?.uid {
+                self.ref.child ( Constant.friendsTable ).child(userID).observeSingleEvent(of: .value) { (snapshot) in
+                    if(snapshot.exists()) {
+                        let array:NSArray = snapshot.children.allObjects as NSArray
+                        for obj in array {
+                            let snapshot:DataSnapshot = obj as! DataSnapshot
+                            if var childSnapshot = snapshot.value as? [String : AnyObject] {
+                                childSnapshot[Constant.id] = snapshot.key as String as AnyObject
+                                let favData = FriendModel ( dic: childSnapshot as NSDictionary )
+                                if let fav = favData {
+                                    friends.append(fav)
+                                }
                             }
-                        }
-                    }// End For loop
-                    /// - TAG: Filter User DATA
-                    self.getFriendRecordById(friends: friends)
-                }// End Snapshot if else statement
-            }// End ref Child Completion Block
+                        }// End For loop
+                        /// - TAG: Filter User DATA
+                        self.getFriendRecordById(friends: friends)
+                    }// End Snapshot if else statement
+                }// End ref Child Completion Block
+            }
         }else{
             PopupHelper.showAlertControllerWithError (
                 forErrorMessage: Constant.internetMsg,
@@ -669,7 +772,7 @@ extension HomeViewController {
         if Connectivity.isConnectedToNetwork() {
             self.ref.child ( Constant.usersTable ).child ( friendId ).observeSingleEvent ( of: .value, with: { (snapshot) in
                 let value = snapshot.value as? NSDictionary
-                let user = LoginModel ( dic: value as! NSDictionary )
+                let user = LoginModel ( dic: value! )
                 if let userData = user {
                     if userData.token != nil || userData.token != "" {
                         if let userName = user?.name {

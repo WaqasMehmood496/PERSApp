@@ -137,13 +137,14 @@ extension LocalMapViewController:GMSMapViewDelegate{
     }
     
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
-        let controller = self.storyboard!.instantiateViewController(identifier: "PlayerViewController") as! PlayerViewController
-        controller.isVideoSelectedFromMap = true
+        let controller = self.storyboard!.instantiateViewController(identifier: "PlayerVC") as! PlayerViewController
         if let selectedVideo = Int(marker.accessibilityHint!) {
-            controller.MyAreaVideos.append(self.myNearestVideos[selectedVideo])
-            DispatchQueue.main.async {
-                self.tabBarController!.present( controller, animated: true, completion: nil )
-            }
+            controller.MyAreaVideos = self.myNearestVideos
+            controller.SelectedVideo = self.myNearestVideos[selectedVideo]
+//            DispatchQueue.main.async {
+//                self.tabBarController!.present( controller, animated: true, completion: nil )
+//            }
+            self.navigationController?.pushViewController(controller, animated: true)
         }
         return true
     }

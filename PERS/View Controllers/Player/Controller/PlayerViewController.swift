@@ -22,7 +22,8 @@ class PlayerViewController: UIViewController {
     let playerViewController = AVPlayerViewController()
     var playlist = AVQueuePlayer()
     var MyAreaVideos = [VideosModel]()
-    var isVideoSelectedFromMap = false
+    var SelectedVideo = VideosModel()
+    var isSelectedVideoAddedInItem = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,8 +42,6 @@ class PlayerViewController: UIViewController {
 extension PlayerViewController{
     //VIDEO PLAYER METHOD
     func player(items:[AVPlayerItem]) {
-        print(items.count)
-        
         playlist = AVQueuePlayer(items: items)
         playlist.rate = 1
         
@@ -62,11 +61,22 @@ extension PlayerViewController{
     
     func getAllPlayList() -> [AVPlayerItem] {
         var items = [AVPlayerItem]()
-        for video in self.MyAreaVideos{
-            if let url = URL.init(string: video.videoURL) {
-                print(url)
-                let videoUrl = AVPlayerItem(url: url)
-                items.append(videoUrl)
+        for video in self.MyAreaVideos {
+            if isSelectedVideoAddedInItem{
+                if let url = URL.init(string: video.videoURL) {
+                    print(url)
+                    let videoUrl = AVPlayerItem(url: url)
+                    items.append(videoUrl)
+                }
+            } else {
+                if video.id == self.SelectedVideo.id{
+                    if let url = URL.init(string: video.videoURL) {
+                        print(url)
+                        let videoUrl = AVPlayerItem(url: url)
+                        items.append(videoUrl)
+                    }
+                    self.isSelectedVideoAddedInItem = true
+                }
             }
         }
         return items
@@ -89,12 +99,7 @@ extension PlayerViewController{
 
 extension PlayerViewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if isVideoSelectedFromMap {
-            self.RelatedVideosLabel.isHidden = true
-            return 0
-        } else {
-            return self.MyAreaVideos.count
-        }
+        return self.MyAreaVideos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -107,7 +112,9 @@ extension PlayerViewController:UICollectionViewDelegate,UICollectionViewDataSour
                 cell.VideoDate.text = self.getTimeFromTimeStamp(timeStamp: timeStamp)
             }
         }
-        cell.PersonImage.sd_setImage(with: URL(string: self.MyAreaVideos[indexPath.row].userImage), placeholderImage: #imageLiteral(resourceName: "Clip-2"))
+        if let image = self.MyAreaVideos[indexPath.row].userImage{
+            cell.PersonImage.sd_setImage(with: URL(string: image), placeholderImage: #imageLiteral(resourceName: "Clip-2"))
+        }
         cell.PersonName.text = self.MyAreaVideos[indexPath.row].userName
         
         
