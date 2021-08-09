@@ -70,8 +70,7 @@ extension AddFriendsViewController{
             usersArray.removeAll()
         }
         
-        if let myId = CommonHelper.getCachedUserData()?.id
-        {
+        if let myId = CommonHelper.getCachedUserData()?.id {
             for user in self.allUser{
                 if user.id != myId{
                     usersArray.append(user)
@@ -129,6 +128,8 @@ extension AddFriendsViewController{
                 "name":currentUser.name
             ])
         }
+        self.allUser.remove(at: index)
+        self.FriendListTableView.reloadData()
     }// End Add in to favorites method
 }
 
@@ -148,6 +149,9 @@ extension AddFriendsViewController:UITableViewDelegate,UITableViewDataSource {
         if let image = self.allUser[indexPath.row].imageURL{
             cell.UserImage.sd_setImage(with: URL(string: image), placeholderImage: #imageLiteral(resourceName: "Logo"))
         }
+        let bgColorView = UIView()
+        bgColorView.backgroundColor = .clear
+        cell.selectedBackgroundView = bgColorView
         return cell
     }
     

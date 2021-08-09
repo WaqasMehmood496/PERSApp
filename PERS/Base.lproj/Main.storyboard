@@ -612,7 +612,7 @@
             <objects>
                 <viewController modalTransitionStyle="crossDissolve" modalPresentationStyle="overCurrentContext" id="GaX-jE-U9c" customClass="LocalMapViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xmJ-Bd-SSw">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KDn-gv-mSN" customClass="GMSMapView">
@@ -646,7 +646,7 @@
             <objects>
                 <viewController storyboardIdentifier="HomeViewController" id="roB-Sa-zBC" customClass="HomeViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aMi-LD-2Sg">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ECO-Uu-O92">
@@ -671,17 +671,17 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Area" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ggG-fR-nZ8">
                                 <rect key="frame" x="16" y="65" width="382" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recently Added" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kax-7k-YwT">
                                 <rect key="frame" x="16" y="317" width="382" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FCQ-HJ-HWy">
-                                <rect key="frame" x="16" y="94" width="398" height="215"/>
+                                <rect key="frame" x="0.0" y="94" width="414" height="215"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="215" id="r0e-sg-k50"/>
@@ -690,11 +690,11 @@
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="VideosCell" id="Vfq-2E-YIQ" customClass="HomeCollectionViewCell" customModule="PERS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.5" width="240" height="214"/>
+                                        <rect key="frame" x="16" y="0.5" width="240" height="214"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="CXr-C6-dgp">
                                             <rect key="frame" x="0.0" y="0.0" width="240" height="214"/>
@@ -913,9 +913,9 @@
                             <constraint firstItem="kax-7k-YwT" firstAttribute="top" secondItem="FCQ-HJ-HWy" secondAttribute="bottom" constant="8" id="EDG-tY-Oi8"/>
                             <constraint firstItem="ggG-fR-nZ8" firstAttribute="top" secondItem="ECO-Uu-O92" secondAttribute="bottom" constant="8" id="MBM-TY-oB7"/>
                             <constraint firstItem="ECO-Uu-O92" firstAttribute="leading" secondItem="s3q-y3-Tws" secondAttribute="leading" constant="64" id="QQK-IX-sin"/>
-                            <constraint firstItem="FCQ-HJ-HWy" firstAttribute="leading" secondItem="s3q-y3-Tws" secondAttribute="leading" constant="16" id="SfP-g6-KsQ"/>
+                            <constraint firstItem="FCQ-HJ-HWy" firstAttribute="leading" secondItem="s3q-y3-Tws" secondAttribute="leading" id="SfP-g6-KsQ"/>
                             <constraint firstItem="kax-7k-YwT" firstAttribute="trailing" secondItem="ggG-fR-nZ8" secondAttribute="trailing" id="Wrm-fC-kfB"/>
-                            <constraint firstItem="2Rn-s7-HzE" firstAttribute="leading" secondItem="FCQ-HJ-HWy" secondAttribute="leading" id="b97-Oe-sVE"/>
+                            <constraint firstItem="2Rn-s7-HzE" firstAttribute="leading" secondItem="FCQ-HJ-HWy" secondAttribute="leading" constant="16" id="b97-Oe-sVE"/>
                             <constraint firstItem="s3q-y3-Tws" firstAttribute="trailing" secondItem="ggG-fR-nZ8" secondAttribute="trailing" constant="16" id="dNZ-Bc-a4F"/>
                             <constraint firstItem="s3q-y3-Tws" firstAttribute="bottom" secondItem="2Rn-s7-HzE" secondAttribute="bottom" id="eke-pb-k05"/>
                             <constraint firstItem="ECO-Uu-O92" firstAttribute="top" secondItem="s3q-y3-Tws" secondAttribute="top" constant="12" id="j7J-jd-jwy"/>
@@ -944,7 +944,7 @@
             <objects>
                 <viewController storyboardIdentifier="PlayerVC" id="ppk-Ue-bse" customClass="PlayerViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="X5b-6D-Ijd">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iN3-l3-NWD">
@@ -1134,6 +1134,9 @@
                     <connections>
                         <outlet property="RelatedVideoTableView" destination="oUo-BO-DAs" id="PcC-KH-wUD"/>
                         <outlet property="RelatedVideosLabel" destination="qar-Qe-7xa" id="S5q-ju-GhS"/>
+                        <outlet property="UploadDateLabel" destination="fus-DE-lUZ" id="sWJ-hC-h0y"/>
+                        <outlet property="UserImage" destination="LQl-er-8In" id="pzD-Pp-5e7"/>
+                        <outlet property="UserNameLabel" destination="VDH-1z-dlV" id="gtf-ao-OB2"/>
                         <outlet property="VideoContainerView" destination="iN3-l3-NWD" id="Gqn-xm-jXA"/>
                     </connections>
                 </viewController>
@@ -1350,7 +1353,7 @@
             <objects>
                 <viewController storyboardIdentifier="NotificationsViewController" id="6a2-IW-0I3" customClass="NotificationsViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Duh-k8-e1S">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QXO-87-nrV">
@@ -1473,7 +1476,7 @@
             <objects>
                 <viewController id="s6N-31-u1Z" customClass="ProfileViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cGv-Dg-3s1">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sLF-yA-gzC">
@@ -1943,7 +1946,7 @@
             <objects>
                 <viewController storyboardIdentifier="AddFriendVC" id="Pez-0H-bXf" customClass="AddFriendsViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HSL-AL-G8H">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3kM-bF-TyZ">
@@ -2119,7 +2122,7 @@
                                     <action selector="doneBtnPressed:" destination="Xzr-yw-W5i" eventType="touchUpInside" id="ThJ-34-Z2q"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Location" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ht2-2r-XzR">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Location" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ht2-2r-XzR">
                                 <rect key="frame" x="8" y="44" width="398" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="ryu-z3-C56"/>
@@ -2155,7 +2158,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="lblAddress" destination="Ht2-2r-XzR" id="Toc-y5-8D0"/>
+                        <outlet property="lblAddress" destination="Ht2-2r-XzR" id="Nno-ju-uvH"/>
                         <outlet property="mapView" destination="Qpg-Ps-ezz" id="e5A-dL-YdH"/>
                     </connections>
                 </viewController>
@@ -2168,7 +2171,7 @@
             <objects>
                 <viewController id="k0q-xB-s6e" customClass="FriendRequestViewController" customModule="PERS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Pq5-cZ-DD8">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Kx2-T9-Dqd">

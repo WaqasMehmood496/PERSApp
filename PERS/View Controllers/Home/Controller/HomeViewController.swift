@@ -15,7 +15,7 @@ import FirebaseStorage
 import FirebaseMessaging
 import CoreLocation
 import SwiftEntryKit
-
+import SwiftyJSON
 class HomeViewController: UIViewController, CLLocationManagerDelegate {
     
     // IBOUTLET'S
@@ -52,7 +52,6 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
         userLocationSetup()
         collectionViewSetup()
         updateToken()
-        //getLocationForMyAreaVideos()
         getRecentlyAddedVideos()
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -60,10 +59,21 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
     }
     //IBACTION'S
     @IBAction func EmergencyAlertBtnAction(_ sender: Any) {
+        
         showHUDView(hudIV: .indeterminate, text: .process) { (hud) in
             hud.show(in: self.view, animated: true)
             self.getLocation(hud: hud)
         }
+        
+//        let data: [String:Any] = ["Video":"ABCDEF","TETE":1,"SDDS":"RETRTY"]
+//        let json = JSON(data)
+//
+//        self.notificationSender.sendPushNotification (
+//            to: "e-xRFq3UMUrOsZb9wcl6kb:APA91bEi5MAN4dkkrAfUemB2BZks3DLD8oWbc0SOf7d1poqRSH0JR688yhjlybZy-ooQ_hNhF_-452KEuhJU_SgOPF_dP6vp8ipOVfCo7XpQT8oMrD0l6D4rHBSkMGCjL6qKRcmjSEqh",
+//            title: "\("userName")",
+//            body: Constant.notificationTitle,
+//            data: json.dictionaryObject!
+//        )
     }
 }
 
@@ -240,7 +250,7 @@ extension HomeViewController {
             if let videoLat = CLLocationDegrees( video.videoLatitude ) , let videoLng = CLLocationDegrees(video.videoLongitude) {
                 let videoLocation = CLLocation(latitude: videoLat, longitude: videoLng)
                 let distance = self.currentLocation.distance(from: videoLocation) / 1000
-                if( distance <= 1609 ) {
+                if( distance <= 8046.72 ) {
                     self.MyAreaVideos.append(self.allVideos[index])
                 }
             }
@@ -453,7 +463,7 @@ extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource
             if let image = self.MyAreaVideos[indexPath.row].userImage{
                 cell.PersonImage.sd_setImage (
                     with: URL(string: image),
-                    placeholderImage: #imageLiteral(resourceName: "Clip-2")
+                    placeholderImage: #imageLiteral(resourceName: "Clip")
                 )
             }
             cell.PersonName.text = self.MyAreaVideos[indexPath.row].userName
@@ -476,7 +486,7 @@ extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource
             if let image = self.videoArray[indexPath.row].userImage{
                 cell.PersonImage.sd_setImage (
                     with: URL(string: image),
-                    placeholderImage: #imageLiteral(resourceName: "Clip-2")
+                    placeholderImage: #imageLiteral(resourceName: "Clip")
                 )
             }
             cell.PersonName.text = self.videoArray[indexPath.row].userName
@@ -704,9 +714,11 @@ extension HomeViewController {
     
     //UPDATE IMAGE URL INTO USER TABLE
     func SaveDatatoDB ( videoUrl:String ){
+        
+        guard let user = self.mAuth.currentUser?.uid else { return }
+        let timestamp = Int(NSDate().timeIntervalSince1970)
+        
         if CommonHelper.getCachedUserData() != nil {
-            guard let user = self.mAuth.currentUser?.uid else { return }
-            let timestamp = Int(NSDate().timeIntervalSince1970)
             ref.child ( Constant.myVideosTable ).child ( user ).childByAutoId().setValue ([
                 Constant.thumbnail:"\(self.thumbnail)",
                 Constant.timestamp:"\(timestamp)",
@@ -723,15 +735,24 @@ extension HomeViewController {
                 Constant.videoLocation:self.currentAddress,
                 Constant.videoLongitude:"\(self.currentLocation.coordinate.longitude)",
                 Constant.videoURL:videoUrl,
-                //                Constant.userName:currentUser.name,
-                //                Constant.userImage:currentUser.imageURL,
             ])
         }
-        self.getAllFriendsFromFirebase()
+        
+        let videoData = [
+            Constant.thumbnail:"nil",
+            Constant.timestamp:"\(timestamp)",
+            Constant.uploaderID:user,
+            Constant.videoLatitude:"\(self.currentLocation.coordinate.latitude)",
+            Constant.videoLocation:self.currentAddress,
+            Constant.videoLongitude:"\(self.currentLocation.coordinate.longitude)",
+            Constant.videoURL:videoUrl,
+        ]
+        
+        self.getAllFriendsFromFirebase(videoData: videoData)
     }
     
     // GET ALL FRIENDS LIST FROM FIREBASE DATABASE
-    func getAllFriendsFromFirebase() {
+    func getAllFriendsFromFirebase(videoData:[String:String]) {
         if Connectivity.isConnectedToNetwork(){
             var friends = [FriendModel]()
             if let userID = self.mAuth.currentUser?.uid {
@@ -749,7 +770,7 @@ extension HomeViewController {
                             }
                         }// End For loop
                         /// - TAG: Filter User DATA
-                        self.getFriendRecordById(friends: friends)
+                        self.getFriendRecordById(friends: friends, videoData: videoData)
                     }// End Snapshot if else statement
                 }// End ref Child Completion Block
             }
@@ -761,27 +782,47 @@ extension HomeViewController {
         }//End Connectity Check Statement
     }// End get favorite method
     
-    func getFriendRecordById ( friends:[FriendModel] ) {
-        for friend in friends {
-            self.getFriendByIdFromUsersRecord ( friendId: friend.id )
+    func getFriendRecordById ( friends:[FriendModel], videoData:[String:String] ) {
+        
+        var friendArray = friends
+        //Finding 5 miles user id
+        for (index,user) in self.allUsers.enumerated() {
+            if let userLatiture = user.latitude , let userLongitude = user.longitude {
+                if let videoLat = CLLocationDegrees( userLatiture ) , let videoLng = CLLocationDegrees( userLongitude ) {
+                    let videoLocation = CLLocation(latitude: videoLat, longitude: videoLng)
+                    let distance = self.currentLocation.distance(from: videoLocation) / 1000
+                    if( distance <= 8046.72 ) {
+                        friendArray.append(FriendModel(id: self.allUsers[index].id))
+                    }
+                }
+                
+            }
+        }//End For loop
+        // Send notification to each user
+        for friend in friendArray {
+            self.getFriendByIdFromUsersRecord ( friendId: friend.id, videoData: videoData )
         }
     }
     
     // GET ALL FRIENDS TOKEN FROM USER AND SEND PUSH NOTIFICATION
-    func getFriendByIdFromUsersRecord ( friendId:String ) {
+    func getFriendByIdFromUsersRecord ( friendId:String, videoData:[String:String] ) {
         if Connectivity.isConnectedToNetwork() {
             self.ref.child ( Constant.usersTable ).child ( friendId ).observeSingleEvent ( of: .value, with: { (snapshot) in
                 let value = snapshot.value as? NSDictionary
                 let user = LoginModel ( dic: value! )
                 if let userData = user {
                     if userData.token != nil || userData.token != "" {
-                        if let userName = user?.name {
-                            self.notificationSender.sendPushNotification (
-                                to: userData.token,
-                                title: "\(userName)",
-                                body: Constant.notificationTitle
-                            )
-                        }
+                        
+                        let subDic:[String:Any] = ["Title":"New Video","message":"New Video uploaded","videoData":videoData.description]
+                        let dic:[String:Any] = ["data":subDic]
+                        
+                        
+                        self.notificationSender.sendPushNotification (
+                            to: userData.token,
+                            title: userData.name,
+                            body: Constant.notificationTitle,
+                            data: dic
+                        )
                     }
                 }
                 PopupHelper.changeRootView (

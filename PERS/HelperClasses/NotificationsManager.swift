@@ -7,14 +7,16 @@
 
 import Foundation
 import UIKit
-
+import SwiftyJSON
 class PushNotificationSender {
-    func sendPushNotification(to token: String, title: String, body: String) {
+    
+    func sendPushNotification(to token: String, title: String, body: String, data:[String:Any]) {
         let urlString = "https://fcm.googleapis.com/fcm/send"
         let url = NSURL(string: urlString)!
         let paramString: [String : Any] = ["to" : token,
-                                           "notification" : ["title" : title, "body" : body],
-                                           "data" : ["user" : "test_id"]
+                                           "notification" : ["title" : title,
+                                                             "body": body],
+                                           "data" : data
         ]
         let request = NSMutableURLRequest(url: url as URL)
         request.httpMethod = "POST"

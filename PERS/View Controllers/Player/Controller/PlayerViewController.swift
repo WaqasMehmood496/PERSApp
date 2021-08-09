@@ -15,6 +15,9 @@ class PlayerViewController: UIViewController {
     @IBOutlet weak var RelatedVideoTableView: UICollectionView!
     @IBOutlet weak var VideoContainerView: UIView!
     @IBOutlet weak var RelatedVideosLabel: UILabel!
+    @IBOutlet weak var UserNameLabel: UILabel!
+    @IBOutlet weak var UploadDateLabel: UILabel!
+    @IBOutlet weak var UserImage: UIImageView!
     
     //MARK: VARIABLE'S
     private let spacingIphone:CGFloat = 0.0
@@ -24,10 +27,12 @@ class PlayerViewController: UIViewController {
     var MyAreaVideos = [VideosModel]()
     var SelectedVideo = VideosModel()
     var isSelectedVideoAddedInItem = false
+    var currentVideoCount = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
+        self.setupVideoData()
         if self.MyAreaVideos.count != 0{
             player(items: getAllPlayList())
         }
@@ -40,10 +45,25 @@ class PlayerViewController: UIViewController {
 }
 
 extension PlayerViewController{
+    
+    func setupVideoData() {
+        if MyAreaVideos.count != 0{
+            self.UserImage.sd_setImage(with: URL(string: self.SelectedVideo.userImage), placeholderImage: #imageLiteral(resourceName: "Clip"))
+            self.UserNameLabel.text = self.SelectedVideo.userName
+            self.UploadDateLabel.text = self.SelectedVideo.timestamp
+        }
+    }
+    
     //VIDEO PLAYER METHOD
     func player(items:[AVPlayerItem]) {
         playlist = AVQueuePlayer(items: items)
         playlist.rate = 1
+        
+        playlist.actionAtItemEnd = .advance
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(playerItemDidReachEnd(notification:)),
+                                               name: .AVPlayerItemDidPlayToEndTime,
+                                               object: playlist.currentItem)
         
         playerViewController.player = playlist
         playerViewController.delegate = self
@@ -52,6 +72,21 @@ extension PlayerViewController{
         self.VideoContainerView.addSubview(playerViewController.view)
         addChild(playerViewController)
         playlist.play()
+    }
+    
+    @objc func playerItemDidReachEnd(notification: Notification) {
+        if let playerItem = notification.object as? AVPlayerItem {
+            //playerItem.seek(to: CMTime.zero)
+//            DispatchQueue.main.async {
+//                self.currentVideoCount = self.currentVideoCount + 1
+//                self.UserImage.sd_setImage(with: URL(string: self.MyAreaVideos[self.currentVideoCount].userImage), placeholderImage: #imageLiteral(resourceName: "Clip"))
+//                self.UserNameLabel.text = self.MyAreaVideos[self.currentVideoCount].userName
+//                self.UploadDateLabel.text = self.MyAreaVideos[self.currentVideoCount].timestamp
+//            }
+            
+            
+            print("-------------123------------")
+        }
     }
     
     @objc func playerDidFinishPlaying(note: NSNotification){

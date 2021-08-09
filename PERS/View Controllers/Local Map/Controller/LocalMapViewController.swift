@@ -61,18 +61,42 @@ extension LocalMapViewController{
         locationManager.delegate = self
     }
     
-    func checkMyNearestVideos(videos: [VideosModel]) {
+    func videosWithUploaderRecord(videos:[VideosModel],users:[LoginModel]) {
+        for (vindex,video) in videos.enumerated(){
+            for (_,user) in users.enumerated(){
+                if user.id == video.uploaderID{
+                    videos[vindex].userName = user.name
+                    videos[vindex].userImage = user.imageURL
+                }
+            }
+        }
+        checkMyNearestVideos(videos: videos)
+    }
+    
+    func checkMyNearestVideos(videos:[VideosModel]) {
+//        for (index,video) in self.allVideos.enumerated(){
+//            if let videoLat = CLLocationDegrees( video.videoLatitude ) , let videoLng = CLLocationDegrees(video.videoLongitude) {
+//                let videoLocation = CLLocation(latitude: videoLat, longitude: videoLng)
+//                let distance = self.curentPosition.distance(from: videoLocation) / 1000
+//                if( distance <= 1609 ) {
+//                    // place mark on google map
+//                    let marker = GMSMarker(position: CLLocationCoordinate2D (latitude: videoLat, longitude: videoLng))
+//                    marker.map = self.Map
+//                    marker.icon = #imageLiteral(resourceName: "Location")
+//                    marker.accessibilityHint = String(index)
+//                    myNearestVideos.append(video)
+//                }
+//            }
+//        }//End For loop
+        
+        
+        
         for (index,video) in videos.enumerated(){
             if let videoLat = CLLocationDegrees( video.videoLatitude ) , let videoLng = CLLocationDegrees(video.videoLongitude) {
                 let videoLocation = CLLocation(latitude: videoLat, longitude: videoLng)
                 let distance = self.curentPosition.distance(from: videoLocation) / 1000
-                if( distance <= 1609 ) {
-                    // place mark on google map
-                    let marker = GMSMarker(position: CLLocationCoordinate2D (latitude: videoLat, longitude: videoLng))
-                    marker.map = self.Map
-                    marker.icon = #imageLiteral(resourceName: "Location")
-                    marker.accessibilityHint = String(index)
-                    myNearestVideos.append(video)
+                if( distance <= 8046.72 ) {
+                    self.myNearestVideos.append(video)
                 }
             }
         }//End For loop
@@ -99,7 +123,7 @@ extension LocalMapViewController: CLLocationManagerDelegate {
             self.Map.camera = camera
             self.Map.animate(to: camera)
             self.curentPosition = location
-            self.getAllVideosInMyArea()
+            self.getAllVideos()
             self.locationManager.stopUpdatingLocation()
         }
     }
@@ -141,9 +165,9 @@ extension LocalMapViewController:GMSMapViewDelegate{
         if let selectedVideo = Int(marker.accessibilityHint!) {
             controller.MyAreaVideos = self.myNearestVideos
             controller.SelectedVideo = self.myNearestVideos[selectedVideo]
-//            DispatchQueue.main.async {
-//                self.tabBarController!.present( controller, animated: true, completion: nil )
-//            }
+            //            DispatchQueue.main.async {
+            //                self.tabBarController!.present( controller, animated: true, completion: nil )
+            //            }
             self.navigationController?.pushViewController(controller, animated: true)
         }
         return true
@@ -181,7 +205,7 @@ extension LocalMapViewController:GMSMapViewDelegate{
 // MARK:- FIREBASE METHODS EXTENSION
 extension LocalMapViewController{
     // GET ALL VIDEOS FROM FIREBASE DATABASE
-    func getAllVideosInMyArea() {
+    func getAllVideos() {
         if Connectivity.isConnectedToNetwork(){
             self.ref.child(Constant.videosTable).observe(.value) { (snapshot) in
                 if(snapshot.exists()) {
@@ -198,7 +222,8 @@ extension LocalMapViewController{
                             }
                         }
                     }// End For loop
-                    self.checkMyNearestVideos(videos: tempArray)
+                    //self.checkMyNearestVideos(videos: tempArray)
+                    self.getAllUsersRecord(videos: tempArray)
                 }else{
                     print("Data not found")
                 }// End Snapshot if else statement
@@ -208,5 +233,31 @@ extension LocalMapViewController{
         }//End Connectity Check Statement
     }// End get favorite method
     
-    
+    func getAllUsersRecord(videos:[VideosModel]) {
+        if Connectivity.isConnectedToNetwork() {
+            if (self.mAuth.currentUser?.uid) != nil{
+                self.ref.child("Users").observeSingleEvent(of: .value) { (snapshot) in
+                    if(snapshot.exists()) {
+                        var allUsers = [LoginModel]()
+                        let array:NSArray = snapshot.children.allObjects as NSArray
+                        for obj in array {
+                            let snapshot:DataSnapshot = obj as! DataSnapshot
+                            if var childSnapshot = snapshot.value as? [String : AnyObject] {
+                                childSnapshot[Constant.id] = snapshot.key as String as AnyObject
+                                let users = LoginModel(dic: childSnapshot as NSDictionary)
+                                if let user = users {
+                                    allUsers.append(user)
+                                }
+                            }
+                        }// End For loop
+                        self.videosWithUploaderRecord(videos: videos, users: allUsers)
+                    }// End Snapshot if else statement
+                }// End ref Child Completion Block
+            }// End Firebase user id
+            else{
+            }
+        }else{
+            PopupHelper.showAlertControllerWithError( forErrorMessage: "Internet is unavailable please check your connection", forViewController: self )
+        }//End Connectity Check Statement
+    }// End get favorite method
 }

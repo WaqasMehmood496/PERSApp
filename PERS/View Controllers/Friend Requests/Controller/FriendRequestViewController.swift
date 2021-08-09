@@ -81,6 +81,9 @@ extension FriendRequestViewController:UITableViewDelegate,UITableViewDataSource{
         cell.AddFriendBtn.tag = indexPath.row
         cell.CancelBtn.addTarget(self, action: #selector(CancelBtnAction(_:)), for: .touchUpInside)
         cell.CancelBtn.tag = indexPath.row
+        let bgColorView = UIView()
+        bgColorView.backgroundColor = .clear
+        cell.selectedBackgroundView = bgColorView
         return cell
     }
     

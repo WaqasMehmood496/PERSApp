@@ -32,6 +32,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate {
     
     //MARK: IBACTION'S
     @IBAction func doneBtnPressed(_ sender:Any){
+        self.location.address = self.lblAddress.text!
         delagate?.passCurrentLocation(data: self.location)
         self.dismiss(animated: true, completion: nil)
     }
@@ -79,7 +80,7 @@ extension MapsViewController{
         marker.title = address
         self.lblAddress.text = address
         marker.map = self.mapView
-        marker.icon = #imageLiteral(resourceName: "Search Location")
+        marker.icon = #imageLiteral(resourceName: "Location")
     }
     /// - TAG: Save user current or selected location in model
     func saveLocation(addressStr:String,address:GMSAddress,coordinate:CLLocationCoordinate2D) {

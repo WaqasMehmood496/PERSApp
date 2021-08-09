@@ -119,7 +119,7 @@ extension ProfileViewController {
     func updateFriendRequestData(data: [FriendRequestModel]) {
         self.friendsRequests = data
         self.FriendRequestLabel.text = "\(data.count)"
-        self.getFriendsFromFirebase()//Fetch all friends
+        //self.getFriendsFromFirebase()//Fetch all friends
     }
 }
 
@@ -130,7 +130,7 @@ extension ProfileViewController{
     //GET ALL USERS RECORD FROM FIREBASE DATABASE
     func getAllUsersRecord() {
         if Connectivity.isConnectedToNetwork() {
-            if (self.mAuth.currentUser?.uid) != nil{
+            if (self.mAuth.currentUser?.uid) != nil {
                 self.ref.child("Users").observeSingleEvent(of: .value) { (snapshot) in
                     if(snapshot.exists()) {
                         let array:NSArray = snapshot.children.allObjects as NSArray
@@ -157,17 +157,18 @@ extension ProfileViewController{
     
     // GET ALL FRIENDS VIDEOS FROM FIREBASE DATABASE
     func getFriendsFromFirebase() {
-        if Connectivity.isConnectedToNetwork(){
+        if Connectivity.isConnectedToNetwork() {
             showHUDView(hudIV: .indeterminate, text: .process) { (hud) in
                 hud.show(in: self.view, animated: true)
                 var friends = [FriendModel]()
-                if let userID = self.mAuth.currentUser?.uid{
-                    self.ref.child("Friends").child(userID).observeSingleEvent(of: .value) { (snapshot) in
+                if let userID = self.mAuth.currentUser?.uid {
+                    self.ref.child("Friends").child(userID).observe(.value) { (snapshot) in
                         if(snapshot.exists()) {
+                            self.friendList.removeAll()
                             let array:NSArray = snapshot.children.allObjects as NSArray
                             for obj in array {
                                 let snapshot:DataSnapshot = obj as! DataSnapshot
-                                if var childSnapshot = snapshot.value as? [String : AnyObject]{
+                                if var childSnapshot = snapshot.value as? [String : AnyObject] {
                                     childSnapshot[Constant.id] = snapshot.key as String as AnyObject
                                     let favData = FriendModel(dic: childSnapshot as NSDictionary)
                                     if let fav = favData{
@@ -296,6 +297,9 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource{
         cell.Title.text = self.friendList[indexPath.row].name
         cell.Description.text = self.friendList[indexPath.row].location
         cell.UserImage.sd_setImage(with: URL(string: self.friendList[indexPath.row].imageURL), placeholderImage: #imageLiteral(resourceName: "Logo"))
+        let bgColorView = UIView()
+        bgColorView.backgroundColor = .clear
+        cell.selectedBackgroundView = bgColorView
         return cell
     }
 }

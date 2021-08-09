@@ -12,7 +12,7 @@ import FirebaseCore
 import FirebaseMessaging
 import FirebaseInstallations
 import IQKeyboardManagerSwift
-
+import SwiftyJSON
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -110,25 +110,48 @@ extension AppDelegate{
         }
     }
     
-    func saveIntoCache(data:[String:AnyObject]) {
-        if let fetchData = data["alert"] as? NSDictionary{
-            let title = fetchData["title"] as! String
-            let description = fetchData["body"] as! String
-            if var notificationCache = CommonHelper.getNotificationCachedData(){
-                notificationCache.append(NotificationModel(title: title, detail: description))
-                CommonHelper.saveNotificationCachedData(notificationCache)
-            }
-            else {
-                var array = [NotificationModel]()
-                array.append(NotificationModel(title: title, detail: description))
-                CommonHelper.saveNotificationCachedData(array)
-            }
+    func saveIntoCache(data:[String:AnyObject], notificationData:[String:AnyObject] ) {
+        let notification = NotificationModel()
+        
+        if let fetchData = data["alert"] as? NSDictionary {
+            notification.title = (fetchData["title"] as! String)
+            notification.detail = (fetchData["body"] as! String)
+        }
+        
+        if let uploadId = (notificationData[Constant.uploaderID] as? String){
+            notification.uploaderID = uploadId
+        }
+        if let videoLatitude = (notificationData[Constant.videoLatitude] as? String) {
+            notification.videoLatitude = videoLatitude
+        }
+        if let videoLocation = (notificationData[Constant.videoLocation] as? String) {
+            notification.videoLocation = videoLocation
+        }
+        if let videoLongitude = (notificationData[Constant.videoLongitude] as? String) {
+            notification.videoLongitude = videoLongitude
+        }
+        if let videoUrl = (notificationData[Constant.videoURL] as? String) {
+            notification.videoURL = videoUrl
+        }
+        if let timeStamp = (notificationData[Constant.timestamp] as? String) {
+            notification.timestamp = timeStamp
+        }
+        // SAVE INTO NOTIFICATION
+        if var notificationCache = CommonHelper.getNotificationCachedData(){
+            notificationCache.append(notification)
+            CommonHelper.saveNotificationCachedData(notificationCache)
+        }
+        else {
+            var array = [NotificationModel]()
+            array.append(notification)
+            CommonHelper.saveNotificationCachedData(array)
         }
     }
 }
 
 //MARK:- NOTIFICATION DELEGATES METHOD'S
-extension AppDelegate:UNUserNotificationCenterDelegate{
+extension AppDelegate:UNUserNotificationCenterDelegate {
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         if notification.request.identifier == "Local Notification Order" {
             print("Handling notifications with the Local Notification Identifier")
@@ -142,10 +165,11 @@ extension AppDelegate:UNUserNotificationCenterDelegate{
             completionHandler(UNNotificationPresentationOptions([.badge,.banner,.sound]))
             return
         }
-        print ("the notification detail is " , aps )
-        print ("the user info is " , userInfo )
+        print(userInfo as? NSDictionary)
+        print ("the notification detail is " , aps)
+        let data = userInfo as! [String:AnyObject]
         
-        self.saveIntoCache(data: aps)
+        self.saveIntoCache(data: aps, notificationData: data)
         
         //      let str = String(describing: userInfo)
         //
@@ -180,6 +204,7 @@ extension AppDelegate:UNUserNotificationCenterDelegate{
             
         }
     }
+    
     @objc func userNotify(){
         let notificationCenter = UNUserNotificationCenter.current()
         let options: UNAuthorizationOptions = [.alert, .sound, .badge]
@@ -196,6 +221,7 @@ extension AppDelegate:UNUserNotificationCenterDelegate{
                 return
             }
         }
+        
         let content = UNMutableNotificationContent() // Содержимое уведомления
         content.title = "TastyBox"
         content.body = "Your Order Ready please collect it now"
