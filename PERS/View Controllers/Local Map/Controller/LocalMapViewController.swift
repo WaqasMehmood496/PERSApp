@@ -34,6 +34,9 @@ class LocalMapViewController: UIViewController {
         self.mapStyleSetup()
         self.userLocationSetup()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = false
+    }
 }
 
 //MARK:- HELPING METHOD'S
@@ -96,10 +99,18 @@ extension LocalMapViewController{
                 let videoLocation = CLLocation(latitude: videoLat, longitude: videoLng)
                 let distance = self.curentPosition.distance(from: videoLocation) / 1000
                 if( distance <= 8046.72 ) {
-                    self.myNearestVideos.append(video)
+                    myNearestVideos.append(video)
+                    placeMarkOnMap(lat: videoLat, lng: videoLng,index: index)
                 }
             }
         }//End For loop
+    }
+    
+    func placeMarkOnMap(lat:Double,lng:Double,index:Int) {
+        let marker = GMSMarker(position: CLLocationCoordinate2D (latitude: lat, longitude: lng))
+        marker.map = self.Map
+        marker.icon = #imageLiteral(resourceName: "Location")
+        marker.accessibilityHint = String(index)
     }
 }
 

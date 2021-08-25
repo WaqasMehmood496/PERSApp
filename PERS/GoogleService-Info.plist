@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>874705020622-ij0ra1c4ohe1144abr7erlu071j991v1.apps.googleusercontent.com</string>
+	<string>527149308576-kh98pr10d020u8u01s1ii6fc2pub6pfh.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.874705020622-ij0ra1c4ohe1144abr7erlu071j991v1</string>
+	<string>com.googleusercontent.apps.527149308576-kh98pr10d020u8u01s1ii6fc2pub6pfh</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCjS8sP6t2b0fKNmFJgvgtiOF4_v0fwnRc</string>
+	<string>AIzaSyBnQngZXCKUwwNfO6i4JiEwQEU8Lb8zSus</string>
 	<key>GCM_SENDER_ID</key>
-	<string>874705020622</string>
+	<string>527149308576</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.BuzzwareTech.PERSApp</string>
 	<key>PROJECT_ID</key>
-	<string>pers-4c196</string>
+	<string>pers-427bd</string>
 	<key>STORAGE_BUCKET</key>
-	<string>pers-4c196.appspot.com</string>
+	<string>pers-427bd.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:874705020622:ios:a725516151deafc1bf929f</string>
-	<key>DATABASE_URL</key>
-	<string>https://pers-4c196-default-rtdb.firebaseio.com</string>
+	<string>1:527149308576:ios:f1c7458bc9ebb0b7c887c5</string>
 </dict>
 </plist>

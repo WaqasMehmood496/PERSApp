@@ -13,6 +13,7 @@ import FirebaseMessaging
 import FirebaseInstallations
 import IQKeyboardManagerSwift
 import SwiftyJSON
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -22,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     override init() {
         super .init()
         FirebaseApp.configure()
-        GMSServices.provideAPIKey("AIzaSyCjS8sP6t2b0fKNmFJgvgtiOF4_v0fwnRc")
+        GMSServices.provideAPIKey("AIzaSyBnQngZXCKUwwNfO6i4JiEwQEU8Lb8zSus")
         self.setUpAppNotifications()
     }
     
@@ -110,7 +111,7 @@ extension AppDelegate{
         }
     }
     
-    func saveIntoCache(data:[String:AnyObject], notificationData:[String:AnyObject] ) {
+    func saveIntoCache(data:[String:AnyObject], notificationData:[String:AnyObject]) {
         let notification = NotificationModel()
         
         if let fetchData = data["alert"] as? NSDictionary {
@@ -158,6 +159,7 @@ extension AppDelegate:UNUserNotificationCenterDelegate {
             center.removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
             center.removePendingNotificationRequests(withIdentifiers: [notification.request.identifier])
         }
+        
         UIApplication.shared.applicationIconBadgeNumber = 0
         completionHandler(UNNotificationPresentationOptions([.badge,.banner,.sound]))
         let userInfo = notification.request.content.userInfo
@@ -165,6 +167,7 @@ extension AppDelegate:UNUserNotificationCenterDelegate {
             completionHandler(UNNotificationPresentationOptions([.badge,.banner,.sound]))
             return
         }
+        
         print(userInfo as? NSDictionary)
         print ("the notification detail is " , aps)
         let data = userInfo as! [String:AnyObject]

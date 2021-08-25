@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseDatabase
+
 class AllRequestModel: Codable {
     var receiverId:String!
     var requester: [FriendRequestModel]!
@@ -55,10 +56,6 @@ class FriendRequestModel: Codable {
             self.imageURL = imageURL
             self.name = name
         }
-        
-        
-        
-        
     }
 }
 

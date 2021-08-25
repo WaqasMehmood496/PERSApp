@@ -9,6 +9,16 @@
 			<key>orderHint</key>
 			<integer>40</integer>
 		</dict>
+		<key>PersExtension.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>41</integer>
+		</dict>
+		<key>PersWidgetExtension.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>41</integer>
+		</dict>
 	</dict>
 </dict>
 </plist>

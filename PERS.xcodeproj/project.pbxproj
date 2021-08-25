@@ -8,11 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		30FEC2D74CA734F543B79FEB /* Pods_PERS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E19AD45B637D4130AA94699 /* Pods_PERS.framework */; };
+		7619598E26D68CBD00C73714 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76AA5B7A26D65AFB0073DED0 /* WidgetKit.framework */; };
+		7619598F26D68CBD00C73714 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76AA5B7C26D65AFB0073DED0 /* SwiftUI.framework */; };
+		7619599226D68CBD00C73714 /* PersWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7619599126D68CBD00C73714 /* PersWidget.swift */; };
+		7619599426D68CC800C73714 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7619599326D68CC800C73714 /* Assets.xcassets */; };
+		7619599826D68CC800C73714 /* PersWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7619598D26D68CBD00C73714 /* PersWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		761959A126D6984100C73714 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 761959A026D6984100C73714 /* GoogleService-Info.plist */; };
 		761D7AF7268203C10013EA2F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761D7AF6268203C10013EA2F /* AppDelegate.swift */; };
 		761D7AFE268203C10013EA2F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 761D7AFC268203C10013EA2F /* Main.storyboard */; };
-		761D7B00268203C40013EA2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 761D7AFF268203C40013EA2F /* Assets.xcassets */; };
 		761D7B03268203C40013EA2F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 761D7B01268203C40013EA2F /* LaunchScreen.storyboard */; };
-		761D7B822682111D0013EA2F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 761D7B812682111D0013EA2F /* GoogleService-Info.plist */; };
 		761D7BEE268213100013EA2F /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761D7B852682130B0013EA2F /* Constant.swift */; };
 		761D7BEF268213100013EA2F /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761D7B862682130B0013EA2F /* Globals.swift */; };
 		761D7BF0268213100013EA2F /* BadgedBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761D7B882682130C0013EA2F /* BadgedBarButtonItem.swift */; };
@@ -71,21 +75,46 @@
 		761D7C29268213100013EA2F /* HelpingDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761D7BED268213100013EA2F /* HelpingDelegates.swift */; };
 		7633D25926A321C50022A573 /* MapVideoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7633D25826A321C50022A573 /* MapVideoDetailViewController.swift */; };
 		7638076326832E88001D08AB /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7638076226832E88001D08AB /* NotificationsManager.swift */; };
-		76397E0726BAC53100D31BCF /* VideoPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76397E0626BAC53100D31BCF /* VideoPopup.xib */; };
-		76397E0C26BAC75300D31BCF /* VideoUploadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76397E0B26BAC75300D31BCF /* VideoUploadingView.swift */; };
 		7661316B268B59CB004DC5E0 /* style.json in Resources */ = {isa = PBXBuildFile; fileRef = 7661316A268B59CA004DC5E0 /* style.json */; };
+		76AA5B9526D66A480073DED0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76AA5B9426D66A480073DED0 /* Assets.xcassets */; };
 		76F9D7BC268F3FA7005E2A12 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F9D7BB268F3FA7005E2A12 /* NotificationModel.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		7619599626D68CC800C73714 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 761D7AEB268203C00013EA2F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7619598C26D68CBD00C73714;
+			remoteInfo = PersWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		76AA5B8726D65B030073DED0 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				7619599826D68CC800C73714 /* PersWidgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		7619598D26D68CBD00C73714 /* PersWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PersWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		7619599126D68CBD00C73714 /* PersWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersWidget.swift; sourceTree = "<group>"; };
+		7619599326D68CC800C73714 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7619599526D68CC800C73714 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		761959A026D6984100C73714 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		761D7AF3268203C10013EA2F /* PERS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PERS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		761D7AF6268203C10013EA2F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		761D7AFD268203C10013EA2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		761D7AFF268203C40013EA2F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		761D7B02268203C40013EA2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		761D7B04268203C40013EA2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		761D7B282682072C0013EA2F /* PERS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PERS.entitlements; sourceTree = "<group>"; };
-		761D7B812682111D0013EA2F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		761D7B852682130B0013EA2F /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		761D7B862682130B0013EA2F /* Globals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		761D7B882682130C0013EA2F /* BadgedBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgedBarButtonItem.swift; sourceTree = "<group>"; };
@@ -144,9 +173,11 @@
 		761D7BED268213100013EA2F /* HelpingDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpingDelegates.swift; sourceTree = "<group>"; };
 		7633D25826A321C50022A573 /* MapVideoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVideoDetailViewController.swift; sourceTree = "<group>"; };
 		7638076226832E88001D08AB /* NotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
-		76397E0626BAC53100D31BCF /* VideoPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VideoPopup.xib; sourceTree = "<group>"; };
-		76397E0B26BAC75300D31BCF /* VideoUploadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoUploadingView.swift; sourceTree = "<group>"; };
 		7661316A268B59CA004DC5E0 /* style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = style.json; sourceTree = "<group>"; };
+		76AA5B7A26D65AFB0073DED0 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		76AA5B7C26D65AFB0073DED0 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		76AA5B9126D66A3C0073DED0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		76AA5B9426D66A480073DED0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		76F9D7BB268F3FA7005E2A12 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
 		7E19AD45B637D4130AA94699 /* Pods_PERS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PERS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C860F488655CBE23AC5F556 /* Pods-PERS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PERS.debug.xcconfig"; path = "Target Support Files/Pods-PERS/Pods-PERS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -154,6 +185,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		7619598A26D68CBD00C73714 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7619598F26D68CBD00C73714 /* SwiftUI.framework in Frameworks */,
+				7619598E26D68CBD00C73714 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		761D7AF0268203C10013EA2F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -178,14 +218,27 @@
 			isa = PBXGroup;
 			children = (
 				7E19AD45B637D4130AA94699 /* Pods_PERS.framework */,
+				76AA5B7A26D65AFB0073DED0 /* WidgetKit.framework */,
+				76AA5B7C26D65AFB0073DED0 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7619599026D68CBD00C73714 /* PersWidget */ = {
+			isa = PBXGroup;
+			children = (
+				7619599126D68CBD00C73714 /* PersWidget.swift */,
+				7619599326D68CC800C73714 /* Assets.xcassets */,
+				7619599526D68CC800C73714 /* Info.plist */,
+			);
+			path = PersWidget;
 			sourceTree = "<group>";
 		};
 		761D7AEA268203C00013EA2F = {
 			isa = PBXGroup;
 			children = (
 				761D7AF5268203C10013EA2F /* PERS */,
+				7619599026D68CBD00C73714 /* PersWidget */,
 				761D7AF4268203C10013EA2F /* Products */,
 				1F5FC0FE71F256CB0A4FB498 /* Pods */,
 				7370F0547E64D49834B02ED6 /* Frameworks */,
@@ -196,6 +249,7 @@
 			isa = PBXGroup;
 			children = (
 				761D7AF3268203C10013EA2F /* PERS.app */,
+				7619598D26D68CBD00C73714 /* PersWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -211,10 +265,10 @@
 				761D7B972682130D0013EA2F /* View Controllers */,
 				761D7AF6268203C10013EA2F /* AppDelegate.swift */,
 				761D7AFC268203C10013EA2F /* Main.storyboard */,
-				761D7AFF268203C40013EA2F /* Assets.xcassets */,
+				76AA5B9426D66A480073DED0 /* Assets.xcassets */,
 				761D7B01268203C40013EA2F /* LaunchScreen.storyboard */,
-				761D7B04268203C40013EA2F /* Info.plist */,
-				761D7B812682111D0013EA2F /* GoogleService-Info.plist */,
+				76AA5B9126D66A3C0073DED0 /* Info.plist */,
+				761959A026D6984100C73714 /* GoogleService-Info.plist */,
 				7661316A268B59CA004DC5E0 /* style.json */,
 			);
 			path = PERS;
@@ -254,7 +308,6 @@
 		761D7B972682130D0013EA2F /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				76397E0926BAC72300D31BCF /* Uploading Video Popup */,
 				7633D25626A321A60022A573 /* Map Video Detail */,
 				761D7B982682130D0013EA2F /* Local Map */,
 				761D7B9E2682130D0013EA2F /* Home */,
@@ -651,26 +704,26 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		76397E0926BAC72300D31BCF /* Uploading Video Popup */ = {
-			isa = PBXGroup;
-			children = (
-				76397E0626BAC53100D31BCF /* VideoPopup.xib */,
-				76397E0A26BAC73400D31BCF /* UIView */,
-			);
-			path = "Uploading Video Popup";
-			sourceTree = "<group>";
-		};
-		76397E0A26BAC73400D31BCF /* UIView */ = {
-			isa = PBXGroup;
-			children = (
-				76397E0B26BAC75300D31BCF /* VideoUploadingView.swift */,
-			);
-			path = UIView;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		7619598C26D68CBD00C73714 /* PersWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7619599B26D68CC800C73714 /* Build configuration list for PBXNativeTarget "PersWidgetExtension" */;
+			buildPhases = (
+				7619598926D68CBD00C73714 /* Sources */,
+				7619598A26D68CBD00C73714 /* Frameworks */,
+				7619598B26D68CBD00C73714 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PersWidgetExtension;
+			productName = PersWidgetExtension;
+			productReference = 7619598D26D68CBD00C73714 /* PersWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		761D7AF2268203C10013EA2F /* PERS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 761D7B07268203C40013EA2F /* Build configuration list for PBXNativeTarget "PERS" */;
@@ -681,10 +734,12 @@
 				761D7AF1268203C10013EA2F /* Resources */,
 				28E153EBCA0E820F2F959EF5 /* [CP] Embed Pods Frameworks */,
 				398ADA36D7AF29A224E38770 /* [CP] Copy Pods Resources */,
+				76AA5B8726D65B030073DED0 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				7619599726D68CC800C73714 /* PBXTargetDependency */,
 			);
 			name = PERS;
 			productName = PERS;
@@ -700,6 +755,9 @@
 				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
+					7619598C26D68CBD00C73714 = {
+						CreatedOnToolsVersion = 12.4;
+					};
 					761D7AF2268203C10013EA2F = {
 						CreatedOnToolsVersion = 12.4;
 					};
@@ -719,21 +777,29 @@
 			projectRoot = "";
 			targets = (
 				761D7AF2268203C10013EA2F /* PERS */,
+				7619598C26D68CBD00C73714 /* PersWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		7619598B26D68CBD00C73714 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7619599426D68CC800C73714 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		761D7AF1268203C10013EA2F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				76397E0726BAC53100D31BCF /* VideoPopup.xib in Resources */,
 				761D7B03268203C40013EA2F /* LaunchScreen.storyboard in Resources */,
-				761D7B822682111D0013EA2F /* GoogleService-Info.plist in Resources */,
 				7661316B268B59CB004DC5E0 /* style.json in Resources */,
-				761D7B00268203C40013EA2F /* Assets.xcassets in Resources */,
+				761959A126D6984100C73714 /* GoogleService-Info.plist in Resources */,
 				761D7AFE268203C10013EA2F /* Main.storyboard in Resources */,
+				76AA5B9526D66A480073DED0 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -799,6 +865,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		7619598926D68CBD00C73714 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7619599226D68CBD00C73714 /* PersWidget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		761D7AEF268203C10013EA2F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -830,7 +904,6 @@
 				7633D25926A321C50022A573 /* MapVideoDetailViewController.swift in Sources */,
 				761D7C15268213100013EA2F /* NVActivityIndicatorPresenter.swift in Sources */,
 				761D7AF7268203C10013EA2F /* AppDelegate.swift in Sources */,
-				76397E0C26BAC75300D31BCF /* VideoUploadingView.swift in Sources */,
 				761D7BFD268213100013EA2F /* AppStoryBoard.swift in Sources */,
 				761D7C17268213100013EA2F /* WebServicesHelper.swift in Sources */,
 				761D7C22268213100013EA2F /* WebServiceResponseDelegate.swift in Sources */,
@@ -869,6 +942,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		7619599726D68CC800C73714 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7619598C26D68CBD00C73714 /* PersWidgetExtension */;
+			targetProxy = 7619599626D68CC800C73714 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		761D7AFC268203C10013EA2F /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -889,6 +970,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		7619599926D68CC800C73714 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 638JFH4RR5;
+				INFOPLIST_FILE = PersWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.BuzzwareTech.PERSApp.PersWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7619599A26D68CC800C73714 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 638JFH4RR5;
+				INFOPLIST_FILE = PersWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.BuzzwareTech.PERSApp.PersWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		761D7B05268203C40013EA2F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1009,6 +1132,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9C860F488655CBE23AC5F556 /* Pods-PERS.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1023,7 +1147,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.BuzzwareTech.PERSApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1031,6 +1155,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A9BA8AF749ED8E6AD2819317 /* Pods-PERS.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1045,13 +1170,22 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.BuzzwareTech.PERSApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		7619599B26D68CC800C73714 /* Build configuration list for PBXNativeTarget "PersWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7619599926D68CC800C73714 /* Debug */,
+				7619599A26D68CC800C73714 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		761D7AEE268203C00013EA2F /* Build configuration list for PBXProject "PERS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

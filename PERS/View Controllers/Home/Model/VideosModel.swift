@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 class VideosModel: Codable {
     
     var id: String!

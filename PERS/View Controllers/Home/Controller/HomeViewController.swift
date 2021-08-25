@@ -16,6 +16,7 @@ import FirebaseMessaging
 import CoreLocation
 import SwiftEntryKit
 import SwiftyJSON
+
 class HomeViewController: UIViewController, CLLocationManagerDelegate {
     
     // IBOUTLET'S
@@ -53,7 +54,9 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
         collectionViewSetup()
         updateToken()
         getRecentlyAddedVideos()
+        self.openCamera()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
     }
@@ -67,7 +70,6 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
         
 //        let data: [String:Any] = ["Video":"ABCDEF","TETE":1,"SDDS":"RETRTY"]
 //        let json = JSON(data)
-//
 //        self.notificationSender.sendPushNotification (
 //            to: "e-xRFq3UMUrOsZb9wcl6kb:APA91bEi5MAN4dkkrAfUemB2BZks3DLD8oWbc0SOf7d1poqRSH0JR688yhjlybZy-ooQ_hNhF_-452KEuhJU_SgOPF_dP6vp8ipOVfCo7XpQT8oMrD0l6D4rHBSkMGCjL6qKRcmjSEqh",
 //            title: "\("userName")",
@@ -124,7 +126,7 @@ extension HomeViewController {
 
 
 //MARK: - NEW FIREBASE METHODS EXTENSION
-extension HomeViewController{
+extension HomeViewController {
     // GET ALL VIDEOS FROM FIREBASE DATABASE
     func getAllVideos() {
         if Connectivity.isConnectedToNetwork() {
@@ -271,8 +273,8 @@ extension HomeViewController {
 
 
 
-//MARK:- HELPING METHOD'S EXTENSION
-extension HomeViewController{
+//MARK:- CONTROLLER HELPING METHOD'S EXTENSION
+extension HomeViewController {
     
     func userLocationSetup() {
         //        locationManager = CLLocationManager()
@@ -334,7 +336,7 @@ extension HomeViewController{
     }
     
     //This method will change time stamp into date time and return only time
-    func getTimeFromTimeStamp(timeStamp:Double) -> String{
+    func getTimeFromTimeStamp(timeStamp:Double) -> String {
         let date = NSDate (
             timeIntervalSince1970: timeStamp
         )
@@ -434,7 +436,7 @@ extension HomeViewController {
 
 
 //MARK:- UICOLLECTION VIEW DELEGATES AND DATASOURCE METHOD"S EXTENSION
-extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
+extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 0{
             return self.MyAreaVideos.count
@@ -547,6 +549,7 @@ extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource
         }
     }
 }
+
 
 //MARK:- CAMERA METHIO'S EXTENSION
 extension HomeViewController {
@@ -666,6 +669,8 @@ extension HomeViewController {
         )
     }
 }
+
+
 
 //MARK:- UPLOAD CAPTURE VIDEO METHOD'S
 extension HomeViewController {
@@ -812,10 +817,8 @@ extension HomeViewController {
                 let user = LoginModel ( dic: value! )
                 if let userData = user {
                     if userData.token != nil || userData.token != "" {
-                        
                         let subDic:[String:Any] = ["Title":"New Video","message":"New Video uploaded","videoData":videoData.description]
                         let dic:[String:Any] = ["data":subDic]
-                        
                         
                         self.notificationSender.sendPushNotification (
                             to: userData.token,
