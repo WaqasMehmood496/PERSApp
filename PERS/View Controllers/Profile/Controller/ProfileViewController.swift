@@ -133,8 +133,6 @@ extension ProfileViewController {
 
 
 
-
-
 //MARK:- FIREBASE METHOD'S EXTENSION
 extension ProfileViewController{
     //GET ALL USERS RECORD FROM FIREBASE DATABASE

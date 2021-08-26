@@ -56,22 +56,21 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
         collectionViewSetup()
         updateToken()
         getRecentlyAddedVideos()
-        showHUDView(hudIV: .indeterminate, text: .process) { (hud) in
-            hud.show(in: self.view, animated: true)
-            self.getLocation(hud: hud)
-        }
+//        showHUDView(hudIV: .indeterminate, text: .process) { (hud) in
+//            hud.show(in: self.view, animated: true)
+//            self.getLocation(hud: hud)
+        //        }
+        self.getLocation()
+        self.openCamera()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
     }
     //IBACTION'S
     @IBAction func EmergencyAlertBtnAction(_ sender: Any) {
         
-        showHUDView(hudIV: .indeterminate, text: .process) { (hud) in
-            hud.show(in: self.view, animated: true)
-            self.getLocation(hud: hud)
-        }
-//        sendNotifications(token: "d3olOuQf10ZGg8ULogzp8w:APA91bGtKPS_rMuiFKhe5xb3ccEaVmDqHDpx0NL9_jezz1dKSQivuVsyhfQ3wv48BXZJPr21QkcJ2ElZNacQVIMOOdGQ75H2DavToYXfh3KmqIdbJUyFUbruAlVjADAdr4LiTaqeG27G", username: "waqas", thumbnail: "asasa", videoLatitude: "lasa", videoLongitude: "asa", videoLocation: "asad", videoURL: "wwww")
+        self.getLocation()
     }
 }
 
@@ -357,15 +356,13 @@ extension HomeViewController{
 //MARK:- UPLOAD VIDEO EXTENSION
 extension HomeViewController {
     // First get user lat,lng
-    func getLocation(hud:JGProgressHUD) {
+    func getLocation() {
         self.getUserCurrentLocation { (status) in
             if status{
                 self.getCurrentAddress (
-                    location: self.currentLocation,
-                    hud: hud
+                    location: self.currentLocation
                 )
             }else{
-                hud.dismiss()
                 PopupHelper.alertWithOk (
                     title: Constant.locationTitle,
                     message: Constant.locationMsg,
@@ -390,7 +387,7 @@ extension HomeViewController {
     }
     
     // This method will fetch user current location address using lat lng
-    func getCurrentAddress(location:CLLocation,hud:JGProgressHUD) {
+    func getCurrentAddress(location:CLLocation) {
         let loc: CLLocation = CLLocation (
             latitude:location.coordinate.latitude,
             longitude: location.coordinate.longitude
@@ -422,9 +419,7 @@ extension HomeViewController {
                     }
                     
                     self.currentAddress = addressString
-                    hud.dismiss()
                     //self.CameraBottomSheet()
-                    self.openCamera()
                 }
             })
     }
@@ -551,50 +546,6 @@ extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource
 
 //MARK:- CAMERA METHIO'S EXTENSION
 extension HomeViewController {
-    //BOTTOM SHEET WHICH WILL SHOW TWO OPTION [CAMERA AND GALLERY]
-    func CameraBottomSheet() {
-        let alert = UIAlertController (
-            title: "Choose Image",
-            message: nil,
-            preferredStyle: .actionSheet
-        )
-        alert.addAction (
-            UIAlertAction(
-                title: "Camera",
-                style: .default,
-                handler: { _ in
-                    self.Selected_choise ( choise: "Camera" )
-                }))
-        alert.addAction (
-            UIAlertAction (
-                title: "Gallery",
-                style: .default,
-                handler: { _ in
-                    self.Selected_choise(choise: "gallery")
-                }))
-        alert.addAction (
-            UIAlertAction.init (
-                title: "Cancel",
-                style: .cancel,
-                handler: nil)
-        )
-        self.present ( alert, animated: true, completion: nil )
-    }
-    // THIS METHOD IS USE FOR CHOICE WHICH IS SELECTED BY USER
-    func Selected_choise ( choise:String ) {
-        if choise == "gallery" {
-            self.openGallery()
-        } else {
-            self.openCamera()
-        }
-        self.present ( image, animated: true )
-    }
-    //THIS METHODS WILL OPEN GALLERY FOR IMAGE SELECTION
-    func openGallery() {
-        image.delegate = self as UIImagePickerControllerDelegate & UINavigationControllerDelegate
-        image.sourceType = UIImagePickerController.SourceType.photoLibrary
-        image.mediaTypes = ["public.movie"]
-    }
     // THIS METHOD WILL OPEN CAMERA FOR CAPTURING IMAGE
     func openCamera() {
         if UIImagePickerController.isSourceTypeAvailable (
@@ -605,7 +556,7 @@ extension HomeViewController {
             imagePicker.delegate = self
             imagePicker.sourceType = UIImagePickerController.SourceType.camera
             imagePicker.allowsEditing = false
-            self.present (
+            self.tabBarController!.present (
                 imagePicker,
                 animated: true,
                 completion: nil
@@ -622,49 +573,50 @@ extension HomeViewController {
         _ picker: UIImagePickerController,
         didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]
     ) {
-        if let movie = info[.mediaURL] as? URL {
-            let file = MediaFile()
-            file.videoUrl = movie
-            UrlHelper().getThumbnailImageFromVideoUrl ( mediaFile: file ) { (media) in
-                if let image = media.image {
-                    if let thumbnail = image.jpegData ( compressionQuality: 0.4 ) {
-                        self.thumbnail = thumbnail.base64EncodedString()
-                        self.uploadVideo (
-                            movie, ""
-                        ) { (url, storageRef) in
-                            self.SaveDatatoDB (
-                                videoUrl: url.absoluteString
+        
+        picker.dismiss (
+            animated: true
+        ){
+            if let movie = info[.mediaURL] as? URL {
+                let file = MediaFile()
+                file.videoUrl = movie
+                UrlHelper().getThumbnailImageFromVideoUrl ( mediaFile: file ) { (media) in
+                    if let image = media.image {
+                        if let thumbnail = image.jpegData ( compressionQuality: 0.4 ) {
+                            self.thumbnail = thumbnail.base64EncodedString()
+                            self.uploadVideo (
+                                movie, ""
+                            ) { (url, storageRef) in
+                                self.SaveDatatoDB (
+                                    videoUrl: url.absoluteString
+                                )
+                            } progressEsc: { (progress) in
+                                print ( progress )
+                            } completionEsc: {
+                                
+                            } errorEsc: { (error) in
+                                PopupHelper.alertWithOk (
+                                    title: "Video Uploaded Fail",
+                                    message: "\( error.localizedDescription )",
+                                    controler: self
+                                )
+                                print ( error.localizedDescription )
+                            }
+                        }else{
+                            PopupHelper.showAlertControllerWithError (
+                                forErrorMessage: "Video thumbnail generating fail please try again",
+                                forViewController: self
                             )
-                        } progressEsc: { (progress) in
-                            print ( progress )
-                        } completionEsc: {
-                            
-                        } errorEsc: { (error) in
-                            PopupHelper.alertWithOk (
-                                title: "Video Uploaded Fail",
-                                message: "\( error.localizedDescription )",
-                                controler: self
-                            )
-                            print ( error.localizedDescription )
                         }
                     }else{
                         PopupHelper.showAlertControllerWithError (
-                            forErrorMessage: "Video thumbnail generating fail please try again",
+                            forErrorMessage: "Unknown error occur please try again",
                             forViewController: self
                         )
                     }
-                }else{
-                    PopupHelper.showAlertControllerWithError (
-                        forErrorMessage: "Unknown error occur please try again",
-                        forViewController: self
-                    )
                 }
             }
         }
-        picker.dismiss (
-            animated: true,
-            completion: nil
-        )
     }
 }
 

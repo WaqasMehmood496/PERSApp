@@ -63,8 +63,6 @@ struct PersWidgetEntryView : View {
                         .padding(.bottom,0.2)
                         .padding(.leading,8)
                 }
-                .background(Color.gray.opacity(0.4))
-                .cornerRadius(8)
                 .padding(.top,4)
                 
                 Image("AppLogo1")

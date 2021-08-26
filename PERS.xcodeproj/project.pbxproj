@@ -83,6 +83,8 @@
 		768FB9CC26D7848600B59DEB /* VideoPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 768FB9A626D7848600B59DEB /* VideoPopup.xib */; };
 		768FB9CD26D7848600B59DEB /* VideoUploadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768FB9A826D7848600B59DEB /* VideoUploadingView.swift */; };
 		768FB9CE26D7848600B59DEB /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768FB9AB26D7848600B59DEB /* PlayerViewController.swift */; };
+		768FBA1526D7F30000B59DEB /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768FBA1426D7F2FF00B59DEB /* CameraController.swift */; };
+		768FBA1926D7F41800B59DEB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768FBA1826D7F41800B59DEB /* ViewController.swift */; };
 		76AA5B9526D66A480073DED0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76AA5B9426D66A480073DED0 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -187,6 +189,8 @@
 		768FB9A626D7848600B59DEB /* VideoPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoPopup.xib; sourceTree = "<group>"; };
 		768FB9A826D7848600B59DEB /* VideoUploadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoUploadingView.swift; sourceTree = "<group>"; };
 		768FB9AB26D7848600B59DEB /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		768FBA1426D7F2FF00B59DEB /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
+		768FBA1826D7F41800B59DEB /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		76AA5B7A26D65AFB0073DED0 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		76AA5B7C26D65AFB0073DED0 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		76AA5B9126D66A3C0073DED0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -353,6 +357,7 @@
 		768FB95E26D7848600B59DEB /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				768FBA1226D7F2E700B59DEB /* Camera */,
 				768FB95F26D7848600B59DEB /* Local Map */,
 				768FB96526D7848600B59DEB /* Home */,
 				768FB96C26D7848600B59DEB /* Location Map */,
@@ -746,6 +751,23 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		768FBA1226D7F2E700B59DEB /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				768FBA1326D7F2EF00B59DEB /* Controller */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		768FBA1326D7F2EF00B59DEB /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				768FBA1826D7F41800B59DEB /* ViewController.swift */,
+				768FBA1426D7F2FF00B59DEB /* CameraController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -960,8 +982,10 @@
 				768FB9C326D7848600B59DEB /* NotificationsViewController.swift in Sources */,
 				761D7BF7268213100013EA2F /* Extensions.swift in Sources */,
 				768FB9B126D7848600B59DEB /* VideosModel.swift in Sources */,
+				768FBA1526D7F30000B59DEB /* CameraController.swift in Sources */,
 				768FB9CA26D7848600B59DEB /* LoginViewController.swift in Sources */,
 				768FB9BD26D7848600B59DEB /* MapsViewController.swift in Sources */,
+				768FBA1926D7F41800B59DEB /* ViewController.swift in Sources */,
 				761D7BF3268213100013EA2F /* UIViewController+Additions.swift in Sources */,
 				761D7BFB268213100013EA2F /* Utility.swift in Sources */,
 				768FB9BC26D7848600B59DEB /* ForgotPasswordViewController.swift in Sources */,

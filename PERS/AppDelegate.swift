@@ -43,6 +43,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register: \(error)")
     }
+    func applicationWillTerminate(_ application: UIApplication) {
+        atexit {
+            
+            _Exit(0)
+        }
+        
+    }
 }
 
 
