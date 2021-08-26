@@ -15,7 +15,8 @@ enum webserviceUrl: String {
     
     //Login Storyboard
     case login = "/auth/login",
-    socialLogIn = "/auth/social"
+    socialLogIn = "/auth/social",
+    sendNotification = "/sendHttpPushNotification"
     
     func url() -> String {
         return Constant.mainUrl + self.rawValue
@@ -353,10 +354,10 @@ class WebServicesHelper
     {
         let serviceURL:String = self.serviceName.url()
         
-        let myheaders:HTTPHeaders = ["Content-Type":"application/x-www-form-urlencoded","Accept":"application/json"]
+        let myheaders:HTTPHeaders = ["Content-Type":"application/json"]
         //let myheaders = ["Content-Type":"text/html; charset=UTF-8","Accept": "*/*"]
         
-        AF.request(serviceURL, method: .post, parameters: self.parameters, encoding: URLEncoding.default, headers: myheaders)
+        AF.request(serviceURL, method: .post, parameters: self.parameters, encoding: JSONEncoding.default, headers: nil)
             .responseJSON { response in
                 
                 

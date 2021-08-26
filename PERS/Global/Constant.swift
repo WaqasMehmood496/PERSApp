@@ -13,8 +13,8 @@ struct Constant {
     
     static let v2 = "v2"
     static let version = "api/"
-    static let mainUrl = "http://sergxpress.com:3000/" + version + v2
-    
+    static let mainUrl = "https://us-central1-pers-427bd.cloudfunctions.net"
+    //https://us-central1-pers-427bd.cloudfunctions.net/sendHttpPushNotification
     //MARK: CACHE KEY'S
     static let login_key = "login_key"
     static let token_id = "token_id"
@@ -85,7 +85,9 @@ struct Constant {
     static let notificationTitle = "New video uploaded"
     static let internetMsg = "Internet is unavailable please check your connection"
     static let locationMsg = "Your location not found please enable your location from settings"
-    
+    static let username = "username"
+    static let uploaderid = "uploaderid"
+    static let userimage = "userimage"
     
     //MARK: VIEW CONTROLLER IDENTIFIERS
     static let tabbarIdentifier = "Tabbar"

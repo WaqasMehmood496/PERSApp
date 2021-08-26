@@ -137,9 +137,8 @@ extension SignUpViewController{
                             self.mAuth.currentUser?.sendEmailVerification(completion: { err in
                                 if let error = err{
                                     print(error)
-                                    hud.dismiss()
                                     self.ErrorAlertMessage(title: "Alert", description: error.localizedDescription)
-                                    
+                                    hud.dismiss()
                                 }
                                 else{
                                     self.insertUserIntoDataBase(fullname: fullname, email: email, mobileNumber: mobilenumber, location: location, password: password)
@@ -150,7 +149,6 @@ extension SignUpViewController{
                         }// End Error condition
                     }// End Authorization (mAuth)
                 }else{
-                    hud.dismiss()
                     PopupHelper.alertWithOk(title: "Empty Field", message: "All fields are required", controler: self)
                 }// End Feilds condition
             }//End Progress hud

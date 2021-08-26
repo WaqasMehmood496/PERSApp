@@ -77,22 +77,6 @@ extension LocalMapViewController{
     }
     
     func checkMyNearestVideos(videos:[VideosModel]) {
-//        for (index,video) in self.allVideos.enumerated(){
-//            if let videoLat = CLLocationDegrees( video.videoLatitude ) , let videoLng = CLLocationDegrees(video.videoLongitude) {
-//                let videoLocation = CLLocation(latitude: videoLat, longitude: videoLng)
-//                let distance = self.curentPosition.distance(from: videoLocation) / 1000
-//                if( distance <= 1609 ) {
-//                    // place mark on google map
-//                    let marker = GMSMarker(position: CLLocationCoordinate2D (latitude: videoLat, longitude: videoLng))
-//                    marker.map = self.Map
-//                    marker.icon = #imageLiteral(resourceName: "Location")
-//                    marker.accessibilityHint = String(index)
-//                    myNearestVideos.append(video)
-//                }
-//            }
-//        }//End For loop
-        
-        
         
         for (index,video) in videos.enumerated(){
             if let videoLat = CLLocationDegrees( video.videoLatitude ) , let videoLng = CLLocationDegrees(video.videoLongitude) {
@@ -176,9 +160,7 @@ extension LocalMapViewController:GMSMapViewDelegate{
         if let selectedVideo = Int(marker.accessibilityHint!) {
             controller.MyAreaVideos = self.myNearestVideos
             controller.SelectedVideo = self.myNearestVideos[selectedVideo]
-            //            DispatchQueue.main.async {
-            //                self.tabBarController!.present( controller, animated: true, completion: nil )
-            //            }
+            controller.isShowMoreVideos = false
             self.navigationController?.pushViewController(controller, animated: true)
         }
         return true

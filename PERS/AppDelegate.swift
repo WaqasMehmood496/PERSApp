@@ -13,7 +13,6 @@ import FirebaseMessaging
 import FirebaseInstallations
 import IQKeyboardManagerSwift
 import SwiftyJSON
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -111,32 +110,35 @@ extension AppDelegate{
         }
     }
     
-    func saveIntoCache(data:[String:AnyObject], notificationData:[String:AnyObject]) {
+    func saveIntoCache(videoData:NSDictionary,title:String,detail:String) {
         let notification = NotificationModel()
-        
-        if let fetchData = data["alert"] as? NSDictionary {
-            notification.title = (fetchData["title"] as! String)
-            notification.detail = (fetchData["body"] as! String)
-        }
-        
-        if let uploadId = (notificationData[Constant.uploaderID] as? String){
-            notification.uploaderID = uploadId
-        }
-        if let videoLatitude = (notificationData[Constant.videoLatitude] as? String) {
-            notification.videoLatitude = videoLatitude
-        }
-        if let videoLocation = (notificationData[Constant.videoLocation] as? String) {
-            notification.videoLocation = videoLocation
-        }
-        if let videoLongitude = (notificationData[Constant.videoLongitude] as? String) {
-            notification.videoLongitude = videoLongitude
-        }
-        if let videoUrl = (notificationData[Constant.videoURL] as? String) {
+        notification.detail = detail
+        notification.title = title
+        if let videoUrl =  videoData["videoURL"] as? String {
             notification.videoURL = videoUrl
         }
-        if let timeStamp = (notificationData[Constant.timestamp] as? String) {
-            notification.timestamp = timeStamp
+        if let thumbnail =  videoData["thumbnail"] as? String {
+            notification.thumbnail = thumbnail
         }
+        if let timestamp =  videoData["timestamp"] as? String {
+            notification.timestamp = timestamp
+        }
+        if let uploaderid =  videoData["uploaderid"] as? String {
+            notification.uploaderid = uploaderid
+        }
+        if let userimage =  videoData["userimage"] as? String {
+            notification.userimage = userimage
+        }
+        if let videoLatitude =  videoData["videoLatitude"] as? String {
+            notification.videoLatitude = videoLatitude
+        }
+        if let videoLongitude =  videoData["videoLongitude"] as? String {
+            notification.videoLongitude = videoLongitude
+        }
+        if let videoURL =  videoData["v"] as? String {
+            notification.videoURL = videoURL
+        }
+        
         // SAVE INTO NOTIFICATION
         if var notificationCache = CommonHelper.getNotificationCachedData(){
             notificationCache.append(notification)
@@ -147,6 +149,7 @@ extension AppDelegate{
             array.append(notification)
             CommonHelper.saveNotificationCachedData(array)
         }
+        
     }
 }
 
@@ -159,7 +162,6 @@ extension AppDelegate:UNUserNotificationCenterDelegate {
             center.removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
             center.removePendingNotificationRequests(withIdentifiers: [notification.request.identifier])
         }
-        
         UIApplication.shared.applicationIconBadgeNumber = 0
         completionHandler(UNNotificationPresentationOptions([.badge,.banner,.sound]))
         let userInfo = notification.request.content.userInfo
@@ -167,35 +169,21 @@ extension AppDelegate:UNUserNotificationCenterDelegate {
             completionHandler(UNNotificationPresentationOptions([.badge,.banner,.sound]))
             return
         }
+        print(userInfo as NSDictionary)
+        print(aps)
         
-        print(userInfo as? NSDictionary)
-        print ("the notification detail is " , aps)
-        let data = userInfo as! [String:AnyObject]
-        
-        self.saveIntoCache(data: aps, notificationData: data)
-        
-        //      let str = String(describing: userInfo)
-        //
-        //      let arr = str.components(separatedBy: ",")
-        //
-        //    let arr2 = arr.filter { (val) -> Bool in
-        //      return val.contains("status")
-        //    }
-        //    if arr2.count > 0{
-        //      let arr3 = arr2[0].components(separatedBy: ":")
-        //      print("the arr2 is" , arr3)
-        //      let type = arr3.last
-        //
-        //      print("the type is" , type!)
-        //
-        //      let typ = type?.replacingOccurrences(of: " ", with: "")
-        //      if typ == "1"{
-        //        self.userNotify()
-        //        //self.timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(userNotify), userInfo: nil, repeats: true)
-        //
-        //      }
-        //    }
-        
+        if let videoData = userInfo as? NSDictionary {
+            if let alert = aps["alert"] as? [String:AnyObject] {
+                guard let title = alert["title"] as? String else {
+                    return
+                }
+                guard let detail = alert["body"] as? String else {
+                    return
+                }
+                self.saveIntoCache(videoData: videoData, title: title, detail: detail)
+            }
+            
+        }
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {

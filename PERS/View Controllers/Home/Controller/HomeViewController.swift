@@ -17,6 +17,7 @@ import CoreLocation
 import SwiftEntryKit
 import SwiftyJSON
 
+
 class HomeViewController: UIViewController, CLLocationManagerDelegate {
     
     // IBOUTLET'S
@@ -46,6 +47,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
     var MyAreaVideos = [VideosModel]()
     var isAllVideosSelected = true
     var isLocationGet = false
+    var dataDic:[String:Any]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,9 +56,11 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
         collectionViewSetup()
         updateToken()
         getRecentlyAddedVideos()
-        self.openCamera()
+        showHUDView(hudIV: .indeterminate, text: .process) { (hud) in
+            hud.show(in: self.view, animated: true)
+            self.getLocation(hud: hud)
+        }
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
     }
@@ -67,15 +71,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
             hud.show(in: self.view, animated: true)
             self.getLocation(hud: hud)
         }
-        
-//        let data: [String:Any] = ["Video":"ABCDEF","TETE":1,"SDDS":"RETRTY"]
-//        let json = JSON(data)
-//        self.notificationSender.sendPushNotification (
-//            to: "e-xRFq3UMUrOsZb9wcl6kb:APA91bEi5MAN4dkkrAfUemB2BZks3DLD8oWbc0SOf7d1poqRSH0JR688yhjlybZy-ooQ_hNhF_-452KEuhJU_SgOPF_dP6vp8ipOVfCo7XpQT8oMrD0l6D4rHBSkMGCjL6qKRcmjSEqh",
-//            title: "\("userName")",
-//            body: Constant.notificationTitle,
-//            data: json.dictionaryObject!
-//        )
+//        sendNotifications(token: "d3olOuQf10ZGg8ULogzp8w:APA91bGtKPS_rMuiFKhe5xb3ccEaVmDqHDpx0NL9_jezz1dKSQivuVsyhfQ3wv48BXZJPr21QkcJ2ElZNacQVIMOOdGQ75H2DavToYXfh3KmqIdbJUyFUbruAlVjADAdr4LiTaqeG27G", username: "waqas", thumbnail: "asasa", videoLatitude: "lasa", videoLongitude: "asa", videoLocation: "asad", videoURL: "wwww")
     }
 }
 
@@ -273,8 +269,8 @@ extension HomeViewController {
 
 
 
-//MARK:- CONTROLLER HELPING METHOD'S EXTENSION
-extension HomeViewController {
+//MARK:- HELPING METHOD'S EXTENSION
+extension HomeViewController{
     
     func userLocationSetup() {
         //        locationManager = CLLocationManager()
@@ -336,7 +332,7 @@ extension HomeViewController {
     }
     
     //This method will change time stamp into date time and return only time
-    func getTimeFromTimeStamp(timeStamp:Double) -> String {
+    func getTimeFromTimeStamp(timeStamp:Double) -> String{
         let date = NSDate (
             timeIntervalSince1970: timeStamp
         )
@@ -427,7 +423,8 @@ extension HomeViewController {
                     
                     self.currentAddress = addressString
                     hud.dismiss()
-                    self.CameraBottomSheet()
+                    //self.CameraBottomSheet()
+                    self.openCamera()
                 }
             })
     }
@@ -436,7 +433,7 @@ extension HomeViewController {
 
 
 //MARK:- UICOLLECTION VIEW DELEGATES AND DATASOURCE METHOD"S EXTENSION
-extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 0{
             return self.MyAreaVideos.count
@@ -510,9 +507,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         if isAllVideosSelected {
             playViewController.MyAreaVideos = self.MyAreaVideos
             playViewController.SelectedVideo = self.MyAreaVideos[sender.tag]
+            playViewController.isShowMoreVideos = true
         } else {
             playViewController.MyAreaVideos = self.videoArray
             playViewController.SelectedVideo = self.videoArray[sender.tag]
+            playViewController.isShowMoreVideos = true
         }
         self.navigationController?.pushViewController ( playViewController, animated: true )
     }
@@ -549,7 +548,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
     }
 }
-
 
 //MARK:- CAMERA METHIO'S EXTENSION
 extension HomeViewController {
@@ -670,8 +668,6 @@ extension HomeViewController {
     }
 }
 
-
-
 //MARK:- UPLOAD CAPTURE VIDEO METHOD'S
 extension HomeViewController {
     
@@ -724,7 +720,7 @@ extension HomeViewController {
         let timestamp = Int(NSDate().timeIntervalSince1970)
         
         if CommonHelper.getCachedUserData() != nil {
-            ref.child ( Constant.myVideosTable ).child ( user ).childByAutoId().setValue ([
+            ref.child ( Constant.myVideosTable ).child ( user ).childByAutoId().setValue([
                 Constant.thumbnail:"\(self.thumbnail)",
                 Constant.timestamp:"\(timestamp)",
                 Constant.videoLatitude:"\(self.currentLocation.coordinate.latitude)",
@@ -743,21 +739,27 @@ extension HomeViewController {
             ])
         }
         
-        let videoData = [
-            Constant.thumbnail:"nil",
-            Constant.timestamp:"\(timestamp)",
-            Constant.uploaderID:user,
-            Constant.videoLatitude:"\(self.currentLocation.coordinate.latitude)",
-            Constant.videoLocation:self.currentAddress,
-            Constant.videoLongitude:"\(self.currentLocation.coordinate.longitude)",
-            Constant.videoURL:videoUrl,
-        ]
+        if let image = CommonHelper.getCachedUserData()?.imageURL {
+            let videos = VideosModel()
+            videos.thumbnail = "\(self.thumbnail)"
+            videos.timestamp = "\(timestamp)"
+            videos.videoLatitude = "\(self.currentLocation.coordinate.latitude)"
+            videos.videoLocation = self.currentAddress
+            videos.videoLongitude = "\(self.currentLocation.coordinate.longitude)"
+            videos.videoURL = videoUrl
+            videos.uploaderID = user
+            if image == "null"{
+                videos.userImage = "no image"
+            } else {
+                videos.userImage = image
+            }
+            self.getAllFriendsFromFirebase(videoData: videos)
+        }
         
-        self.getAllFriendsFromFirebase(videoData: videoData)
     }
     
     // GET ALL FRIENDS LIST FROM FIREBASE DATABASE
-    func getAllFriendsFromFirebase(videoData:[String:String]) {
+    func getAllFriendsFromFirebase(videoData:VideosModel) {
         if Connectivity.isConnectedToNetwork(){
             var friends = [FriendModel]()
             if let userID = self.mAuth.currentUser?.uid {
@@ -775,7 +777,10 @@ extension HomeViewController {
                             }
                         }// End For loop
                         /// - TAG: Filter User DATA
-                        self.getFriendRecordById(friends: friends, videoData: videoData)
+                        //self.getMyNearUser(friends: friends, videoData: videoData)
+                        for friend in friends {
+                            self.getFriendByIdFromUsersRecord ( friendId: friend.id, videoData: videoData )
+                        }
                     }// End Snapshot if else statement
                 }// End ref Child Completion Block
             }
@@ -787,45 +792,15 @@ extension HomeViewController {
         }//End Connectity Check Statement
     }// End get favorite method
     
-    func getFriendRecordById ( friends:[FriendModel], videoData:[String:String] ) {
-        
-        var friendArray = friends
-        //Finding 5 miles user id
-        for (index,user) in self.allUsers.enumerated() {
-            if let userLatiture = user.latitude , let userLongitude = user.longitude {
-                if let videoLat = CLLocationDegrees( userLatiture ) , let videoLng = CLLocationDegrees( userLongitude ) {
-                    let videoLocation = CLLocation(latitude: videoLat, longitude: videoLng)
-                    let distance = self.currentLocation.distance(from: videoLocation) / 1000
-                    if( distance <= 8046.72 ) {
-                        friendArray.append(FriendModel(id: self.allUsers[index].id))
-                    }
-                }
-                
-            }
-        }//End For loop
-        // Send notification to each user
-        for friend in friendArray {
-            self.getFriendByIdFromUsersRecord ( friendId: friend.id, videoData: videoData )
-        }
-    }
-    
     // GET ALL FRIENDS TOKEN FROM USER AND SEND PUSH NOTIFICATION
-    func getFriendByIdFromUsersRecord ( friendId:String, videoData:[String:String] ) {
+    func getFriendByIdFromUsersRecord ( friendId:String, videoData:VideosModel ) {
         if Connectivity.isConnectedToNetwork() {
             self.ref.child ( Constant.usersTable ).child ( friendId ).observeSingleEvent ( of: .value, with: { (snapshot) in
                 let value = snapshot.value as? NSDictionary
                 let user = LoginModel ( dic: value! )
                 if let userData = user {
                     if userData.token != nil || userData.token != "" {
-                        let subDic:[String:Any] = ["Title":"New Video","message":"New Video uploaded","videoData":videoData.description]
-                        let dic:[String:Any] = ["data":subDic]
-                        
-                        self.notificationSender.sendPushNotification (
-                            to: userData.token,
-                            title: userData.name,
-                            body: Constant.notificationTitle,
-                            data: dic
-                        )
+                        self.sendNotifications(token: userData.token!, username: userData.name!, thumbnail: "thumbnail", videoLatitude: videoData.videoLatitude!, videoLongitude: videoData.videoLongitude!, videoLocation: videoData.videoLocation!, videoURL: videoData.videoURL!,uploaderId: videoData.uploaderID!,timestamp: videoData.timestamp!,userimage: videoData.userImage!)
                     }
                 }
                 PopupHelper.changeRootView (
@@ -843,4 +818,47 @@ extension HomeViewController {
             )
         }//End Connectity Check Statement
     }// End get favorite method
+}
+
+
+// MARK:-Api Methods Extension
+extension HomeViewController:WebServiceResponseDelegate {
+    
+    func sendNotifications(token:String,username:String,thumbnail:String,videoLatitude:String,videoLongitude:String,videoLocation:String,videoURL:String,uploaderId:String,timestamp:String,userimage:String) {
+
+        if Connectivity.isConnectedToNetwork() {
+            self.dataDic = [String:Any]()
+            if let username = CommonHelper.getCachedUserData()?.name {
+                self.dataDic[Constant.token_id] = token
+                self.dataDic[Constant.username] = username
+                self.dataDic[Constant.thumbnail] = thumbnail
+                self.dataDic[Constant.videoLatitude] = videoLatitude
+                self.dataDic[Constant.videoLongitude] = videoLongitude
+                self.dataDic[Constant.videoLocation] = videoLocation
+                self.dataDic[Constant.videoURL] = videoURL
+                self.dataDic[Constant.timestamp] = timestamp
+                self.dataDic[Constant.userimage] = userimage
+                self.dataDic[Constant.uploaderid] = uploaderId
+                self.callWebService(.sendNotification, hud: JGProgressHUD())
+            }
+        }
+    }
+    
+    func callWebService(_ url:webserviceUrl,hud: JGProgressHUD) {
+        let service = WebServicesHelper(serviceToCall: url, withMethod: .post, havingParameters: dataDic, relatedViewController: self,hud: hud)
+        service.delegateForWebServiceResponse = self
+        service.callWebService()
+    }
+    
+    func webServiceDataParsingOnResponseReceived(url: webserviceUrl?, viewControllerObj: UIViewController?, dataDict: Any, hud: JGProgressHUD) {
+        switch url {
+        case .sendNotification:
+            if dataDict is Dictionary<String, Any> {
+                print("Notification seneded successfully")
+                hud.dismiss()
+            }
+        default:
+            hud.dismiss()
+        }
+    }
 }

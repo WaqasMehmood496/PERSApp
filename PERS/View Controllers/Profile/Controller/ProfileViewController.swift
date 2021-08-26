@@ -33,6 +33,7 @@ class ProfileViewController: UIViewController, FriendRequestsDelegate {
     var isImageUpdate = false
     var friendsRequests = [FriendRequestModel]()
     let image = UIImagePickerController()
+    var totalFriends = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,6 +75,10 @@ class ProfileViewController: UIViewController, FriendRequestsDelegate {
     }
 }
 
+
+
+
+
 //MARK:- HELPING METHO'D EXTENSION
 extension ProfileViewController {
     // SETUP USER INTERFACE WITH SOME MODIFICATION
@@ -91,13 +96,15 @@ extension ProfileViewController {
     //THIS METHOD WILL COMPARE THE FRIEND ID TO ALL USER RECORDS TO FETCH WHICH USER IS IN FRIEND LIST
     func compareRecord(friendArray:[FriendModel]) {
         self.friendList.removeAll()
-        for friend in friendArray{
-            for user in self.allUser{
-                if user.id == friend.id{
+        for user in self.allUser {
+            _ = friendArray.contains(where: { (friend) -> Bool in
+                if friend.id == user.id {
                     self.friendList.append(user)
+                    return true
                 }
-            }//End friend loop
-        }//End user loop
+                return false
+            })
+        }
         self.FriendListTableView.reloadData()
     }
     
@@ -117,11 +124,14 @@ extension ProfileViewController {
     }
     //THIS DELEGATE METHOD WILL UPDATE THE FRIEND REQUEST ARRAY AND FRIEND LIST
     func updateFriendRequestData(data: [FriendRequestModel]) {
-        self.friendsRequests = data
-        self.FriendRequestLabel.text = "\(data.count)"
-        //self.getFriendsFromFirebase()//Fetch all friends
+        friendsRequests = data
+        totalFriends = totalFriends - 1
+        FriendRequestLabel.text = "\(totalFriends)"
     }
 }
+
+
+
 
 
 
@@ -179,7 +189,8 @@ extension ProfileViewController{
                             hud.dismiss()
                         }// End Snapshot if else statement
                         self.compareRecord(friendArray: friends)
-                        self.TotalFriendCountLabel.text = "You have \(friends.count) friends"
+                        self.totalFriends = friends.count
+                        self.TotalFriendCountLabel.text = "You have \(self.totalFriends) friends"
                         self.getFriendRequestsFromFirebase(hud: hud)
                     }// End ref Child Completion Block
                 }// End Firebase user id
@@ -196,8 +207,9 @@ extension ProfileViewController{
     func getFriendRequestsFromFirebase(hud:JGProgressHUD) {
         if Connectivity.isConnectedToNetwork(){
             if let userID = self.mAuth.currentUser?.uid{
-                self.ref.child("Requests").child(userID).observeSingleEvent(of: .value) { (snapshot) in
+                self.ref.child("Requests").child(userID).observe(.value) { (snapshot) in
                     if (snapshot.exists()) {
+                        self.friendsRequests.removeAll()
                         let array:NSArray = snapshot.children.allObjects as NSArray
                         for obj in array {
                             let snapshot:DataSnapshot = obj as! DataSnapshot
@@ -286,6 +298,10 @@ extension ProfileViewController{
     }
 }
 
+
+
+
+
 // MARK:- UITBLEVIEW DATASOURCE AND DELEGATES EXTENSION
 extension ProfileViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -303,6 +319,11 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource{
         return cell
     }
 }
+
+
+
+
+
 
 //MARK:- CAMERA METHIO'S EXTENSION
 extension ProfileViewController {

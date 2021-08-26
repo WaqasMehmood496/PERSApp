@@ -22,9 +22,11 @@ class NotificationsViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        
     }
     override func viewWillAppear(_ animated: Bool) {
-        if let notifiArray = CommonHelper.getNotificationCachedData(){
+        self.navigationController?.navigationBar.isHidden = false
+        if let notifiArray = CommonHelper.getNotificationCachedData() {
             notificationsArray = notifiArray
         }
         self.NotificationTableView.reloadData()
@@ -49,8 +51,8 @@ extension NotificationsViewController:UITableViewDelegate,UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let video = [VideosModel(id: self.notificationsArray[indexPath.row].uploaderID, thumbnail: "", uploaderID: self.notificationsArray[indexPath.row].uploaderID, videoLatitude: self.notificationsArray[indexPath.row].videoLongitude, videoLocation: self.notificationsArray[indexPath.row].videoLocation, videoLongitude: self.notificationsArray[indexPath.row].videoLongitude, videoURL: self.notificationsArray[indexPath.row].videoURL, timestamp: self.notificationsArray[indexPath.row].timestamp, userName: "ABC", userImage: "Clip")]
+        let selected = self.notificationsArray[indexPath.row]
+        let video = [VideosModel(id: selected.uploaderid, thumbnail: selected.thumbnail, uploaderID: selected.uploaderid, videoLatitude: selected.videoLatitude, videoLocation: selected.videoLocation, videoLongitude: selected.videoLongitude, videoURL: selected.videoURL, timestamp: selected.timestamp, userName: selected.detail, userImage: selected.userimage)]
         
         
         let playViewController = UIStoryboard.init (
@@ -61,7 +63,7 @@ extension NotificationsViewController:UITableViewDelegate,UITableViewDataSource 
         ) as! PlayerViewController
         playViewController.MyAreaVideos = video
         playViewController.SelectedVideo = video.first!
-        
+        playViewController.isShowMoreVideos = false
         self.navigationController?.pushViewController ( playViewController, animated: true )
     }
 }

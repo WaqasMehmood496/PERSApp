@@ -28,6 +28,7 @@ class PlayerViewController: UIViewController {
     var SelectedVideo = VideosModel()
     var isSelectedVideoAddedInItem = false
     var currentVideoCount = 0
+    var isShowMoreVideos = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +36,9 @@ class PlayerViewController: UIViewController {
         self.setupVideoData()
         if self.MyAreaVideos.count != 0{
             player(items: getAllPlayList())
+        }
+        if isShowMoreVideos == false{
+            self.RelatedVideoTableView.isHidden = true
         }
     }
     
@@ -50,7 +54,9 @@ extension PlayerViewController{
         if MyAreaVideos.count != 0{
             self.UserImage.sd_setImage(with: URL(string: self.SelectedVideo.userImage), placeholderImage: #imageLiteral(resourceName: "Clip"))
             self.UserNameLabel.text = self.SelectedVideo.userName
-            self.UploadDateLabel.text = self.SelectedVideo.timestamp
+            if let timeStamp = Double(self.SelectedVideo.timestamp) {
+                self.UploadDateLabel.text = self.getTimeFromTimeStamp(timeStamp: timeStamp)
+            }
         }
     }
     
@@ -77,12 +83,12 @@ extension PlayerViewController{
     @objc func playerItemDidReachEnd(notification: Notification) {
         if let playerItem = notification.object as? AVPlayerItem {
             //playerItem.seek(to: CMTime.zero)
-//            DispatchQueue.main.async {
-//                self.currentVideoCount = self.currentVideoCount + 1
-//                self.UserImage.sd_setImage(with: URL(string: self.MyAreaVideos[self.currentVideoCount].userImage), placeholderImage: #imageLiteral(resourceName: "Clip"))
-//                self.UserNameLabel.text = self.MyAreaVideos[self.currentVideoCount].userName
-//                self.UploadDateLabel.text = self.MyAreaVideos[self.currentVideoCount].timestamp
-//            }
+            //            DispatchQueue.main.async {
+            //                self.currentVideoCount = self.currentVideoCount + 1
+            //                self.UserImage.sd_setImage(with: URL(string: self.MyAreaVideos[self.currentVideoCount].userImage), placeholderImage: #imageLiteral(resourceName: "Clip"))
+            //                self.UserNameLabel.text = self.MyAreaVideos[self.currentVideoCount].userName
+            //                self.UploadDateLabel.text = self.MyAreaVideos[self.currentVideoCount].timestamp
+            //            }
             
             
             print("-------------123------------")
