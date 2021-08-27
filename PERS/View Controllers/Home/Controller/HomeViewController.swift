@@ -17,7 +17,6 @@ import CoreLocation
 import SwiftEntryKit
 import SwiftyJSON
 
-
 class HomeViewController: UIViewController, CLLocationManagerDelegate {
     
     // IBOUTLET'S
@@ -56,11 +55,11 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
         collectionViewSetup()
         updateToken()
         getRecentlyAddedVideos()
-//        showHUDView(hudIV: .indeterminate, text: .process) { (hud) in
-//            hud.show(in: self.view, animated: true)
-//            self.getLocation(hud: hud)
+        //        showHUDView(hudIV: .indeterminate, text: .process) { (hud) in
+        //            hud.show(in: self.view, animated: true)
+        //            self.getLocation(hud: hud)
         //        }
-        self.getLocation()
+        //self.getLocation()
         self.openCamera()
     }
     
@@ -69,8 +68,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
     }
     //IBACTION'S
     @IBAction func EmergencyAlertBtnAction(_ sender: Any) {
-        
-        self.getLocation()
+        self.openCamera()
     }
 }
 
@@ -269,7 +267,7 @@ extension HomeViewController {
 
 
 //MARK:- HELPING METHOD'S EXTENSION
-extension HomeViewController{
+extension HomeViewController {
     
     func userLocationSetup() {
         //        locationManager = CLLocationManager()
@@ -356,22 +354,22 @@ extension HomeViewController{
 //MARK:- UPLOAD VIDEO EXTENSION
 extension HomeViewController {
     // First get user lat,lng
-    func getLocation() {
-        self.getUserCurrentLocation { (status) in
-            if status{
-                self.getCurrentAddress (
-                    location: self.currentLocation
-                )
-            }else{
-                PopupHelper.alertWithOk (
-                    title: Constant.locationTitle,
-                    message: Constant.locationMsg,
-                    controler: self
-                )
-                locationManager.requestWhenInUseAuthorization()
-            }
-        }
-    }
+    //    func getLocation() {
+    //        self.getUserCurrentLocation { (status) in
+    //            if status{
+    //                self.getCurrentAddress (
+    //                    location: self.currentLocation
+    //                )
+    //            }else{
+    //                PopupHelper.alertWithOk (
+    //                    title: Constant.locationTitle,
+    //                    message: Constant.locationMsg,
+    //                    controler: self
+    //                )
+    //                locationManager.requestWhenInUseAuthorization()
+    //            }
+    //        }
+    //    }
     
     //GET USER CURRENT LOCATION
     func getUserCurrentLocation ( completion: (Bool ) -> ()) {
@@ -380,8 +378,11 @@ extension HomeViewController {
             CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
                 CLLocationManager.authorizationStatus() ==  .authorizedAlways {
             self.currentLocation = locationManager.location
+            self.getCurrentAddress (
+                location: self.currentLocation
+            )
             completion(true)
-        }else{
+        } else {
             completion(false)
         }
     }
@@ -417,7 +418,6 @@ extension HomeViewController {
                     if pm.postalCode != nil {
                         addressString = addressString + pm.postalCode! + " "
                     }
-                    
                     self.currentAddress = addressString
                     //self.CameraBottomSheet()
                 }
@@ -584,23 +584,29 @@ extension HomeViewController {
                     if let image = media.image {
                         if let thumbnail = image.jpegData ( compressionQuality: 0.4 ) {
                             self.thumbnail = thumbnail.base64EncodedString()
-                            self.uploadVideo (
-                                movie, ""
-                            ) { (url, storageRef) in
-                                self.SaveDatatoDB (
-                                    videoUrl: url.absoluteString
-                                )
-                            } progressEsc: { (progress) in
-                                print ( progress )
-                            } completionEsc: {
-                                
-                            } errorEsc: { (error) in
-                                PopupHelper.alertWithOk (
-                                    title: "Video Uploaded Fail",
-                                    message: "\( error.localizedDescription )",
-                                    controler: self
-                                )
-                                print ( error.localizedDescription )
+                            self.getUserCurrentLocation { (isLocationFound) in
+                                if isLocationFound {
+                                    self.uploadVideo (
+                                        movie, ""
+                                    ) { (url, storageRef) in
+                                        self.SaveDatatoDB (
+                                            videoUrl: url.absoluteString
+                                        )
+                                    } progressEsc: { (progress) in
+                                        print ( progress )
+                                    } completionEsc: {
+                                        
+                                    } errorEsc: { (error) in
+                                        PopupHelper.alertWithOk (
+                                            title: "Video Uploaded Fail",
+                                            message: "\( error.localizedDescription )",
+                                            controler: self
+                                        )
+                                        print ( error.localizedDescription )
+                                    }
+                                } else {
+                                    PopupHelper.alertWithOk(title: "Location not found", message: "Your location cannot be found please enable your location", controler: self)
+                                }
                             }
                         }else{
                             PopupHelper.showAlertControllerWithError (
@@ -777,7 +783,7 @@ extension HomeViewController {
 extension HomeViewController:WebServiceResponseDelegate {
     
     func sendNotifications(token:String,username:String,thumbnail:String,videoLatitude:String,videoLongitude:String,videoLocation:String,videoURL:String,uploaderId:String,timestamp:String,userimage:String) {
-
+        
         if Connectivity.isConnectedToNetwork() {
             self.dataDic = [String:Any]()
             if let username = CommonHelper.getCachedUserData()?.name {
