@@ -30,7 +30,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         IQKeyboardManager.shared.enable = true
         self.checkUserAlreadyLogin()
-        
+        if let value = launchOptions?[UIApplication.LaunchOptionsKey.sourceApplication] as? String, value == "OpenApp" {
+            //Launched via today widget
+            print("🚀 Launched from widget")
+        }
         return true
     }
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -40,16 +43,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print ("ashdgjasjda" , deviceToken )
         print("Device Token: \(token)")
     }
+    
     func application(_ application: UIApplication,didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register: \(error)")
     }
+    
     func applicationWillTerminate(_ application: UIApplication) {
         atexit {
-            
             _Exit(0)
         }
         
     }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        print("App sdonosvs")
+        isWidgetSelected = true
+        self.checkUserAlreadyLogin()
+        return true
+        //maybeOpenedFromWidget(urlContexts: URLContexts)
+    }
+//    private func maybeOpenedFromWidget(urlContexts: Set<UIOpenURLContext>) {
+//        guard let _: UIOpenURLContext = urlContexts.first(where: { $0.url.scheme == "widget-deeplink" }) else { return }
+//        print("🚀 Launched from widget")
+//    }
 }
 
 

@@ -39,6 +39,7 @@ struct SimpleEntry: TimelineEntry {
 
 struct PersWidgetEntryView : View {
     var entry: Provider.Entry
+    private static let deeplinkURL: URL = URL(string: "widget-deeplink://OpenApp")!
     
     var body: some View {
         ZStack{
@@ -73,8 +74,7 @@ struct PersWidgetEntryView : View {
                     
                 
             }
-            
-        }
+        }.widgetURL(PersWidgetEntryView.deeplinkURL)
     }
 }
 
@@ -88,6 +88,7 @@ struct PersWidget: Widget {
         }
         .configurationDisplayName("My Widget")
         .description("This is an example widget.")
+        
     }
 }
 

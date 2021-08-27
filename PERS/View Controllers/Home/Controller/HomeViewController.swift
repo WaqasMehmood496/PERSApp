@@ -55,17 +55,18 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
         collectionViewSetup()
         updateToken()
         getRecentlyAddedVideos()
-        //        showHUDView(hudIV: .indeterminate, text: .process) { (hud) in
-        //            hud.show(in: self.view, animated: true)
-        //            self.getLocation(hud: hud)
-        //        }
-        //self.getLocation()
-        self.openCamera()
+        if isWidgetSelected {
+            self.openCamera()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
     }
+    override func viewDidAppear(_ animated: Bool) {
+        
+    }
+    
     //IBACTION'S
     @IBAction func EmergencyAlertBtnAction(_ sender: Any) {
         self.openCamera()
@@ -353,24 +354,6 @@ extension HomeViewController {
 
 //MARK:- UPLOAD VIDEO EXTENSION
 extension HomeViewController {
-    // First get user lat,lng
-    //    func getLocation() {
-    //        self.getUserCurrentLocation { (status) in
-    //            if status{
-    //                self.getCurrentAddress (
-    //                    location: self.currentLocation
-    //                )
-    //            }else{
-    //                PopupHelper.alertWithOk (
-    //                    title: Constant.locationTitle,
-    //                    message: Constant.locationMsg,
-    //                    controler: self
-    //                )
-    //                locationManager.requestWhenInUseAuthorization()
-    //            }
-    //        }
-    //    }
-    
     //GET USER CURRENT LOCATION
     func getUserCurrentLocation ( completion: (Bool ) -> ()) {
         locationManager.requestWhenInUseAuthorization()
@@ -573,7 +556,6 @@ extension HomeViewController {
         _ picker: UIImagePickerController,
         didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]
     ) {
-        
         picker.dismiss (
             animated: true
         ){

@@ -150,3 +150,4 @@ class Globals
     }
 }
 
+var isWidgetSelected = false
